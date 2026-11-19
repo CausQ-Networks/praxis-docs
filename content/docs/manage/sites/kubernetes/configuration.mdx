@@ -12,12 +12,12 @@ This page applies to both site charts: the recommended [Praxis CLI chart](/manag
 For exhaustive option coverage, refer to the chart resources:
 
 <CardGroup cols={3}>
-  <Card title="Praxis CLI README" href="https://github.com/fosrl/helm-charts/blob/main/charts/praxis-cli/README.md" />
-  <Card title="Praxis CLI values.yaml" href="https://github.com/fosrl/helm-charts/blob/main/charts/praxis-cli/values.yaml" />
-  <Card title="Praxis CLI values.schema.json" href="https://github.com/fosrl/helm-charts/blob/main/charts/praxis-cli/values.schema.json" />
-  <Card title="Newt README" href="https://github.com/fosrl/helm-charts/blob/main/charts/newt/README.md" />
-  <Card title="Newt values.yaml" href="https://github.com/fosrl/helm-charts/blob/main/charts/newt/values.yaml" />
-  <Card title="Newt values.schema.json" href="https://github.com/fosrl/helm-charts/blob/main/charts/newt/values.schema.json" />
+  <Card title="Praxis CLI README" href="https://github.com/causq-networks/helm-charts/blob/main/charts/praxis-cli/README.md" />
+  <Card title="Praxis CLI values.yaml" href="https://github.com/causq-networks/helm-charts/blob/main/charts/praxis-cli/values.yaml" />
+  <Card title="Praxis CLI values.schema.json" href="https://github.com/causq-networks/helm-charts/blob/main/charts/praxis-cli/values.schema.json" />
+  <Card title="Newt README" href="https://github.com/causq-networks/helm-charts/blob/main/charts/newt/README.md" />
+  <Card title="Newt values.yaml" href="https://github.com/causq-networks/helm-charts/blob/main/charts/newt/values.yaml" />
+  <Card title="Newt values.schema.json" href="https://github.com/causq-networks/helm-charts/blob/main/charts/newt/values.schema.json" />
 </CardGroup>
 
 ## Version context
@@ -685,7 +685,7 @@ Enable DNS egress rules if your default network policy blocks DNS.
 Use a values file:
 
 ```bash
-helm upgrade --install newt fossorial/newt \
+helm upgrade --install newt causq/newt \
   --namespace praxis \
   --values values-newt.yaml
 ```
@@ -693,7 +693,7 @@ helm upgrade --install newt fossorial/newt \
 Use inline values only for small tests:
 
 ```bash
-helm upgrade --install newt fossorial/newt \
+helm upgrade --install newt causq/newt \
   --namespace praxis \
   --set 'newtInstances[0].name=main-tunnel' \
   --set 'newtInstances[0].auth.existingSecretName=newt-auth'
@@ -706,7 +706,7 @@ See [Site (newt) Helm](/manage/sites/kubernetes/helm) for the installation flow.
 Render the chart with Helm, then use Kustomize overlays:
 
 ```bash
-helm template newt fossorial/newt \
+helm template newt causq/newt \
   --namespace praxis \
   --values values-newt.yaml \
   > base/newt.yaml

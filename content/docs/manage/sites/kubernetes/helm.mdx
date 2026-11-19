@@ -9,7 +9,7 @@ This guide installs and manages sites in Kubernetes with the `causq-networks/pra
 The Praxis CLI chart is the recommended way to run sites on Kubernetes. Existing Newt deployments keep working; see [Helm (Newt)](/manage/sites/kubernetes/newt-helm) for the Newt chart and [Migrating from the Newt chart](#migrating-from-the-newt-chart) to switch.
 </Note>
 
-See [Version Matrix](https://github.com/fosrl/helm-charts/blob/main/VERSION_MATRIX.md) for chart and default app version references.
+See [Version Matrix](https://github.com/causq-networks/helm-charts/blob/main/VERSION_MATRIX.md) for chart and default app version references.
 
 ## What the chart supports
 
@@ -126,14 +126,14 @@ siteInstances:
 Add the Helm repository:
 
 ```bash
-helm repo add fossorial https://charts.fossorial.io
-helm repo update fossorial
+helm repo add causq https://charts.causq.com
+helm repo update causq
 ```
 
 Install the chart:
 
 ```bash
-helm upgrade --install praxis-site fossorial/praxis-cli \
+helm upgrade --install praxis-site causq/praxis-cli \
   --namespace praxis \
   --values values-site.yaml
 ```
@@ -197,7 +197,7 @@ siteInstances:
 Install the chart:
 
 ```bash
-helm upgrade --install praxis-site fossorial/praxis-cli \
+helm upgrade --install praxis-site causq/praxis-cli \
   --namespace praxis \
   --values values-site.yaml
 ```
@@ -223,7 +223,7 @@ siteInstances:
       fileName: config.json
 ```
 
-To apply a blueprint once, right after provisioning, set `provisioningBlueprintFile` and `provisioningBlueprintData` on the instance. See the [chart README](https://github.com/fosrl/helm-charts/blob/main/charts/praxis-cli/README.md#provisioning-blueprint-single-use) for an example.
+To apply a blueprint once, right after provisioning, set `provisioningBlueprintFile` and `provisioningBlueprintData` on the instance. See the [chart README](https://github.com/causq-networks/helm-charts/blob/main/charts/praxis-cli/README.md#provisioning-blueprint-single-use) for an example.
 
 ## Verifying connectivity
 
@@ -248,9 +248,9 @@ If the pod is running but the site does not connect, check:
 ## Upgrade
 
 ```bash
-helm repo update fossorial
+helm repo update causq
 
-helm upgrade praxis-site fossorial/praxis-cli \
+helm upgrade praxis-site causq/praxis-cli \
   --namespace praxis \
   --values values-site.yaml
 ```
@@ -327,7 +327,7 @@ Run only one connector per site. Uninstall the Newt release (or disable its inst
 
 ```bash
 helm uninstall newt --namespace praxis
-helm upgrade --install praxis-site fossorial/praxis-cli \
+helm upgrade --install praxis-site causq/praxis-cli \
   --namespace praxis \
   --values values-site.yaml
 ```
@@ -366,7 +366,7 @@ global:
 The chart is also published as an OCI chart in GHCR:
 
 ```bash
-helm upgrade --install praxis-site oci://ghcr.io/fosrl/helm-charts/praxis-cli \
+helm upgrade --install praxis-site oci://ghcr.io/causq-networks/helm-charts/praxis-cli \
   --version 0.1.0 \
   --namespace praxis \
   --values values-site.yaml
@@ -377,12 +377,12 @@ OCI changes where Helm pulls the chart from. It does not change the values file 
 ## References
 
 <CardGroup cols={2}>
-  <Card title="Chart README" href="https://github.com/fosrl/helm-charts/blob/main/charts/praxis-cli/README.md" icon="book" />
-  <Card title="values.yaml" href="https://github.com/fosrl/helm-charts/blob/main/charts/praxis-cli/values.yaml" icon="file-code" />
-  <Card title="values.schema.json" href="https://github.com/fosrl/helm-charts/blob/main/charts/praxis-cli/values.schema.json" icon="file-code" />
+  <Card title="Chart README" href="https://github.com/causq-networks/helm-charts/blob/main/charts/praxis-cli/README.md" icon="book" />
+  <Card title="values.yaml" href="https://github.com/causq-networks/helm-charts/blob/main/charts/praxis-cli/values.yaml" icon="file-code" />
+  <Card title="values.schema.json" href="https://github.com/causq-networks/helm-charts/blob/main/charts/praxis-cli/values.schema.json" icon="file-code" />
   <Card title="Artifact Hub" href="https://artifacthub.io/packages/helm/causq-networks/praxis-cli" icon="box" />
   <Card title="Praxis CLI" href="https://github.com/CausQ-Networks/praxis-cli" icon="terminal" />
-  <Card title="Issues" href="https://github.com/fosrl/helm-charts/issues" icon="circle-question" />
+  <Card title="Issues" href="https://github.com/causq-networks/helm-charts/issues" icon="circle-question" />
 </CardGroup>
 
 ## Next steps

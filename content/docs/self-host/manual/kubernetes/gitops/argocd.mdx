@@ -27,7 +27,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://charts.fossorial.io
+    repoURL: https://charts.causq.com
     chart: praxis
     targetRevision: 0.1.0-alpha.0  # or use ~0.1.0 for range
     helm:
@@ -84,7 +84,7 @@ kubectl apply -f praxis-app.yaml
 
 In the Argo CD UI, you should see the `praxis` application. Argo CD will:
 
-1. Fetch the Helm chart from `https://charts.fossorial.io`
+1. Fetch the Helm chart from `https://charts.causq.com`
 2. Render the chart with your inline `values`
 3. Create all resources in the `praxis` namespace
 4. Continuously monitor for drift
@@ -123,7 +123,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://charts.fossorial.io
+    repoURL: https://charts.causq.com
     chart: newt
     targetRevision: 1.4.0
     helm:
@@ -315,7 +315,7 @@ If the Helm chart is available in an OCI registry:
 
 ```yaml
 source:
-  repoURL: oci://registry.example.com/fossorial
+  repoURL: oci://registry.example.com/causq
   chart: praxis
   targetRevision: 0.1.0-alpha.0
   helm:

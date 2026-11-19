@@ -9,7 +9,7 @@ This guide installs and manages Newt sites in Kubernetes using the `causq-networ
 New sites should use the [Praxis CLI chart](/manage/sites/kubernetes/helm), which runs sites with the Praxis CLI. This page covers the Newt chart for existing Newt deployments, which keep working.
 </Note>
 
-See [Version Matrix](https://github.com/fosrl/helm-charts/blob/main/VERSION_MATRIX.md) for chart and default app version references.
+See [Version Matrix](https://github.com/causq-networks/helm-charts/blob/main/VERSION_MATRIX.md) for chart and default app version references.
 
 ## What the chart supports
 
@@ -141,14 +141,14 @@ newtInstances:
 Add the Helm repository:
 
 ```bash
-helm repo add fossorial https://charts.fossorial.io
-helm repo update fossorial
+helm repo add causq https://charts.causq.com
+helm repo update causq
 ```
 
 Install Newt:
 
 ```bash
-helm upgrade --install newt fossorial/newt \
+helm upgrade --install newt causq/newt \
   --namespace praxis \
   --values values-newt.yaml
 ```
@@ -212,7 +212,7 @@ newtInstances:
 Install Newt:
 
 ```bash
-helm upgrade --install newt fossorial/newt \
+helm upgrade --install newt causq/newt \
   --namespace praxis \
   --values values-newt.yaml
 ```
@@ -265,13 +265,13 @@ If the pod is running but the site does not connect, check:
 Update the Helm repository:
 
 ```bash
-helm repo update fossorial
+helm repo update causq
 ```
 
 Upgrade the release:
 
 ```bash
-helm upgrade newt fossorial/newt \
+helm upgrade newt causq/newt \
   --namespace praxis \
   --values values-newt.yaml
 ```
@@ -369,14 +369,14 @@ The Newt chart is also published as an OCI chart in GHCR.
 Pull the chart:
 
 ```bash
-helm pull oci://ghcr.io/fosrl/helm-charts/newt \
+helm pull oci://ghcr.io/causq-networks/helm-charts/newt \
   --version 1.6.0
 ```
 
 Install from OCI:
 
 ```bash
-helm upgrade --install newt oci://ghcr.io/fosrl/helm-charts/newt \
+helm upgrade --install newt oci://ghcr.io/causq-networks/helm-charts/newt \
   --version 1.6.0 \
   --namespace praxis \
   --values values-newt.yaml
@@ -387,11 +387,11 @@ OCI changes where Helm pulls the chart from. It does not change the values file 
 ## References
 
 <CardGroup cols={2}>
-  <Card title="Chart README" href="https://github.com/fosrl/helm-charts/blob/main/charts/newt/README.md" icon="book" />
-  <Card title="values.yaml" href="https://github.com/fosrl/helm-charts/blob/main/charts/newt/values.yaml" icon="file-code" />
-  <Card title="values.schema.json" href="https://github.com/fosrl/helm-charts/blob/main/charts/newt/values.schema.json" icon="file-code" />
+  <Card title="Chart README" href="https://github.com/causq-networks/helm-charts/blob/main/charts/newt/README.md" icon="book" />
+  <Card title="values.yaml" href="https://github.com/causq-networks/helm-charts/blob/main/charts/newt/values.yaml" icon="file-code" />
+  <Card title="values.schema.json" href="https://github.com/causq-networks/helm-charts/blob/main/charts/newt/values.schema.json" icon="file-code" />
   <Card title="Artifact Hub" href="https://artifacthub.io/packages/helm/causq-networks/praxis-newt" icon="box" />
-  <Card title="Issues" href="https://github.com/fosrl/helm-charts/issues" icon="circle-question" />
+  <Card title="Issues" href="https://github.com/causq-networks/helm-charts/issues" icon="circle-question" />
 </CardGroup>
 
 ## Next steps

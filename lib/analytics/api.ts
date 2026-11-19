@@ -2,7 +2,7 @@ import 'server-only';
 import type { ChatUIMessage } from '@/lib/ai/types';
 
 /**
- * Analytics are stored by the Fossorial API (`/api/v1/docs-analytics`), called from the
+ * Analytics are stored by the CausQ API (`/api/v1/docs-analytics`), called from the
  * docs server with `FOSSORIAL_API_KEY` so the key never reaches the browser. With
  * `FOSSORIAL_API_URL` or the key unset, events are dropped (fine for local development).
  */
@@ -36,7 +36,7 @@ async function post(path: string, body: object) {
   });
   if (!res.ok) {
     const detail = await res.text().catch(() => '');
-    throw new ApiError(res.status, `Fossorial API ${path} responded ${res.status} ${detail.slice(0, 300)}`);
+    throw new ApiError(res.status, `CausQ API ${path} responded ${res.status} ${detail.slice(0, 300)}`);
   }
 }
 

@@ -28,7 +28,7 @@ export const FEATURE_BANNER_INIT_SCRIPT = `try{if(localStorage.getItem(${JSON.st
   FEATURE_BANNER_DISMISSED_ATTR,
 )},"")}catch(e){}`;
 
-export const FOOTER_LEGAL_ENTITY = 'Fossorial Inc.';
+export const FOOTER_LEGAL_ENTITY = 'CausQ Inc.';
 
 export const FOOTER_ADDRESS = [
   '169 Madison Ave STE 81373',

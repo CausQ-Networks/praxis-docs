@@ -16,7 +16,7 @@ kubectl version
 ```
 
 <Info>
-See the [Version Matrix](https://github.com/fosrl/helm-charts/VERSION_MATRIX.md) for the supported Kubernetes versions of the Praxis and Newt Helm charts.
+See the [Version Matrix](https://github.com/causq-networks/helm-charts/VERSION_MATRIX.md) for the supported Kubernetes versions of the Praxis and Newt Helm charts.
 </Info>
 
 ## Controller access and RBAC
@@ -147,7 +147,7 @@ kubectl create namespace praxis
 When using Helm, you can also let Helm create the namespace:
 
 ```bash
-helm upgrade --install praxis fossorial/praxis \
+helm upgrade --install praxis causq/praxis \
   --namespace praxis \
   --create-namespace
 ```

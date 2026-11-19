@@ -8,9 +8,9 @@ This page covers the main Praxis Kubernetes configuration options for Helm and K
 For exhaustive option coverage, refer to the chart resources:
 
 <CardGroup cols={3}>
-  <Card title="README" href="https://github.com/fosrl/helm-charts/blob/main/charts/praxis/README.md" />
-  <Card title="values.yaml" href="https://github.com/fosrl/helm-charts/blob/main/charts/praxis/values.yaml" />
-  <Card title="values.schema.json" href="https://github.com/fosrl/helm-charts/blob/main/charts/praxis/values.schema.json" />
+  <Card title="README" href="https://github.com/causq-networks/helm-charts/blob/main/charts/praxis/README.md" />
+  <Card title="values.yaml" href="https://github.com/causq-networks/helm-charts/blob/main/charts/praxis/values.yaml" />
+  <Card title="values.schema.json" href="https://github.com/causq-networks/helm-charts/blob/main/charts/praxis/values.schema.json" />
 </CardGroup>
 
 ## Version context
@@ -494,7 +494,7 @@ For first installs, `delayed` can help when Gerbil would otherwise fail before t
 Switch back after setup:
 
 ```bash
-helm upgrade praxis fossorial/praxis \
+helm upgrade praxis causq/praxis \
   --namespace praxis \
   --reuse-values \
   --set gerbil.startupMode=normal
@@ -902,7 +902,7 @@ The Praxis server does not apply Blueprint files directly. Blueprints are applie
 Use a values file:
 
 ```bash
-helm upgrade --install praxis fossorial/praxis \
+helm upgrade --install praxis causq/praxis \
   --namespace praxis \
   --values values-praxis.yaml
 ```
@@ -910,7 +910,7 @@ helm upgrade --install praxis fossorial/praxis \
 Use inline values only for small tests:
 
 ```bash
-helm upgrade --install praxis fossorial/praxis \
+helm upgrade --install praxis causq/praxis \
   --namespace praxis \
   --set deployment.type=controller \
   --set deployment.mode=multi \
@@ -930,7 +930,7 @@ For complete application configuration keys and examples, see:
 Render the chart with Helm, then apply Kustomize overlays:
 
 ```bash
-helm template praxis fossorial/praxis \
+helm template praxis causq/praxis \
   --namespace praxis \
   --values values-praxis.yaml \
   > base/praxis.yaml

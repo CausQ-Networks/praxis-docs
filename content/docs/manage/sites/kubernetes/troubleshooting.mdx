@@ -547,7 +547,7 @@ newtInstances:
 Then upgrade:
 
 ```bash
-helm upgrade "$NEWT_RELEASE" fossorial/newt \
+helm upgrade "$NEWT_RELEASE" causq/newt \
   --namespace "$NEWT_NAMESPACE" \
   --values values-newt.yaml
 ```
@@ -582,7 +582,7 @@ newtInstances:
 Upgrade after changing values:
 
 ```bash
-helm upgrade "$NEWT_RELEASE" fossorial/newt \
+helm upgrade "$NEWT_RELEASE" causq/newt \
   --namespace "$NEWT_NAMESPACE" \
   --values values-newt.yaml
 ```
@@ -592,7 +592,7 @@ helm upgrade "$NEWT_RELEASE" fossorial/newt \
 Preview an upgrade:
 
 ```bash
-helm upgrade "$NEWT_RELEASE" fossorial/newt \
+helm upgrade "$NEWT_RELEASE" causq/newt \
   --namespace "$NEWT_NAMESPACE" \
   --values values-newt.yaml \
   --dry-run
@@ -601,7 +601,7 @@ helm upgrade "$NEWT_RELEASE" fossorial/newt \
 Render the chart locally:
 
 ```bash
-helm template "$NEWT_RELEASE" fossorial/newt \
+helm template "$NEWT_RELEASE" causq/newt \
   --namespace "$NEWT_NAMESPACE" \
   --values values-newt.yaml
 ```

@@ -1,5 +1,5 @@
 /**
- * Read-only copy of the docs analytics tables from the Fossorial API
+ * Read-only copy of the docs analytics tables from the CausQ API
  * (api repo: src/services/db/schema.ts, `docs*` tables). The API owns these tables and
  * their migrations; keep this file in sync when they change. This app never writes.
  */

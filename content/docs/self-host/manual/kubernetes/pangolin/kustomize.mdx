@@ -198,8 +198,8 @@ Use `gerbil.startupMode=delayed` for the first install if Gerbil should not star
 Add and update the Helm repository:
 
 ```bash
-helm repo add fossorial https://charts.fossorial.io
-helm repo update fossorial
+helm repo add causq https://charts.causq.com
+helm repo update causq
 ```
 
 Create directories:
@@ -211,7 +211,7 @@ mkdir -p base overlays/dev/patches overlays/staging/patches overlays/prod/patche
 Render the Praxis chart:
 
 ```bash
-helm template praxis fossorial/praxis \
+helm template praxis causq/praxis \
   --namespace praxis \
   --values values/values-base.yaml \
   > base/praxis.yaml
@@ -220,7 +220,7 @@ helm template praxis fossorial/praxis \
 You can also render from the GHCR OCI chart:
 
 ```bash
-helm template praxis oci://ghcr.io/fosrl/helm-charts/praxis \
+helm template praxis oci://ghcr.io/causq-networks/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
   --namespace praxis \
   --values values/values-base.yaml \
@@ -395,7 +395,7 @@ gerbil:
 Then re-render:
 
 ```bash
-helm template praxis fossorial/praxis \
+helm template praxis causq/praxis \
   --namespace praxis \
   --values values/values-base.yaml \
   > base/praxis.yaml
@@ -465,13 +465,13 @@ When upgrading the Praxis chart or changing Helm values, re-render the base and 
 Update the Helm repository:
 
 ```bash
-helm repo update fossorial
+helm repo update causq
 ```
 
 Render the updated chart output:
 
 ```bash
-helm template praxis fossorial/praxis \
+helm template praxis causq/praxis \
   --namespace praxis \
   --values values/values-base.yaml \
   > base/praxis.yaml
@@ -480,7 +480,7 @@ helm template praxis fossorial/praxis \
 Or with OCI:
 
 ```bash
-helm template praxis oci://ghcr.io/fosrl/helm-charts/praxis \
+helm template praxis oci://ghcr.io/causq-networks/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
   --namespace praxis \
   --values values/values-base.yaml \
@@ -520,7 +520,7 @@ Do not run `helm upgrade` against a release that is managed by Kustomize.
 Avoid this pattern:
 
 ```bash
-helm upgrade praxis fossorial/praxis --namespace praxis
+helm upgrade praxis causq/praxis --namespace praxis
 kubectl apply -k overlays/prod
 ```
 

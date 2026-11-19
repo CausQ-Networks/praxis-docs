@@ -85,7 +85,7 @@ ai:
 
 | Key | Purpose |
 |---|---|
-| `upstream_url` | HTTP GET for the catalog JSON. Defaults to the Fossorial API. Point this at your own endpoint to serve a custom catalog. |
+| `upstream_url` | HTTP GET for the catalog JSON. Defaults to the CausQ API. Point this at your own endpoint to serve a custom catalog. |
 | `file` | Local JSON file that **replaces** the HTTP catalog. |
 | `merge_file` | Local JSON merged on top of the base catalog. Base entries win on duplicates; the merge file only adds missing models. |
 | `refresh_interval_min_hours` / `max_hours` | Background refresh window. The interval is jittered between min and max so many instances do not hit the upstream at the same moment. Defaults are 6 and 12. |

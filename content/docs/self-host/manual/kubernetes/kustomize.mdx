@@ -77,14 +77,14 @@ mkdir -p base overlays/dev overlays/staging overlays/prod
 Render Praxis:
 
 ```bash tab="Classic Helm repository"
-helm template praxis fossorial/praxis \
+helm template praxis causq/praxis \
   --namespace praxis \
   --values values/values-praxis.yaml \
   > base/praxis.yaml
 ```
 
 ```bash tab="OCI (GHCR)"
-helm template praxis oci://ghcr.io/fosrl/helm-charts/praxis \
+helm template praxis oci://ghcr.io/causq-networks/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
   --namespace praxis \
   --values values/values-praxis.yaml \
@@ -94,14 +94,14 @@ helm template praxis oci://ghcr.io/fosrl/helm-charts/praxis \
 Render Newt:
 
 ```bash tab="Classic Helm repository"
-helm template newt fossorial/newt \
+helm template newt causq/newt \
   --namespace praxis \
   --values values/values-newt.yaml \
   > base/newt.yaml
 ```
 
 ```bash tab="OCI (GHCR)"
-helm template newt oci://ghcr.io/fosrl/helm-charts/newt \
+helm template newt oci://ghcr.io/causq-networks/helm-charts/newt \
   --version 1.4.0 \
   --namespace praxis \
   --values values/values-newt.yaml \
@@ -230,20 +230,20 @@ kustomize build overlays/prod | kubectl apply -f -
 When upgrading chart versions or changing Helm values, re-render the base and review the diff.
 
 ```bash
-helm repo update fossorial
+helm repo update causq
 ```
 
 Render the updated chart output:
 
 ```bash
-helm template praxis fossorial/praxis \
+helm template praxis causq/praxis \
   --namespace praxis \
   --values values/values-praxis.yaml \
   > base/praxis.yaml
 ```
 
 ```bash
-helm template newt fossorial/newt \
+helm template newt causq/newt \
   --namespace praxis \
   --values values/values-newt.yaml \
   > base/newt.yaml
@@ -275,7 +275,7 @@ kubectl apply -k overlays/prod
 Render the charts with the namespace you intend to use:
 
 ```bash
-helm template praxis fossorial/praxis \
+helm template praxis causq/praxis \
   --namespace praxis \
   --values values/values-praxis.yaml \
   > base/praxis.yaml
@@ -304,7 +304,7 @@ Use one of these approaches instead:
 Avoid this pattern:
 
 ```text
-helm upgrade praxis fossorial/praxis
+helm upgrade praxis causq/praxis
 kubectl apply -k overlays/prod
 ```
 

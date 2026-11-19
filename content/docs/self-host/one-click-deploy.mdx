@@ -40,7 +40,7 @@ Praxis publishes one Ubuntu 24.04 AMI per architecture:
 | x86_64 | `praxis-ubuntu-24.04-amd64-*` | `t3.small` |
 | arm64 / Graviton | `praxis-ubuntu-24.04-arm64-*` | `t4g.small` |
 
-The same AMI installs either the **Community Edition** (the default) or the **Enterprise Edition**. You choose the edition when you configure the instance: set `PANGOLIN_EDITION` in user-data, use the **Edition** parameter in CloudFormation, or answer the wizard's prompt. The Enterprise Edition is free for personal use and for businesses under $100K USD gross annual revenue. See [Enterprise Edition](/self-host/enterprise-edition).
+The same AMI installs either the **Community Edition** (the default) or the **Enterprise Edition**. You choose the edition when you configure the instance: set `praxis_EDITION` in user-data, use the **Edition** parameter in CloudFormation, or answer the wizard's prompt. The Enterprise Edition is free for personal use and for businesses under $100K USD gross annual revenue. See [Enterprise Edition](/self-host/enterprise-edition).
 
 The AMIs are available in all default-enabled AWS regions: US East and West, Canada, São Paulo, Ireland, London, Paris, Frankfurt, Stockholm, Mumbai, Tokyo, Seoul, Osaka, Singapore and Sydney.
 
@@ -60,11 +60,11 @@ Graviton (`t4g`) instances are the most cost-effective choice. `t4g.small` (2 vC
 <Tab title="AWS CLI">
   AMI IDs differ per region. Look up the newest one in the region you launch in:
 
-  {/* TODO: replace <PANGOLIN_AWS_ACCOUNT_ID> with the publishing account ID. */}
+  {/* TODO: replace <praxis_AWS_ACCOUNT_ID> with the publishing account ID. */}
 
   ```bash
   aws ec2 describe-images --region us-east-1 \
-    --owners <PANGOLIN_AWS_ACCOUNT_ID> \
+    --owners <praxis_AWS_ACCOUNT_ID> \
     --filters "Name=name,Values=praxis-ubuntu-*-arm64-*" "Name=state,Values=available" \
     --query 'sort_by(Images, &CreationDate)[-1].ImageId' --output text
   ```
@@ -101,9 +101,9 @@ Pick one way to give the instance your edition, domain and email. With CloudForm
   Pass the settings as user-data when you launch. Plain `KEY=VALUE` lines are enough:
 
   ```bash title="user-data.env"
-  PANGOLIN_EDITION=community   # or enterprise
-  PANGOLIN_BASE_DOMAIN=example.com
-  PANGOLIN_EMAIL=admin@example.com
+  praxis_EDITION=community   # or enterprise
+  praxis_BASE_DOMAIN=example.com
+  praxis_EMAIL=admin@example.com
   ```
 
   ```bash
@@ -132,18 +132,18 @@ Pick one way to give the instance your edition, domain and email. With CloudForm
 <Accordion title="All user-data settings">
 | Setting | Default | Description |
 | --- | --- | --- |
-| `PANGOLIN_EDITION` | `community` | `community` or `enterprise` |
-| `PANGOLIN_BASE_DOMAIN` | required | Base domain for resources, e.g. `example.com` |
-| `PANGOLIN_DASHBOARD_DOMAIN` | `praxis.<base domain>` | Domain for the Praxis dashboard |
-| `PANGOLIN_EMAIL` | required | Let's Encrypt email |
-| `PANGOLIN_INSTALL_GERBIL` | `true` | Enable WireGuard tunneling. Set `false` to run Praxis [without tunneling](/self-host/advanced/without-tunneling) |
-| `PANGOLIN_ENABLE_IPV6` | auto | IPv6 on the Docker network. Defaults to on if the instance has an IPv6 address |
-| `PANGOLIN_ENABLE_MAXMIND` | `true` | Download the GeoLite2 databases for [geolocation](/self-host/advanced/enable-geolocation) |
-| `PANGOLIN_SMTP_HOST`, `PANGOLIN_SMTP_PORT`, `PANGOLIN_SMTP_USER`, `PANGOLIN_SMTP_PASS`, `PANGOLIN_SMTP_NO_REPLY` | off | Email (SMTP). Enabled when `PANGOLIN_SMTP_HOST` is set |
-| `PANGOLIN_WAIT_FOR_DNS` | `true` | Wait for the dashboard domain to resolve to the instance before installing |
-| `PANGOLIN_DNS_TIMEOUT` | `1800` | Seconds to wait for DNS before installing anyway |
+| `praxis_EDITION` | `community` | `community` or `enterprise` |
+| `praxis_BASE_DOMAIN` | required | Base domain for resources, e.g. `example.com` |
+| `praxis_DASHBOARD_DOMAIN` | `praxis.<base domain>` | Domain for the Praxis dashboard |
+| `praxis_EMAIL` | required | Let's Encrypt email |
+| `praxis_INSTALL_GERBIL` | `true` | Enable WireGuard tunneling. Set `false` to run Praxis [without tunneling](/self-host/advanced/without-tunneling) |
+| `praxis_ENABLE_IPV6` | auto | IPv6 on the Docker network. Defaults to on if the instance has an IPv6 address |
+| `praxis_ENABLE_MAXMIND` | `true` | Download the GeoLite2 databases for [geolocation](/self-host/advanced/enable-geolocation) |
+| `praxis_SMTP_HOST`, `praxis_SMTP_PORT`, `praxis_SMTP_USER`, `praxis_SMTP_PASS`, `praxis_SMTP_NO_REPLY` | off | Email (SMTP). Enabled when `praxis_SMTP_HOST` is set |
+| `praxis_WAIT_FOR_DNS` | `true` | Wait for the dashboard domain to resolve to the instance before installing |
+| `praxis_DNS_TIMEOUT` | `1800` | Seconds to wait for DNS before installing anyway |
 
-If you give only `PANGOLIN_DASHBOARD_DOMAIN`, the base domain is that domain with its first label removed (`praxis.example.com` → `example.com`).
+If you give only `praxis_DASHBOARD_DOMAIN`, the base domain is that domain with its first label removed (`praxis.example.com` → `example.com`).
 
 <Warning>
 Any process on the instance can read user-data. Consider adding SMTP credentials later in `/opt/praxis/config/config.yml` instead.
@@ -181,7 +181,7 @@ The [Praxis (CE) 1-Click App](https://marketplace.digitalocean.com/apps/praxis-c
   </Tab>
 
   <Tab title="API">
-    Create the droplet from the `fossorial-praxisce1` image with the DigitalOcean API. Set `TOKEN` to a [personal access token](https://docs.digitalocean.com/reference/api/create-personal-access-token/), and put your SSH key IDs or fingerprints in `ssh_keys`:
+    Create the droplet from the `causq-praxisce1` image with the DigitalOcean API. Set `TOKEN` to a [personal access token](https://docs.digitalocean.com/reference/api/create-personal-access-token/), and put your SSH key IDs or fingerprints in `ssh_keys`:
 
     ```bash
     curl -X POST "https://api.digitalocean.com/v2/droplets" \
@@ -191,7 +191,7 @@ The [Praxis (CE) 1-Click App](https://marketplace.digitalocean.com/apps/praxis-c
         "name": "praxis",
         "region": "nyc3",
         "size": "s-1vcpu-2gb",
-        "image": "fossorial-praxisce1",
+        "image": "causq-praxisce1",
         "ssh_keys": ["<ssh-key-id-or-fingerprint>"]
       }'
     ```
@@ -200,7 +200,7 @@ The [Praxis (CE) 1-Click App](https://marketplace.digitalocean.com/apps/praxis-c
   <Tab title="doctl">
     ```bash
     doctl compute droplet create praxis \
-      --image fossorial-praxisce1 \
+      --image causq-praxisce1 \
       --region nyc3 \
       --size s-1vcpu-2gb \
       --ssh-keys <ssh-key-id-or-fingerprint> \
@@ -271,7 +271,7 @@ Both images install Praxis with Docker Compose in `/opt/praxis`. To update to ne
   dig +short praxis.example.com @1.1.1.1
   ```
 
-  The instance keeps checking and installs anyway after `PANGOLIN_DNS_TIMEOUT` (30 minutes by default). If the server sits behind a load balancer, set `PANGOLIN_WAIT_FOR_DNS=false`. Follow progress with `sudo tail -f /var/log/praxis-setup.log`.
+  The instance keeps checking and installs anyway after `praxis_DNS_TIMEOUT` (30 minutes by default). If the server sits behind a load balancer, set `praxis_WAIT_FOR_DNS=false`. Follow progress with `sudo tail -f /var/log/praxis-setup.log`.
 </Accordion>
 
 <Accordion title="Browser shows a certificate error">

@@ -47,7 +47,7 @@ export function SiteFooter() {
             <Link
               href="/"
               aria-label="Praxis Docs home"
-              title="Fossorial (adj.): adapted for digging. Like a praxis."
+              title="CausQ (adj.): adapted for digging. Like a praxis."
               className="flex w-fit items-center gap-2.5"
             >
               <Logo className="h-7" />

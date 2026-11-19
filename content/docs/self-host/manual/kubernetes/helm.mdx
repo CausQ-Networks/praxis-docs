@@ -9,24 +9,24 @@ Use Helm when you want a chart-based workflow for installing, upgrading, rolling
 
 ## Helm repository setup
 
-Add the Fossorial Helm chart repository:
+Add the CausQ Helm chart repository:
 
 ```bash
-helm repo add fossorial https://charts.fossorial.io
-helm repo update fossorial
+helm repo add causq https://charts.causq.com
+helm repo update causq
 ```
 
 Search for available charts:
 
 ```bash
-helm search repo fossorial
+helm search repo causq
 ```
 
 The classic Helm repository flow is the default path for most installations:
 
 ```bash
-helm install my-newt fossorial/newt
-helm install my-praxis fossorial/praxis
+helm install my-newt causq/newt
+helm install my-praxis causq/praxis
 ```
 
 ## Installation overview
@@ -59,22 +59,22 @@ For detailed installation steps, see:
 ## Install command patterns
 
 ```bash tab="Classic Helm repository"
-helm upgrade --install praxis fossorial/praxis \
+helm upgrade --install praxis causq/praxis \
   --namespace praxis \
   --values values-praxis.yaml
 
-helm upgrade --install newt fossorial/newt \
+helm upgrade --install newt causq/newt \
   --namespace praxis \
   --values values-newt.yaml
 ```
 
 ```bash tab="OCI (GHCR)"
-helm upgrade --install praxis oci://ghcr.io/fosrl/helm-charts/praxis \
+helm upgrade --install praxis oci://ghcr.io/causq-networks/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
   --namespace praxis \
   --values values-praxis.yaml
 
-helm upgrade --install newt oci://ghcr.io/fosrl/helm-charts/newt \
+helm upgrade --install newt oci://ghcr.io/causq-networks/helm-charts/newt \
   --version 1.4.0 \
   --namespace praxis \
   --values values-newt.yaml
@@ -112,7 +112,7 @@ Both charts use values files for configuration.
 Praxis example:
 
 ```bash
-helm upgrade --install praxis fossorial/praxis \
+helm upgrade --install praxis causq/praxis \
   --namespace praxis \
   --values values-praxis.yaml
 ```
@@ -120,7 +120,7 @@ helm upgrade --install praxis fossorial/praxis \
 Newt example:
 
 ```bash
-helm upgrade --install newt fossorial/newt \
+helm upgrade --install newt causq/newt \
   --namespace praxis \
   --values values-newt.yaml
 ```
@@ -136,7 +136,7 @@ Do not use `--create-namespace` if you need custom namespace labels or annotatio
 Keep reusable configuration in a values file:
 
 ```bash
-helm upgrade --install praxis fossorial/praxis \
+helm upgrade --install praxis causq/praxis \
   --namespace praxis \
   --values values-praxis.yaml
 ```
@@ -144,7 +144,7 @@ helm upgrade --install praxis fossorial/praxis \
 Use `--set` only for small tests or temporary overrides:
 
 ```bash
-helm upgrade --install praxis fossorial/praxis \
+helm upgrade --install praxis causq/praxis \
   --namespace praxis \
   --set example.key=value
 ```
@@ -162,12 +162,12 @@ Full configuration options are documented here:
 
 ## Artifact Hub and chart discovery
 
-The Fossorial charts can be installed from the Fossorial Helm repository:
+The CausQ charts can be installed from the CausQ Helm repository:
 
 ```bash
-helm repo add fossorial https://charts.fossorial.io
-helm repo update fossorial
-helm search repo fossorial
+helm repo add causq https://charts.causq.com
+helm repo update causq
+helm search repo causq
 ```
 
 Artifact Hub can also be used to discover published chart metadata, available versions, install commands, and repository information.
@@ -182,8 +182,8 @@ OCI is not a separate installation method. It only changes where Helm pulls the 
 
 For Praxis and Newt, OCI chart publishing is available in GHCR:
 
-* Newt: `oci://ghcr.io/fosrl/helm-charts/newt`
-* Praxis: `oci://ghcr.io/fosrl/helm-charts/praxis`
+* Newt: `oci://ghcr.io/causq-networks/helm-charts/newt`
+* Praxis: `oci://ghcr.io/causq-networks/helm-charts/praxis`
 
 You still use Helm in the same way: choose a chart, select a version, provide values, and install the release.
 
@@ -192,14 +192,14 @@ You still use Helm in the same way: choose a chart, select a version, provide va
 Newt example:
 
 ```bash
-helm pull oci://ghcr.io/fosrl/helm-charts/newt \
+helm pull oci://ghcr.io/causq-networks/helm-charts/newt \
   --version 1.4.0
 ```
 
 Praxis example:
 
 ```bash
-helm pull oci://ghcr.io/fosrl/helm-charts/praxis \
+helm pull oci://ghcr.io/causq-networks/helm-charts/praxis \
   --version 0.1.0-alpha.0
 ```
 
@@ -208,7 +208,7 @@ helm pull oci://ghcr.io/fosrl/helm-charts/praxis \
 Newt example:
 
 ```bash
-helm upgrade --install newt oci://ghcr.io/fosrl/helm-charts/newt \
+helm upgrade --install newt oci://ghcr.io/causq-networks/helm-charts/newt \
   --version 1.4.0 \
   --namespace praxis \
   --values values-newt.yaml
@@ -217,7 +217,7 @@ helm upgrade --install newt oci://ghcr.io/fosrl/helm-charts/newt \
 Praxis example:
 
 ```bash
-helm upgrade --install praxis oci://ghcr.io/fosrl/helm-charts/praxis \
+helm upgrade --install praxis oci://ghcr.io/causq-networks/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
   --namespace praxis \
   --values values-praxis.yaml
@@ -232,7 +232,7 @@ Use the classic Helm repository when you want the normal `helm repo add` and `he
 ### Update the classic Helm repository
 
 ```bash
-helm repo update fossorial
+helm repo update causq
 ```
 
 This step is only needed when using the classic Helm repository. OCI installs pull the chart by OCI reference and version.
@@ -242,7 +242,7 @@ This step is only needed when using the classic Helm repository. OCI installs pu
 Classic Helm repository:
 
 ```bash
-helm upgrade praxis fossorial/praxis \
+helm upgrade praxis causq/praxis \
   --namespace praxis \
   --values values-praxis.yaml
 ```
@@ -250,7 +250,7 @@ helm upgrade praxis fossorial/praxis \
 OCI:
 
 ```bash
-helm upgrade praxis oci://ghcr.io/fosrl/helm-charts/praxis \
+helm upgrade praxis oci://ghcr.io/causq-networks/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
   --namespace praxis \
   --values values-praxis.yaml
@@ -261,7 +261,7 @@ helm upgrade praxis oci://ghcr.io/fosrl/helm-charts/praxis \
 Classic Helm repository:
 
 ```bash
-helm upgrade newt fossorial/newt \
+helm upgrade newt causq/newt \
   --namespace praxis \
   --values values-newt.yaml
 ```
@@ -269,7 +269,7 @@ helm upgrade newt fossorial/newt \
 OCI:
 
 ```bash
-helm upgrade newt oci://ghcr.io/fosrl/helm-charts/newt \
+helm upgrade newt oci://ghcr.io/causq-networks/helm-charts/newt \
   --version 1.4.0 \
   --namespace praxis \
   --values values-newt.yaml

@@ -7,7 +7,7 @@ export type Db = NodePgDatabase<typeof schema>;
 
 const globalForDb = globalThis as unknown as { __analyticsDb?: Db };
 
-/** direct connection to the Fossorial API's Postgres (`DATABASE_URL`), read-only use */
+/** direct connection to the CausQ API's Postgres (`DATABASE_URL`), read-only use */
 export function getDb(): Db {
   if (globalForDb.__analyticsDb) return globalForDb.__analyticsDb;
 

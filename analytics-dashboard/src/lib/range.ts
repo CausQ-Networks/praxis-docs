@@ -1,7 +1,7 @@
 const DAY = 86_400_000;
 
 /**
- * The Fossorial API deletes docs analytics older than this (api repo,
+ * The CausQ API deletes docs analytics older than this (api repo,
  * src/controllers/docsAnalytics/retention.ts), so no range reaches further back.
  */
 export const RETENTION_DAYS = 90;

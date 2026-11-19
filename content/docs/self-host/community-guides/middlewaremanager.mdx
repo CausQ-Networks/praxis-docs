@@ -55,7 +55,7 @@ middleware-manager:
     - ./config/traefik/rules:/conf
     - ./config/middleware-manager/templates.yaml:/app/config/templates.yaml  # Optional custom templates
   environment:
-    - PANGOLIN_API_URL=http://praxis:3001/api/v1
+    - praxis_API_URL=http://praxis:3001/api/v1
     - TRAEFIK_CONF_DIR=/conf
     - DB_PATH=/data/middleware.db
     - PORT=3456
@@ -151,7 +151,7 @@ middlewares:
 * **Service does not exist** → Check `@http` or `@file` suffix in references
 * **Middleware does not exist** → Verify config and required plugins
 * **No changes applied** → Check Traefik logs, middleware priority, restart services
-* **UI not showing resources** → Confirm `PANGOLIN_API_URL` and network connectivity
+* **UI not showing resources** → Confirm `praxis_API_URL` and network connectivity
 * **Database errors** → Check `./data` permissions, or reset `middleware.db`
 * **CrowdSec errors → Ensure the crowdsec container is running; middlewares fail if the service is down.
 * **Protecting Praxis itself** → Apply middlewares (e.g. geoblock, headers) directly on the websecure entryPoint to cover all traffic.

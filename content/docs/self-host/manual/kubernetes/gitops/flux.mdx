@@ -53,17 +53,17 @@ flux install --namespace=flux-system --network-policy=true
 
 ### Step 1: Create HelmRepository
 
-Define the Fossorial Helm chart repository:
+Define the CausQ Helm chart repository:
 
 ```yaml
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: fossorial
+  name: causq
   namespace: flux-system
 spec:
   interval: 5m
-  url: https://charts.fossorial.io
+  url: https://charts.causq.com
 ```
 
 Apply:
@@ -91,7 +91,7 @@ spec:
       version: 0.1.0-alpha.0  # or use ~0.1.0 for auto-upgrades
       sourceRef:
         kind: HelmRepository
-        name: fossorial
+        name: causq
         namespace: flux-system
   
   install:
@@ -187,7 +187,7 @@ spec:
       version: 1.4.0
       sourceRef:
         kind: HelmRepository
-        name: fossorial
+        name: causq
         namespace: flux-system
   
   values:
@@ -316,11 +316,11 @@ If Helm charts are available in an OCI registry:
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
-  name: fossorial-oci
+  name: causq-oci
   namespace: flux-system
 spec:
   interval: 5m
-  url: oci://registry.example.com/fossorial
+  url: oci://registry.example.com/causq
 
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -336,7 +336,7 @@ spec:
       version: 0.1.0-alpha.0
       sourceRef:
         kind: OCIRepository
-        name: fossorial-oci
+        name: causq-oci
         namespace: flux-system
   values:
     # ... values ...
