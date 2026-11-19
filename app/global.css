@@ -6,7 +6,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* -------------------------------------------------------------------------- */
-/* Design tokens: same as pangolin.net (landing-v5 app/globals.css)            */
+/* Design tokens: same as praxis.causq.com (landing-v5 app/globals.css)            */
 /* -------------------------------------------------------------------------- */
 
 :root {
@@ -214,7 +214,7 @@ textarea {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Animations (shared with pangolin.net)                                       */
+/* Animations (shared with praxis.causq.com)                                       */
 /* -------------------------------------------------------------------------- */
 
 @keyframes ask-ai-in {
@@ -269,7 +269,7 @@ html[data-feature-banner-dismissed] [data-feature-banner] {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Ask AI answers (same as pangolin.net)                                       */
+/* Ask AI answers (same as praxis.causq.com)                                       */
 /* -------------------------------------------------------------------------- */
 
 .ask-ai-prose {
@@ -327,7 +327,7 @@ html[data-feature-banner-dismissed] [data-feature-banner] {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Page content: pangolin.net news article prose at the docs' text size        */
+/* Page content: praxis.causq.com news article prose at the docs' text size        */
 /* -------------------------------------------------------------------------- */
 
 .docs-prose {
@@ -382,7 +382,7 @@ html[data-feature-banner-dismissed] [data-feature-banner] {
   text-decoration: none;
 }
 
-/* inline code: pangolin.net news-inline-code */
+/* inline code: praxis.causq.com news-inline-code */
 .prose :where(code):not(:where(pre code, .not-prose code)) {
   background-color: var(--soft);
   border: 1px solid var(--border);
@@ -409,7 +409,7 @@ html[data-feature-banner-dismissed] [data-feature-banner] {
   border-color: var(--border);
 }
 
-/* tables: pangolin.net compare table */
+/* tables: praxis.causq.com compare table */
 .prose :where(table):not(:where(.not-prose, .not-prose *)) {
   font-size: 0.875rem;
 }
@@ -420,7 +420,7 @@ html[data-feature-banner-dismissed] [data-feature-banner] {
   font-size: 0.75rem;
 }
 
-/* code blocks: pangolin.net news-code-block (rounded-lg, border, #faf9f7) */
+/* code blocks: praxis.causq.com news-code-block (rounded-lg, border, #faf9f7) */
 figure.shiki {
   background-color: var(--table-header);
   border: 1px solid var(--border);
@@ -453,7 +453,7 @@ figure.shiki .line.highlighted {
   box-shadow: inset 2px 0 0 var(--primary);
 }
 
-/* tabs (Fumadocs): pangolin.net underline tabs, orange active bar */
+/* tabs (Fumadocs): praxis.causq.com underline tabs, orange active bar */
 .prose [role='tablist'],
 [data-tabs] > [role='tablist'] {
   border-color: var(--border);
@@ -474,7 +474,7 @@ figure.shiki .line.highlighted {
 /* MDX components (components/mintlify.tsx)                                    */
 /* -------------------------------------------------------------------------- */
 
-/* ---------- callouts: pangolin.net install callout, tinted by type ---------- */
+/* ---------- callouts: praxis.causq.com install callout, tinted by type ---------- */
 .pg-callout {
   --pg-callout-accent: var(--muted-foreground);
   display: flex;
@@ -559,7 +559,7 @@ figure.shiki .line.highlighted {
   color: var(--foreground);
 }
 
-/* ---------- cards: pangolin.net link cards ---------- */
+/* ---------- cards: praxis.causq.com link cards ---------- */
 .pg-card-group {
   display: grid;
   gap: 1rem;
@@ -746,7 +746,7 @@ figure.shiki .line.highlighted {
   margin-bottom: 0;
 }
 
-/* ---------- accordions & expandables: pangolin.net FAQ ---------- */
+/* ---------- accordions & expandables: praxis.causq.com FAQ ---------- */
 .pg-accordion-group {
   margin-block: 1.25rem;
   border: 1px solid var(--border);
