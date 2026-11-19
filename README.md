@@ -1,5 +1,7 @@
 # Praxis Documentation
 
+[![Discord](https://img.shields.io/discord/1572896060949659679?logo=discord&style=flat-square&label=Discord)](https://praxis.causq.com/discord/)
+
 The Praxis docs site, built with [Fumadocs](https://fumadocs.dev) on Next.js.
 
 ## Development
