@@ -9,7 +9,7 @@ This is a community guide and not officially supported. For issues, contribution
 ## What is Middleware Manager?
 
 The **Middleware Manager** is a microservice that extends your existing traefik deployments.  
-It provides a **web UI** to attach Traefik middlewares to resources without editing Pangolin itself.  
+It provides a **web UI** to attach Traefik middlewares to resources without editing Praxis itself.  
 
 #### Security Warning
 
@@ -34,10 +34,10 @@ Middlewares can strengthen security but also create vulnerabilities if misconfig
 ---
 
 ## Prerequisites
-* A running **Pangolin v1.0.0+**  
+* A running **Praxis v1.0.0+**  
 * Docker + Docker Compose  
 * Basic Traefik knowledge  
-* Admin access to your Pangolin host  
+* Admin access to your Praxis host  
 
 ---
 
@@ -55,7 +55,7 @@ middleware-manager:
     - ./config/traefik/rules:/conf
     - ./config/middleware-manager/templates.yaml:/app/config/templates.yaml  # Optional custom templates
   environment:
-    - PANGOLIN_API_URL=http://pangolin:3001/api/v1
+    - PANGOLIN_API_URL=http://praxis:3001/api/v1
     - TRAEFIK_CONF_DIR=/conf
     - DB_PATH=/data/middleware.db
     - PORT=3456
@@ -154,7 +154,7 @@ middlewares:
 * **UI not showing resources** → Confirm `PANGOLIN_API_URL` and network connectivity
 * **Database errors** → Check `./data` permissions, or reset `middleware.db`
 * **CrowdSec errors → Ensure the crowdsec container is running; middlewares fail if the service is down.
-* **Protecting Pangolin itself** → Apply middlewares (e.g. geoblock, headers) directly on the websecure entryPoint to cover all traffic.
+* **Protecting Praxis itself** → Apply middlewares (e.g. geoblock, headers) directly on the websecure entryPoint to cover all traffic.
 * **Applying to many services** → Attach middleware to entryPoints instead of individual resources to cover all subdomains at once.
 * **TCP / SMTP with STARTTLS** → Not supported. Traefik cannot handle STARTTLS negotiation (only implicit TLS like SMTPS on 465).
 

@@ -1,8 +1,8 @@
 ---
 title: "Client Logs"
-description: "View Pangolin client logs on Windows, Mac, Linux, Android, and iOS"
+description: "View Praxis client logs on Windows, Mac, Linux, Android, and iOS"
 ---
-The Pangolin apps for Windows, Mac, Linux, iOS/iPadOS, and Android show their logs under **About** > **Logs**, with messages from both the app and the tunnel, and can save them to a file to attach to a support request. The sections below also cover each platform's log files and system tools, and the [Pangolin CLI](#cli).
+The Praxis apps for Windows, Mac, Linux, iOS/iPadOS, and Android show their logs under **About** > **Logs**, with messages from both the app and the tunnel, and can save them to a file to attach to a support request. The sections below also cover each platform's log files and system tools, and the [Praxis CLI](#cli).
 
 ## Windows
 
@@ -24,10 +24,10 @@ Get-Content "C:\ProgramData\pangolin\logs\pangolin.log" -Tail 0 -Wait
 
 Open **Settings** > **About** > **Logs**. Select **Save…** to save them to a file.
 
-Pangolin also writes to the Apple system logger. To stream its logs in Terminal:
+Praxis also writes to the Apple system logger. To stream its logs in Terminal:
 
 ```bash
-log stream --predicate 'subsystem == "net.pangolin.Pangolin" OR subsystem == "net.pangolin.Pangolin.PacketTunnel"' --level debug --style compact
+log stream --predicate 'subsystem == "com.causq.praxis" OR subsystem == "com.causq.praxis.PacketTunnel"' --level debug --style compact
 ```
 
 ## Linux
@@ -36,8 +36,8 @@ Open **Settings** > **About** > **Logs**. Select **Save...** to save them to a f
 
 The log files are at:
 
-- Background service and tunnel: `/var/log/pangolin-client/`, also available with `journalctl -u pangolin-client` on systemd
-- App: `~/.local/state/pangolin-client/logs/` (or `$XDG_STATE_HOME/pangolin-client/logs/`)
+- Background service and tunnel: `/var/log/praxis-client/`, also available with `journalctl -u praxis-client` on systemd
+- App: `~/.local/state/praxis-client/logs/` (or `$XDG_STATE_HOME/praxis-client/logs/`)
 
 See [Linux](/manage/clients/platforms/linux#background-service).
 
@@ -46,10 +46,10 @@ See [Linux](/manage/clients/platforms/linux#background-service).
 The default log file location is:
 
 ```
-~/.config/pangolin/logs/client.log
+~/.config/praxis/logs/client.log
 ```
 
-If you run `pangolin up` in detached mode, you can tail logs with:
+If you run `praxis up` in detached mode, you can tail logs with:
 
 ```bash
 pangolin logs client -f -n 10
@@ -60,12 +60,12 @@ This example follows new log lines and shows the last 10 rows.
 Alternatively, run in attached mode to see logs in the current terminal session:
 
 ```bash
-sudo pangolin up --attach
+sudo praxis up --attach
 ```
 
 ## Android
 
-Open **About** > **Logs**. Pangolin saves tunnel logs automatically once you connect. Select **Download Logs** to save them to a file. See [Android](/manage/clients/platforms/android).
+Open **About** > **Logs**. Praxis saves tunnel logs automatically once you connect. Select **Download Logs** to save them to a file. See [Android](/manage/clients/platforms/android).
 
 ## iOS/iPadOS
 
@@ -74,5 +74,5 @@ Open the **About** tab, then **Logs**. Tap the share button to save or send them
 For more detail, attach the iPhone or iPad to a Mac and use Console.app. Add a **Subsystem** filter for:
 
 ```
-net.pangolin.Pangolin
+com.causq.praxis
 ```

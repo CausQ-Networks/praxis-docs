@@ -1,13 +1,13 @@
 ---
 title: "Domains"
 icon: "globe"
-description: "Learn how to configure domains for your Pangolin resources and understand the different domain types available"
+description: "Learn how to configure domains for your Praxis resources and understand the different domain types available"
 ---
 
-Domains allow you to access your Pangolin resources through custom URLs. Pangolin supports different domain types depending on your deployment model and requirements. You can also attach [redirects](/manage/redirects) to a domain hostname to forward matching requests to another URL.
+Domains allow you to access your Praxis resources through custom URLs. Praxis supports different domain types depending on your deployment model and requirements. You can also attach [redirects](/manage/redirects) to a domain hostname to forward matching requests to another URL.
 
 <Tip>
-    In Pangolin Cloud, a domain is not required. You can use our provided domain
+    In Praxis Cloud, a domain is not required. You can use our provided domain
     endings like `.hostlocal.app` or `.tunneled.to` for your resources on any of
     the paid plans.
 </Tip>
@@ -17,7 +17,7 @@ Domains allow you to access your Pangolin resources through custom URLs. Pangoli
 | Type                  | DNS Record | Coverage                                                               | Availability               |
 | --------------------- | ---------- | ---------------------------------------------------------------------- | -------------------------- |
 | **Wildcard**          | A / AAAA   | Base domain and all subdomains (e.g. `example.com`, `app.example.com`) | Self-Hosted                |
-| **Domain Delegation** | NS         | Base domain and all subdomains, managed entirely by Pangolin           | Cloud or Enterprise w/ DNS |
+| **Domain Delegation** | NS         | Base domain and all subdomains, managed entirely by Praxis           | Cloud or Enterprise w/ DNS |
 | **Single Domain**     | CNAME      | Only the exact hostname provided (no subdomains)                       | Cloud or Enterprise w/ DNS |
 
 <Note>
@@ -25,14 +25,14 @@ Domains allow you to access your Pangolin resources through custom URLs. Pangoli
     you already control the server's DNS and just point it at your VPS IP.
 </Note>
 
-## Delegating a Domain to Pangolin Cloud
+## Delegating a Domain to Praxis Cloud
 
-Domain delegation and single-domain (CNAME) setups exist because Pangolin Cloud and Enterprise clustered mode doesn't run on a server whose single IP you control - your traffic is routed and terminated on various nodes. For Pangolin to issue certificates and route traffic for your domain, it needs to be able to create and update DNS records on your behalf.
+Domain delegation and single-domain (CNAME) setups exist because Praxis Cloud and Enterprise clustered mode doesn't run on a server whose single IP you control - your traffic is routed and terminated on various nodes. For Praxis to issue certificates and route traffic for your domain, it needs to be able to create and update DNS records on your behalf.
 
-- **Self-Hosted**: You point A/AAAA records at your own VPS's IP address. DNS stays with your existing provider; Pangolin never needs access to it.
-- **Cloud**: There's no single static IP that's "yours" to point at, and Pangolin needs to create records (for certificate validation, routing, and new resources) without you manually updating DNS every time. Delegation and CNAME setups solve this by giving Pangolin either full control over the zone (NS delegation) or a single record it can manage (CNAME).
+- **Self-Hosted**: You point A/AAAA records at your own VPS's IP address. DNS stays with your existing provider; Praxis never needs access to it.
+- **Cloud**: There's no single static IP that's "yours" to point at, and Praxis needs to create records (for certificate validation, routing, and new resources) without you manually updating DNS every time. Delegation and CNAME setups solve this by giving Praxis either full control over the zone (NS delegation) or a single record it can manage (CNAME).
 
-Domain delegation is the more powerful option since new subdomains work automatically. It also lets you manage the entire DNS zone through Pangolin, including creating and updating records as needed.
+Domain delegation is the more powerful option since new subdomains work automatically. It also lets you manage the entire DNS zone through Praxis, including creating and updating records as needed.
 
 ## Setting It Up
 
@@ -42,20 +42,20 @@ Refer to the [DNS & Networking Section](/self-host/dns-and-networking).
 
 ### Cloud & Enterprise (NS Delegation or CNAME)
 
-    **Changing nameservers hands over the whole zone, not individual records.** If you point the nameservers for your root domain (e.g. `example.com`) at Pangolin, Pangolin becomes authoritative for **every** record on that domain - including MX/email, TXT/SPF, and any other subdomains you weren't intending to move. Once delegated, you manage DNS for that zone through Pangolin, not your old provider. Recreate the records you need as [custom DNS records](#custom-dns-records) before you switch.
+    **Changing nameservers hands over the whole zone, not individual records.** If you point the nameservers for your root domain (e.g. `example.com`) at Praxis, Praxis becomes authoritative for **every** record on that domain - including MX/email, TXT/SPF, and any other subdomains you weren't intending to move. Once delegated, you manage DNS for that zone through Praxis, not your old provider. Recreate the records you need as [custom DNS records](#custom-dns-records) before you switch.
 
     <Warning>
         Some registrars like Cloudflare included only let you delegate NS records at subdomains, and **don't allow you to add NS records on the root zone** at all or still include their nameservers on the root. In this case if you need to use NS delegation, delegate a subdomain of the domain or use CNAME records.
     </Warning>
 
 <Steps>
-<Step title="Add the domain in the Pangolin dashboard">
-  From your organization's domain settings, add the domain and choose either **Domain Delegation** or **Single Domain (CNAME)**. Pangolin will show you the exact records to configure.
+<Step title="Add the domain in the Praxis dashboard">
+  From your organization's domain settings, add the domain and choose either **Domain Delegation** or **Single Domain (CNAME)**. Praxis will show you the exact records to configure.
 </Step>
 <Step title="Configure DNS at your registrar/provider">
   <Tabs>
   <Tab title="Domain Delegation (NS)">
-    Change the nameservers for the domain (or subdomain) to Pangolin's, as shown in the dashboard:
+    Change the nameservers for the domain (or subdomain) to Praxis's, as shown in the dashboard:
 
     ```dns
     Type: NS
@@ -69,7 +69,7 @@ Refer to the [DNS & Networking Section](/self-host/dns-and-networking).
 
   </Tab>
   <Tab title="Single Domain (CNAME)">
-    Add a CNAME for the hostname and for its ACME challenge, pointing to the values Pangolin gives you:
+    Add a CNAME for the hostname and for its ACME challenge, pointing to the values Praxis gives you:
 
     ```dns
     Type: CNAME
@@ -86,35 +86,35 @@ Refer to the [DNS & Networking Section](/self-host/dns-and-networking).
   </Tabs>
 </Step>
 <Step title="Wait for verification">
-  Pangolin checks for the records automatically. NS delegation can take longer to propagate than a CNAME since it changes how the entire zone (or subzone) resolves.
+  Praxis checks for the records automatically. NS delegation can take longer to propagate than a CNAME since it changes how the entire zone (or subzone) resolves.
 </Step>
 </Steps>
 
 ## Custom DNS Records
 
 <Note>
-    Custom DNS records are available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) and self-hosted [Enterprise Edition](/self-host/enterprise-edition) running in [clustering mode](/self-host/clustering/understanding-clustering) with Pangolin's [DNS server](/self-host/advanced/private-config-file#dns-server-configuration) set up.
+    Custom DNS records are available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) and self-hosted [Enterprise Edition](/self-host/enterprise-edition) running in [clustering mode](/self-host/clustering/understanding-clustering) with Praxis's [DNS server](/self-host/advanced/private-config-file#dns-server-configuration) set up.
 </Note>
 
-When you delegate a domain to Pangolin with NS records, Pangolin's nameservers answer every query for that domain. Custom DNS records let you serve your other records from Pangolin too, such as mail (MX), SPF and DMARC (TXT), verification records, and hostnames that point to servers outside Pangolin. This means you can delegate a whole domain without losing the records your old DNS provider was serving.
+When you delegate a domain to Praxis with NS records, Praxis's nameservers answer every query for that domain. Custom DNS records let you serve your other records from Praxis too, such as mail (MX), SPF and DMARC (TXT), verification records, and hostnames that point to servers outside Praxis. This means you can delegate a whole domain without losing the records your old DNS provider was serving.
 
-Custom DNS records can only be added to domains that use **Domain Delegation (NS)**. They aren't available for wildcard or single-domain (CNAME) domains, or for shared domains provided by Pangolin.
+Custom DNS records can only be added to domains that use **Domain Delegation (NS)**. They aren't available for wildcard or single-domain (CNAME) domains, or for shared domains provided by Praxis.
 
 ### Before You Delegate
 
-Changing nameservers moves the whole zone at once. Any record you don't recreate in Pangolin stops resolving once the change propagates. To switch over without downtime:
+Changing nameservers moves the whole zone at once. Any record you don't recreate in Praxis stops resolving once the change propagates. To switch over without downtime:
 
 <Steps>
 <Step title="Add the domain">
-  Add the domain in Pangolin as **Domain Delegation (NS)**. Don't change the nameservers at your registrar yet.
+  Add the domain in Praxis as **Domain Delegation (NS)**. Don't change the nameservers at your registrar yet.
 </Step>
 <Step title="Copy your existing records">
-  At your current DNS provider, list the records for the domain. Recreate the ones you still need in Pangolin under **Records > Custom DNS Records** on the domain. Pay special attention to MX, SPF, DKIM, and DMARC records so email keeps working.
+  At your current DNS provider, list the records for the domain. Recreate the ones you still need in Praxis under **Records > Custom DNS Records** on the domain. Pay special attention to MX, SPF, DKIM, and DMARC records so email keeps working.
 
-  You can add records before the domain is verified. Pangolin stores them and shows a notice that they aren't being served yet.
+  You can add records before the domain is verified. Praxis stores them and shows a notice that they aren't being served yet.
 </Step>
 <Step title="Change the nameservers">
-  Point the domain's nameservers to Pangolin as shown in [Setting It Up](#cloud--enterprise-ns-delegation-or-cname). Once the domain is verified, Pangolin starts serving your custom records.
+  Point the domain's nameservers to Praxis as shown in [Setting It Up](#cloud--enterprise-ns-delegation-or-cname). Once the domain is verified, Praxis starts serving your custom records.
 </Step>
 </Steps>
 
@@ -122,7 +122,7 @@ Changing nameservers moves the whole zone at once. Any record you don't recreate
 
 Open the domain in your organization's **Domains** settings, go to **Records**, and select **Add Record**.
 
-<Frame caption="Custom DNS Records in the Pangolin dashboard">
+<Frame caption="Custom DNS Records in the Praxis dashboard">
     <img src="/images/custom-dns-records.png" alt="Custom DNS Records" />
 </Frame>
 
@@ -154,16 +154,16 @@ Hostname values must be fully qualified, such as `mail.example.net`.
 
 ### Delegating a Subdomain
 
-Add `NS` records to hand a subdomain to another DNS provider, for example to let another team manage `lab.example.com`. Pangolin then refers every query at or below that name to the nameservers you set.
+Add `NS` records to hand a subdomain to another DNS provider, for example to let another team manage `lab.example.com`. Praxis then refers every query at or below that name to the nameservers you set.
 
 - `NS` records can't be added at the root or on a wildcard name.
 - No other records can exist at or below a delegated subdomain, except `A` and `AAAA` glue records for nameservers named inside it (for example, `ns1.lab.example.com`).
-- A subdomain can't be delegated if Pangolin resources, login pages, or redirects use names at or below it.
+- A subdomain can't be delegated if Praxis resources, login pages, or redirects use names at or below it.
 
 ### Limits and Reserved Names
 
 - Each domain can have up to 100 custom records.
 - Each name can have one record per type. To add more values, edit the existing record. `MX` and `SRV` records can be split by priority, with up to 10 values across them.
-- `_acme-challenge` names are managed by Pangolin for certificate issuance and can't be used.
-- `A`, `AAAA`, and `CNAME` records can't be added to names used by Pangolin [resources](/manage/resources/understanding-resources), [login pages](/manage/access-control/login-page), or [redirects](/manage/redirects). Pangolin answers for those names itself.
-- Names inside another domain added to Pangolin separately (for example, `sub.example.com` when it's its own domain) belong to that domain and can't be used here.
+- `_acme-challenge` names are managed by Praxis for certificate issuance and can't be used.
+- `A`, `AAAA`, and `CNAME` records can't be added to names used by Praxis [resources](/manage/resources/understanding-resources), [login pages](/manage/access-control/login-page), or [redirects](/manage/redirects). Praxis answers for those names itself.
+- Names inside another domain added to Praxis separately (for example, `sub.example.com` when it's its own domain) belong to that domain and can't be used here.

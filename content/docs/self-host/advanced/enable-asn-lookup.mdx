@@ -1,11 +1,11 @@
 ---
 title: "Enable ASN Lookup"
-description: "Configuration requirements to enable ASN lookup features in Pangolin"
+description: "Configuration requirements to enable ASN lookup features in Praxis"
 ---
 
-Pangolin uses an ASN database to map request IP addresses to autonomous systems, such as cloud providers, residential ISPs, VPN providers, and corporate networks. That ASN data powers ASN access rules and ASN blocking patterns.
+Praxis uses an ASN database to map request IP addresses to autonomous systems, such as cloud providers, residential ISPs, VPN providers, and corporate networks. That ASN data powers ASN access rules and ASN blocking patterns.
 
-To enable ASN lookup features in Pangolin self-hosted, download the MaxMind ASN database, place it in the `config/` directory, and point Pangolin at the database file. This can be done for free.
+To enable ASN lookup features in Praxis self-hosted, download the MaxMind ASN database, place it in the `config/` directory, and point Praxis at the database file. This can be done for free.
 
 <Tip>
 Remember to keep the ASN database updated regularly, as ASN assignments and network mappings can change over time. You can just repeat the download and extraction steps periodically to ensure your database is current.
@@ -20,7 +20,7 @@ You can automate this process with a MaxMind Docker container. See the [GeoLite2
 You can use the installer to download and place the database for you. Download the latest installer:
 
 ```bash
-curl -fsSL https://static.pangolin.net/get-installer.sh | bash
+curl -fsSL https://praxis.causq.com/get-installer.sh | bash
 ```
 
 Then run the installer again:
@@ -49,16 +49,16 @@ Then run the installer again:
   rm -rf GeoLite2-ASN.tar.gz GeoLite2-ASN_*
   ```
 </Step>
-<Step title="Update the Pangolin config file">
-  Update your Pangolin configuration to point to the new ASN database file. Edit `config/config.yml` to include the following entry:
+<Step title="Update the Praxis config file">
+  Update your Praxis configuration to point to the new ASN database file. Edit `config/config.yml` to include the following entry:
   
   ```yaml
   server:
     maxmind_asn_path: "./config/GeoLite2-ASN.mmdb"
   ```
 </Step>
-<Step title="Restart Pangolin">
-  Restart your Pangolin instance to apply the changes:
+<Step title="Restart Praxis">
+  Restart your Praxis instance to apply the changes:
   
   ```bash
   docker compose restart pangolin

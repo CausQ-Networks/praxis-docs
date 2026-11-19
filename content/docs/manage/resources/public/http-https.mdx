@@ -3,15 +3,15 @@ title: "HTTP / HTTPS"
 description: "Publish websites, APIs, and dashboards as authenticated public reverse proxies"
 ---
 
-HTTP and HTTPS public resources are the most common public resource type. They expose a web application or API on a fully qualified domain name with a valid TLS certificate, fronted by Pangolin's authenticated reverse proxy.
+HTTP and HTTPS public resources are the most common public resource type. They expose a web application or API on a fully qualified domain name with a valid TLS certificate, fronted by Praxis's authenticated reverse proxy.
 
-Users open the resource URL in any web browser. No Pangolin client is required.
+Users open the resource URL in any web browser. No Praxis client is required.
 
 ## Benefits
 
 - Publish apps from behind NAT or a firewall without opening inbound ports or needing a public IP on the backend.
-- Every resource gets a valid TLS certificate that Pangolin issues and renews.
-- Unauthenticated visitors are stopped at Pangolin before any traffic reaches your app.
+- Every resource gets a valid TLS certificate that Praxis issues and renews.
+- Unauthenticated visitors are stopped at Praxis before any traffic reaches your app.
 - SSO, identity providers, and context rules like geo-blocking protect apps that have no login of their own.
 - Multiple targets across sites give load balancing, health checks, and automatic failover.
 - Users only need a browser, so contractors, customers, and personal devices can get access without installing anything.
@@ -26,11 +26,11 @@ Users open the resource URL in any web browser. No Pangolin client is required.
 
 ## How It Works
 
-1. You assign a FQDN on a domain managed in Pangolin.
-2. Pangolin terminates TLS and applies [authentication and access rules](/manage/resources/public/authentication).
+1. You assign a FQDN on a domain managed in Praxis.
+2. Praxis terminates TLS and applies [authentication and access rules](/manage/resources/public/authentication).
 3. Authenticated requests are proxied through a site connector to your backend target.
 
-Pangolin acts as a front-door barrier: unauthenticated visitors are redirected to a Pangolin login page before traffic reaches your application.
+Praxis acts as a front-door barrier: unauthenticated visitors are redirected to a Praxis login page before traffic reaches your application.
 
 ## Target Configuration
 
@@ -44,7 +44,7 @@ This multi-target model differs from SSH, RDP, and VNC public resources, which u
 
 ## Authentication and Access Rules
 
-HTTP/HTTPS resources are protocol-aware and fully support Pangolin's identity and context policies:
+HTTP/HTTPS resources are protocol-aware and fully support Praxis's identity and context policies:
 
 - Platform SSO and external identity providers
 - User, role, and machine access assignments

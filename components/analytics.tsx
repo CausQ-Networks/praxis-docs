@@ -5,7 +5,7 @@ import Script from 'next/script';
  * Only loaded in production builds; set NEXT_PUBLIC_DISABLE_ANALYTICS=1 to turn off.
  */
 const POSTHOG_KEY = 'phc_RIHQ7o2Y2hf8qms2nP62vpoJHEvsrw6TieflQGQO7yI';
-const POSTHOG_HOST = 'https://pangolin.net/relay-O7yI';
+const POSTHOG_HOST = 'https://praxis.net/relay-O7yI';
 const RYBBIT_SITE_ID = 'da4fb64dc2d5';
 
 export function Analytics() {

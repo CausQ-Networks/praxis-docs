@@ -3,7 +3,7 @@ title: "Custom"
 description: "Connect any upstream endpoint and assign whichever API capabilities it speaks"
 ---
 
-A custom provider is for an upstream that is not in the typed list: a self-hosted model server, a vendor API, a proxy, or an internal service reached through a Pangolin site. You assign any mix of [capabilities](/manage/ai/providers/configuration#capabilities). The gateway will accept those API formats on resources that attach this provider.
+A custom provider is for an upstream that is not in the typed list: a self-hosted model server, a vendor API, a proxy, or an internal service reached through a Praxis site. You assign any mix of [capabilities](/manage/ai/providers/configuration#capabilities). The gateway will accept those API formats on resources that attach this provider.
 
 Custom providers start blank. You choose capabilities, [routing](/manage/ai/providers/configuration#routing), and [auth](/manage/ai/providers/configuration#auth-type). At least one capability is required. Site Targets routing is available on Custom only.
 
@@ -21,12 +21,12 @@ See [AI Providers](/manage/ai/providers/overview) if you haven't created a provi
 
 ## Reach a Self-Hosted API
 
-Site Targets send the request over a Pangolin tunnel to a host the site can reach. [Install a site](/manage/sites/install-site) on the same network as the model server so the gateway can route to that API over the tunnel. See [Understanding Sites](/manage/sites/understanding-sites).
+Site Targets send the request over a Praxis tunnel to a host the site can reach. [Install a site](/manage/sites/install-site) on the same network as the model server so the gateway can route to that API over the tunnel. See [Understanding Sites](/manage/sites/understanding-sites).
 
 After the site is connected, add the process as a target on the provider's **Network** tab (host, port, HTTP or HTTPS). Worked examples: [Ollama](/manage/ai/providers/custom/ollama), [vLLM](/manage/ai/providers/custom/vllm), and [Bifrost](/manage/ai/providers/custom/bifrost).
 
 <Note>
-    AI Gateway providers are only routed to the Pangolin server nodes. Sites
+    AI Gateway providers are only routed to the Praxis server nodes. Sites
     that are connected to remote nodes will not be accessible to be routed to as
     targets on providers. DNS resolution of gateway resources will not point at
     remote nodes. Users using gateway resources with custom targets on sites may
@@ -40,7 +40,7 @@ Worked Custom setups:
 
 - [Ollama](/manage/ai/providers/custom/ollama): local models on a site, OpenAI Chat Completions
 - [vLLM](/manage/ai/providers/custom/vllm): a vLLM OpenAI server on a site
-- [Bifrost](/manage/ai/providers/custom/bifrost): downstream model routing with Pangolin identity headers
+- [Bifrost](/manage/ai/providers/custom/bifrost): downstream model routing with Praxis identity headers
 - [Cloud APIs Through a Site](/manage/ai/providers/custom/cloud-apis-through-a-site): send OpenAI or Anthropic out through a site so the vendor sees that site's IP
 
 The same Custom pattern works for llama.cpp server, LM Studio, LocalAI, and other OpenAI-compatible listeners: pick Chat Completions, point Site Targets at the process, and allow the model ids it serves.

@@ -1,15 +1,15 @@
 ---
 title: "Internal CLI (pangctl)"
-description: "Command-line tool for managing your Pangolin instance"
+description: "Command-line tool for managing your Praxis instance"
 ---
-The Pangolin container includes a CLI tool called `pangctl` that provides commands to help you manage your Pangolin instance.
+The Praxis container includes a CLI tool called `pangctl` that provides commands to help you manage your Praxis instance.
 
 ## Accessing the CLI
 
-Run the following command on the host where the Pangolin container is running:
+Run the following command on the host where the Praxis container is running:
 
 ```bash
-docker exec -it pangolin pangctl <command>
+docker exec -it praxis pangctl <command>
 ```
 
 ## Available Commands
@@ -17,15 +17,15 @@ docker exec -it pangolin pangctl <command>
 To see all available commands:
 
 ```bash
-docker exec -it pangolin pangctl --help
+docker exec -it praxis pangctl --help
 ```
 
 ## Set Admin Credentials
 
-Set or reset admin credentials for your Pangolin instance:
+Set or reset admin credentials for your Praxis instance:
 
 ```bash
-docker exec -it pangolin pangctl set-admin-credentials --email "admin@example.com" --password "Password123!"
+docker exec -it praxis pangctl set-admin-credentials --email "admin@example.com" --password "Password123!"
 ```
 
 <Warning>
@@ -37,13 +37,13 @@ Use a strong password and keep your admin credentials secure.
 Add or remove server admin status for a user by email address:
 
 ```bash
-docker exec -it pangolin pangctl set-server-admin --email "admin@example.com"
+docker exec -it praxis pangctl set-server-admin --email "admin@example.com"
 ```
 
 To remove server admin status:
 
 ```bash
-docker exec -it pangolin pangctl set-server-admin --email "admin@example.com" --remove
+docker exec -it praxis pangctl set-server-admin --email "admin@example.com" --remove
 ```
 
 ### Options
@@ -60,7 +60,7 @@ At least one server admin must always exist. The command fails if you try to rem
 Clear all exit nodes from the database:
 
 ```bash
-docker exec -it pangolin pangctl clear-exit-nodes
+docker exec -it praxis pangctl clear-exit-nodes
 ```
 
 <Warning>
@@ -72,7 +72,7 @@ This command permanently deletes all exit nodes from the database. This action c
 Reset a user's security keys (passkeys) by deleting all their webauthn credentials:
 
 ```bash
-docker exec -it pangolin pangctl reset-user-security-keys --email "user@example.com"
+docker exec -it praxis pangctl reset-user-security-keys --email "user@example.com"
 ```
 
 <Warning>
@@ -84,7 +84,7 @@ This command permanently deletes all security keys for the specified user. The u
 Disable two-factor authentication for a user by email address. Sets `twoFactorEnabled` to false and clears the user's 2FA secret:
 
 ```bash
-docker exec -it pangolin pangctl disable-user-2fa --email "user@example.com"
+docker exec -it praxis pangctl disable-user-2fa --email "user@example.com"
 ```
 
 ### Options
@@ -100,7 +100,7 @@ This command disables 2FA for the specified user and clears their stored 2FA sec
 Rotate the server secret by decrypting all encrypted values with the old secret and re-encrypting with a new secret. This command updates OIDC IdP configurations and license keys in the database, as well as the config file.
 
 ```bash
-docker exec -it pangolin pangctl rotate-server-secret --old-secret "current-secret" --new-secret "new-secret"
+docker exec -it praxis pangctl rotate-server-secret --old-secret "current-secret" --new-secret "new-secret"
 ```
 
 ### Options
@@ -125,7 +125,7 @@ This command performs a critical operation that affects all encrypted data in yo
 Clear all license keys from the database:
 
 ```bash
-docker exec -it pangolin pangctl clear-license-keys
+docker exec -it praxis pangctl clear-license-keys
 ```
 
 <Warning>
@@ -137,7 +137,7 @@ This command permanently deletes all license keys from the database. This action
 Delete a client and all associated data (OLMs, current fingerprint, userClients, approvals). Snapshots are preserved.
 
 ```bash
-docker exec -it pangolin pangctl delete-client --orgId "org-123" --niceId "client-identifier"
+docker exec -it praxis pangctl delete-client --orgId "org-123" --niceId "client-identifier"
 ```
 
 ### Options
@@ -162,7 +162,7 @@ This action cannot be undone. Ensure you have backups if needed.
 Generate an SSH CA public/private key pair for an organization and store them in the database. The private key is encrypted with the server secret.
 
 ```bash
-docker exec -it pangolin pangctl generate-org-ca-keys --orgId "org-123"
+docker exec -it praxis pangctl generate-org-ca-keys --orgId "org-123"
 ```
 
 ### Options
@@ -177,10 +177,10 @@ If the organization already has CA keys, the command fails unless you pass `--fo
 
 ## Clear Certificates
 
-Clear all certificates from the database to be reinserted by the server when syncing from acme.json files or using Pangolin DNS.
+Clear all certificates from the database to be reinserted by the server when syncing from acme.json files or using Praxis DNS.
 
 ```bash
-docker exec -it pangolin pangctl clear-certificates
+docker exec -it praxis pangctl clear-certificates
 ```
 
 ## Export Blueprints
@@ -190,13 +190,13 @@ Export existing public and private resources as [blueprint](/manage/blueprints) 
 The YAML is written to stdout, so redirect it to a file. Omit `-it` so that no TTY is allocated and the output isn't mixed with terminal line endings:
 
 ```bash
-docker exec pangolin pangctl export-blueprints > blueprints.yaml
+docker exec praxis pangctl export-blueprints > blueprints.yaml
 ```
 
 To export a single organization:
 
 ```bash
-docker exec pangolin pangctl export-blueprints --orgId "org-123" > org-123.yaml
+docker exec praxis pangctl export-blueprints --orgId "org-123" > org-123.yaml
 ```
 
 ### Options

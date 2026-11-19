@@ -1,18 +1,18 @@
 ---
 title: "Kustomize"
-description: "Deploy Pangolin on Kubernetes using Helm-rendered manifests and Kustomize overlays."
+description: "Deploy Praxis on Kubernetes using Helm-rendered manifests and Kustomize overlays."
 ---
 
-Use Kustomize when you want to manage Pangolin with rendered manifests, environment-specific overlays, and explicit patches in Git.
+Use Kustomize when you want to manage Praxis with rendered manifests, environment-specific overlays, and explicit patches in Git.
 
-For Pangolin, the supported Kustomize workflow is:
+For Praxis, the supported Kustomize workflow is:
 
-1. Render the Pangolin Helm chart to manifests.
+1. Render the Praxis Helm chart to manifests.
 2. Use the rendered output as the Kustomize base.
 3. Create overlays per environment.
 4. Apply the overlay with `kubectl apply -k` or reconcile it with Argo CD or Flux.
 
-## When to use Kustomize for Pangolin
+## When to use Kustomize for Praxis
 
 Use Kustomize if you:
 
@@ -22,16 +22,16 @@ Use Kustomize if you:
 - use Argo CD or Flux with Kustomize sources
 - want to customize Helm-rendered output without forking the chart
 
-For a simpler single-environment setup, use [Pangolin Helm](/self-host/manual/kubernetes/pangolin/helm).
+For a simpler single-environment setup, use [Praxis Helm](/self-host/manual/kubernetes/praxis/helm).
 
 ## Version context
 
-This page is aligned with the Pangolin Helm chart `0.1.0-alpha.0`.
+This page is aligned with the Praxis Helm chart `0.1.0-alpha.0`.
 
 | Item | Value |
 | --- | --- |
 | Chart version | `0.1.0-alpha.0` |
-| Pangolin app version | `1.18.2` |
+| Praxis app version | `1.18.2` |
 | Kubernetes version | `>=1.30.14-0` |
 | Gerbil image tag | `1.3.1` |
 | pangolin-kube-controller image tag | `0.1.0-alpha.1` |
@@ -39,15 +39,15 @@ This page is aligned with the Pangolin Helm chart `0.1.0-alpha.0`.
 
 ## Supported approach
 
-The Pangolin chart does not provide native Kustomize bases. Render the Helm chart first, then use Kustomize on the rendered manifests.
+The Praxis chart does not provide native Kustomize bases. Render the Helm chart first, then use Kustomize on the rendered manifests.
 
 <Warning>
-Do not manage the same Pangolin resources with both a live Helm release and Kustomize. Pick one ownership model per environment.
+Do not manage the same Praxis resources with both a live Helm release and Kustomize. Pick one ownership model per environment.
 </Warning>
 
 Recommended ownership model:
 
-- Use Helm only to render the Pangolin chart.
+- Use Helm only to render the Praxis chart.
 - Use Kustomize, Argo CD, or Flux to apply and reconcile the rendered manifests.
 - Re-render the base when upgrading the chart or changing Helm values.
 
@@ -90,7 +90,7 @@ kubectl create namespace pangolin
 Gerbil requires `NET_ADMIN` for WireGuard interface management. If your cluster enforces Pod Security Admission, label the namespace before creating workloads:
 
 ```bash
-kubectl label namespace pangolin \
+kubectl label namespace praxis \
   pod-security.kubernetes.io/enforce=privileged \
   pod-security.kubernetes.io/warn=baseline \
   pod-security.kubernetes.io/audit=restricted \
@@ -101,13 +101,13 @@ kubectl label namespace pangolin \
 Do not use a restricted Pod Security profile for a namespace running Gerbil unless you have validated the selected chart mode. Gerbil requires `NET_ADMIN`.
 </Warning>
 
-## Step 2: Create the Pangolin app Secret
+## Step 2: Create the Praxis app Secret
 
 Create a Secret for `SERVER_SECRET`:
 
 ```bash
 kubectl create secret generic pangolin-app-secret \
-  --namespace pangolin \
+  --namespace praxis \
   --from-literal=SERVER_SECRET='<strong-random-secret>'
 ```
 
@@ -147,7 +147,7 @@ pangolin:
 
   config:
     app:
-      dashboard_url: https://pangolin.example.com
+      dashboard_url: https://praxis.example.com
     domains:
       domain1:
         base_domain: example.com
@@ -190,10 +190,10 @@ Replace:
 * storage settings
 
 <Note>
-Use `gerbil.startupMode=delayed` for the first install if Gerbil should not start before the initial Pangolin setup is complete. Switch it to `normal` after setup.
+Use `gerbil.startupMode=delayed` for the first install if Gerbil should not start before the initial Praxis setup is complete. Switch it to `normal` after setup.
 </Note>
 
-## Step 4: Render Pangolin to the base
+## Step 4: Render Praxis to the base
 
 Add and update the Helm repository:
 
@@ -208,23 +208,23 @@ Create directories:
 mkdir -p base overlays/dev/patches overlays/staging/patches overlays/prod/patches values
 ```
 
-Render the Pangolin chart:
+Render the Praxis chart:
 
 ```bash
-helm template pangolin fossorial/pangolin \
-  --namespace pangolin \
+helm template praxis fossorial/praxis \
+  --namespace praxis \
   --values values/values-base.yaml \
-  > base/pangolin.yaml
+  > base/praxis.yaml
 ```
 
 You can also render from the GHCR OCI chart:
 
 ```bash
-helm template pangolin oci://ghcr.io/fosrl/helm-charts/pangolin \
+helm template praxis oci://ghcr.io/fosrl/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
-  --namespace pangolin \
+  --namespace praxis \
   --values values/values-base.yaml \
-  > base/pangolin.yaml
+  > base/praxis.yaml
 ```
 
 ## Step 5: Create the base kustomization
@@ -279,7 +279,7 @@ labels:
       app.kubernetes.io/managed-by: kustomize
 
 patches:
-  - path: patches/pangolin-resources.patch.yaml
+  - path: patches/praxis-resources.patch.yaml
     target:
       group: apps
       version: v1
@@ -300,10 +300,10 @@ Replace `pangolin` and `pangolin-dashboard` with the actual names from your rend
 
 ## Step 8: Add patches
 
-### Patch Pangolin resources
+### Patch Praxis resources
 
 ```yaml
-# overlays/prod/patches/pangolin-resources.patch.yaml
+# overlays/prod/patches/praxis-resources.patch.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -327,7 +327,7 @@ CPU limits are rendered by default through the chart's `resourcesPolicy.cpuLimit
 
 ### Patch dashboard IngressRoute host
 
-The Pangolin chart uses Traefik `IngressRoute` for the dashboard and API in controller mode, not a standard Kubernetes `Ingress`.
+The Praxis chart uses Traefik `IngressRoute` for the dashboard and API in controller mode, not a standard Kubernetes `Ingress`.
 
 ```yaml
 # overlays/prod/patches/ingressroute-host.patch.yaml
@@ -350,7 +350,7 @@ Patch the rendered `IngressRoute` only after checking the route order and match 
 ### Patch node affinity
 
 ```yaml
-# overlays/prod/patches/pangolin-node-affinity.patch.yaml
+# overlays/prod/patches/praxis-node-affinity.patch.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -373,7 +373,7 @@ Reference it in `overlays/prod/kustomization.yaml`:
 
 ```yaml
 patches:
-  - path: patches/pangolin-node-affinity.patch.yaml
+  - path: patches/praxis-node-affinity.patch.yaml
     target:
       group: apps
       version: v1
@@ -395,10 +395,10 @@ gerbil:
 Then re-render:
 
 ```bash
-helm template pangolin fossorial/pangolin \
-  --namespace pangolin \
+helm template praxis fossorial/praxis \
+  --namespace praxis \
   --values values/values-base.yaml \
-  > base/pangolin.yaml
+  > base/praxis.yaml
 ```
 
 ## Do not rename rendered Helm resources by default
@@ -455,12 +455,12 @@ kubectl get ingressroute --namespace pangolin
 Check events:
 
 ```bash
-kubectl get events --namespace pangolin --sort-by=.lastTimestamp
+kubectl get events --namespace praxis --sort-by=.lastTimestamp
 ```
 
 ## Updating the rendered base
 
-When upgrading the Pangolin chart or changing Helm values, re-render the base and review the changes.
+When upgrading the Praxis chart or changing Helm values, re-render the base and review the changes.
 
 Update the Helm repository:
 
@@ -471,20 +471,20 @@ helm repo update fossorial
 Render the updated chart output:
 
 ```bash
-helm template pangolin fossorial/pangolin \
-  --namespace pangolin \
+helm template praxis fossorial/praxis \
+  --namespace praxis \
   --values values/values-base.yaml \
-  > base/pangolin.yaml
+  > base/praxis.yaml
 ```
 
 Or with OCI:
 
 ```bash
-helm template pangolin oci://ghcr.io/fosrl/helm-charts/pangolin \
+helm template praxis oci://ghcr.io/fosrl/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
-  --namespace pangolin \
+  --namespace praxis \
   --values values/values-base.yaml \
-  > base/pangolin.yaml
+  > base/praxis.yaml
 ```
 
 Validate the overlay:
@@ -504,7 +504,7 @@ Commit the updated base and overlays:
 
 ```bash
 git add base/ overlays/ values/
-git commit -m "Update Pangolin rendered manifests"
+git commit -m "Update Praxis rendered manifests"
 ```
 
 Apply after review:
@@ -520,7 +520,7 @@ Do not run `helm upgrade` against a release that is managed by Kustomize.
 Avoid this pattern:
 
 ```bash
-helm upgrade pangolin fossorial/pangolin --namespace pangolin
+helm upgrade praxis fossorial/praxis --namespace pangolin
 kubectl apply -k overlays/prod
 ```
 
@@ -532,13 +532,13 @@ Use one of these models instead:
 | Kustomize-managed | Helm renders manifests only. Kustomize applies and owns the live resources.                |
 | GitOps-managed    | Argo CD or Flux applies the Kustomize overlay and owns reconciliation.                     |
 
-## Common Kustomize patches for Pangolin
+## Common Kustomize patches for Praxis
 
 ### Patch resource requests and limits
 
 ```yaml
 patches:
-  - path: patches/pangolin-resources.patch.yaml
+  - path: patches/praxis-resources.patch.yaml
     target:
       group: apps
       version: v1
@@ -639,7 +639,7 @@ Check pod status and events:
 ```bash
 kubectl get pods --namespace pangolin
 kubectl describe pod <pod-name> --namespace pangolin
-kubectl get events --namespace pangolin --sort-by=.lastTimestamp
+kubectl get events --namespace praxis --sort-by=.lastTimestamp
 ```
 
 ### Dashboard routing does not work
@@ -664,7 +664,7 @@ Verify:
 Check Gerbil resources:
 
 ```bash
-kubectl get pods,svc,pvc --namespace pangolin \
+kubectl get pods,svc,pvc --namespace praxis \
   -l app.kubernetes.io/name=gerbil
 ```
 
@@ -679,16 +679,16 @@ Verify:
 ## Next steps
 
 <CardGroup cols={2}>
-	<Card title="Helm Install" href="/self-host/manual/kubernetes/pangolin/helm" icon="box">
-		Install Pangolin with Helm.
+	<Card title="Helm Install" href="/self-host/manual/kubernetes/praxis/helm" icon="box">
+		Install Praxis with Helm.
 	</Card>
-	<Card title="Configuration" href="/self-host/manual/kubernetes/pangolin/configuration" icon="sliders">
-		Review Pangolin chart options.
+	<Card title="Configuration" href="/self-host/manual/kubernetes/praxis/configuration" icon="sliders">
+		Review Praxis chart options.
 	</Card>
-	<Card title="Troubleshooting" href="/self-host/manual/kubernetes/pangolin/troubleshooting" icon="circle-question">
-		Debug Pangolin deployment and routing issues.
+	<Card title="Troubleshooting" href="/self-host/manual/kubernetes/praxis/troubleshooting" icon="circle-question">
+		Debug Praxis deployment and routing issues.
 	</Card>
 	<Card title="GitOps" href="/self-host/manual/kubernetes/gitops/overview" icon="code-branch">
-		Deploy Pangolin with Argo CD or Flux.
+		Deploy Praxis with Argo CD or Flux.
 	</Card>
 </CardGroup>

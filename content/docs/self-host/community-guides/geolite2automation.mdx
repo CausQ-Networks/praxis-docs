@@ -7,7 +7,7 @@ description: "A simple automation to download & update your GeoLite2 databases w
 This is a community guide and is not officially supported. If you have any issues, please reach out to the [author](https://github.com/txwgnd).
 </Note>
 
-This automation lets your system automatically download and update the `GeoLite2-Country` and `GeoLite2-ASN` databases from MaxMind. Pangolin uses these databases for geo-location features such as country or region rules, geo-blocking, analytics, and ASN blocking. It uses MaxMind's [geoipupdate](https://github.com/maxmind/geoipupdate/tree/main) Docker container to do this.
+This automation lets your system automatically download and update the `GeoLite2-Country` and `GeoLite2-ASN` databases from MaxMind. Praxis uses these databases for geo-location features such as country or region rules, geo-blocking, analytics, and ASN blocking. It uses MaxMind's [geoipupdate](https://github.com/maxmind/geoipupdate/tree/main) Docker container to do this.
 
 Maxmind's service is free of charge for development, personal or community use. [Quote](https://support.maxmind.com/knowledge-base/articles/create-a-maxmind-account#h_01G4G4NG5C63BQ6HRG6MSS50T3)
 
@@ -15,12 +15,12 @@ Maxmind's service is free of charge for development, personal or community use. 
 1. **[Requirements](#1-requirements)**
 2. **[Maxmind Account](#2-maxmind-account)**
 3. **[API key creation](#3-api-key-creation)**
-4. **[Modification of Pangolin's `docker-compose.yml`](#4-modification-of-pangolins-docker-compose-yml)**
-5. **[Modification of Pangolin's `config.yml`](#5-modification-of-pangolins-config-yml)**
+4. **[Modification of Praxis's `docker-compose.yml`](#4-modification-of-pangolins-docker-compose-yml)**
+5. **[Modification of Praxis's `config.yml`](#5-modification-of-pangolins-config-yml)**
 
 ## 1. Requirements
 * A Maxmind account for API access
-* Pangolin version 1.11.0 or higher
+* Praxis version 1.11.0 or higher
 
 ## 2. Maxmind Account
 To be able to use Maxmind's service you need to request access to the GeoLite2 databases and create an account on their [website](https://www.maxmind.com/en/geolite2/signup?utm_source=kb&utm_medium=kb-link&utm_campaign=kb-create-account). 
@@ -34,7 +34,7 @@ The next step is to create an API key for `geoipupdate`. You'll find an entry ca
 <img src="/images/maxmind_manage-license-keys.jpeg" alt="Maxmind's Manage license keys page" />
 </Frame>
 
-Give your new key a name. E.g. `Pangolin`.
+Give your new key a name. E.g. `Praxis`.
 
 <Frame caption="Choose a name for the key">
 <img src="/images/maxmind_create-key-page.jpeg" alt="Maxmind's key creation page" />
@@ -48,12 +48,12 @@ After your key got created the webpage will show you your Account ID as well as 
 
 After you clicked on `Return to list` you should see an overview of your keys bundled with some metadata.
 
-## 4. Modification of Pangolin's `docker-compose.yml`
-Now login to your Pangolin host and navigate to `/pangolin` in your user directory:
+## 4. Modification of Praxis's `docker-compose.yml`
+Now login to your Praxis host and navigate to `/praxis` in your user directory:
 ```bash
 cd pangolin
 ```
-Shut down Pangolin with:
+Shut down Praxis with:
 ```bash
 docker compose down
 ```
@@ -80,12 +80,12 @@ services:
       - './config/GeoLite2:/usr/share/GeoIP'
 ```
 #### Note
-If you use the standard Pangolin deployment you shouldn't need to modify the path.
+If you use the standard Praxis deployment you shouldn't need to modify the path.
 This is the bare minimum to run the container. There are other optional environment variables available. Have a look at their [docs](https://dev.maxmind.com/geoip/updating-databases/?lang=en)!
 
 Save and close the file, but don't restart the stack yet!
 
-## 5. Modification of Pangolin's config.yml
+## 5. Modification of Praxis's config.yml
 Navigate to `/config` within the same folder and open it with a text editor.
 ```bash
 cd config
@@ -98,11 +98,11 @@ server:
   maxmind_db_path: "./config/GeoLite2/GeoLite2-Country.mmdb"
   maxmind_asn_path: "./config/GeoLite2/GeoLite2-ASN.mmdb"
 ```
-These entries tell the Pangolin application where to find the databases.
+These entries tell the Praxis application where to find the databases.
 
 Save and close the file then navigate to the `pangolin` folder one level higher.
 
-Restart your Pangolin stack with:
+Restart your Praxis stack with:
 ```bash
 docker compose up -d
 ```

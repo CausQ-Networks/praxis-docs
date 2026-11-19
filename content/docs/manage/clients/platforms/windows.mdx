@@ -1,53 +1,53 @@
 ---
 title: "Windows"
-description: "Install, configure, and update the Pangolin client for Windows"
+description: "Install, configure, and update the Praxis client for Windows"
 ---
 
-<Frame caption="Pangolin for Windows — settings and system tray menu">
+<Frame caption="Praxis for Windows — settings and system tray menu">
   <img
     src="/images/windows_client_ui.png"
-    alt="Pangolin Settings window and system tray menu on Windows showing connected status"
+    alt="Praxis Settings window and system tray menu on Windows showing connected status"
   />
 </Frame>
 
 ## Install
 
-- [Pangolin for Windows Installer](https://pangolin.net/downloads/windows) - This is the official page to download the latest installer file for Windows.
+- [Praxis for Windows Installer](https://praxis.net/downloads/windows) - This is the official page to download the latest installer file for Windows.
 - [All Versions](https://github.com/fosrl/windows-linux/releases) - The releases section of this repository contains release notes and download artifacts for the latest version and all older versions.
 
 ### Installation Steps
 
-1. **Download and install the Pangolin client**
+1. **Download and install the Praxis client**
 
-   Download and install the Pangolin client using the official .msi installer from the download button above.
+   Download and install the Praxis client using the official .msi installer from the download button above.
 
-2. **Launch Pangolin**
+2. **Launch Praxis**
 
-   Open Pangolin from the Start menu or the shortcut on your Desktop.
+   Open Praxis from the Start menu or the shortcut on your Desktop.
 
-3. **Log in with your Pangolin account**
+3. **Log in with your Praxis account**
 
-   Log in on your Pangolin Cloud account or your self-hosted Pangolin instance.
+   Log in on your Praxis Cloud account or your self-hosted Praxis instance.
 
-   - Click the Pangolin icon in the task bar's system tray and select Log in.
+   - Click the Praxis icon in the task bar's system tray and select Log in.
 
 ## Companion Mode
 
-Companion mode lets [Pangolin CLI](/manage/clients/platforms/cli) use this app's login and tunnel. Sign in and connect here, then run CLI commands as that same account. You do not run `pangolin login` again.
+Companion mode lets [Praxis CLI](/manage/clients/platforms/cli) use this app's login and tunnel. Sign in and connect here, then run CLI commands as that same account. You do not run `praxis login` again.
 
-Companion mode is available on Windows only. It requires Pangolin for Windows 0.11.0 or later, and it is on by default once the CLI is installed.
+Companion mode is available on Windows only. It requires Praxis for Windows 0.11.0 or later, and it is on by default once the CLI is installed.
 
 1. Log in with the Windows client and connect.
-2. Install Pangolin CLI if it is not already installed. From the Pangolin menu bar, choose **Install Pangolin CLI**, or follow the [CLI install steps](/manage/clients/platforms/cli).
+2. Install Praxis CLI if it is not already installed. From the Praxis menu bar, choose **Install Praxis CLI**, or follow the [CLI install steps](/manage/clients/platforms/cli).
 3. Run CLI commands in a terminal. For example, open SSH to a [private SSH resource](/manage/resources/private/ssh):
 
 ```bash
 pangolin ssh username@alias
 ```
 
-The CLI follows the account, organization, and exit node selected in the desktop app. Change those in the app. While companion mode is on, `pangolin login`, `pangolin logout`, and `pangolin select` for account, organization, or exit node are blocked.
+The CLI follows the account, organization, and exit node selected in the desktop app. Change those in the app. While companion mode is on, `praxis login`, `praxis logout`, and `praxis select` for account, organization, or exit node are blocked.
 
-The desktop app has to be open and logged in. If it is not, the CLI asks you to start Pangolin and log in.
+The desktop app has to be open and logged in. If it is not, the CLI asks you to start Praxis and log in.
 
 Commands to check status or turn companion mode off are on the [CLI companion mode section](/manage/clients/platforms/cli#companion-mode).
 
@@ -59,35 +59,35 @@ This section covers the general settings for this platform. DNS, MTU, and other 
 
 ### Start at Login
 
-When enabled, Pangolin starts when you sign in to Windows.
+When enabled, Praxis starts when you sign in to Windows.
 
 ### Connect at Start
 
-When enabled, the tunnel connects whenever Pangolin starts. This also opens Pangolin at sign-in.
+When enabled, the tunnel connects whenever Praxis starts. This also opens Praxis at sign-in.
 
 ### Automatically Download and Install Updates
 
-When enabled, Pangolin downloads updates in the background and installs them the next time Pangolin quits or starts. See [Automatic Updates](#automatic-updates).
+When enabled, Praxis downloads updates in the background and installs them the next time Praxis quits or starts. See [Automatic Updates](#automatic-updates).
 
 ### Config File
 
-On Windows, the Pangolin GUI reads configuration from two `pangolin.json` files:
+On Windows, the Praxis GUI reads configuration from two `pangolin.json` files:
 
-- User config: `%LOCALAPPDATA%\Pangolin\pangolin.json` (for example, `C:\Users\USER\AppData\Local\Pangolin\pangolin.json`)
-- System config: `%ProgramData%\Pangolin\pangolin.json`, for every user of the computer
+- User config: `%LOCALAPPDATA%\Praxis\pangolin.json` (for example, `C:\Users\USER\AppData\Local\Praxis\pangolin.json`)
+- System config: `%ProgramData%\Praxis\pangolin.json`, for every user of the computer
 
-Most keys in the `Config` object below can be set in either file. If the same key is in both, the user config's value is used, so administrators can set defaults in the system config while each user can still change their own. Keys marked **System config only** must be set in `%ProgramData%\Pangolin\pangolin.json`; restart the Pangolin manager service and Pangolin after changing them. See [Which Setting Applies](#which-setting-applies) for how the two files combine with per-organization settings and server-side client settings.
+Most keys in the `Config` object below can be set in either file. If the same key is in both, the user config's value is used, so administrators can set defaults in the system config while each user can still change their own. Keys marked **System config only** must be set in `%ProgramData%\Praxis\pangolin.json`; restart the Praxis manager service and Praxis after changing them. See [Which Setting Applies](#which-setting-applies) for how the two files combine with per-organization settings and server-side client settings.
 
 <ResponseField name="Config" type="object">
-  JSON configuration for the Windows Pangolin client stored in `pangolin.json`.
+  JSON configuration for the Windows Praxis client stored in `pangolin.json`.
 
   <Expandable title="Config">
     <ResponseField name="dnsOverride" type="boolean">
-      **Can be set per organization.** When true, matches the [Enable Aliases (Override DNS)](/manage/clients/platforms#enable-aliases-override-dns) setting and lets the client take over DNS resolution for Pangolin resources.
+      **Can be set per organization.** When true, matches the [Enable Aliases (Override DNS)](/manage/clients/platforms#enable-aliases-override-dns) setting and lets the client take over DNS resolution for Praxis resources.
     </ResponseField>
 
     <ResponseField name="dnsTunnel" type="boolean">
-      **Can be set per organization.** When true, matches the [DNS Over Tunnel](/manage/clients/platforms#dns-over-tunnel) setting and sends DNS queries through the Pangolin tunnel.
+      **Can be set per organization.** When true, matches the [DNS Over Tunnel](/manage/clients/platforms#dns-over-tunnel) setting and sends DNS queries through the Praxis tunnel.
     </ResponseField>
 
     <ResponseField name="primaryDNS" type="string">
@@ -123,7 +123,7 @@ Most keys in the `Config` object below can be set in either file. If the same ke
     </ResponseField>
 
     <ResponseField name="preferLocalRoutes" type="boolean">
-      **Can be set per organization.** When true, prioritizes local routes over remote ones by adding an arbitrary metric to the WireGuard routes. This is useful when you want to ensure that local network traffic (for example, to a printer or NAS) is not routed through the Pangolin tunnel.
+      **Can be set per organization.** When true, prioritizes local routes over remote ones by adding an arbitrary metric to the WireGuard routes. This is useful when you want to ensure that local network traffic (for example, to a printer or NAS) is not routed through the Praxis tunnel.
     </ResponseField>
 
     <ResponseField name="exitNodeTakesPrecedence" type="boolean">
@@ -131,19 +131,19 @@ Most keys in the `Config` object below can be set in either file. If the same ke
     </ResponseField>
 
     <ResponseField name="openUIAtLogin" type="boolean">
-      When true, matches the **Start at Login** setting and starts Pangolin when you sign in to Windows. If omitted, the default is `false`.
+      When true, matches the **Start at Login** setting and starts Praxis when you sign in to Windows. If omitted, the default is `false`.
     </ResponseField>
 
     <ResponseField name="autoConnectAtLogin" type="boolean">
-      When true, matches the **Connect at Start** setting. The tunnel connects whenever Pangolin starts, and Pangolin also opens at sign-in, regardless of `openUIAtLogin`. If omitted, the default is `false`.
+      When true, matches the **Connect at Start** setting. The tunnel connects whenever Praxis starts, and Praxis also opens at sign-in, regardless of `openUIAtLogin`. If omitted, the default is `false`.
     </ResponseField>
 
     <ResponseField name="autoUpdateChecksEnabled" type="boolean">
-      **System config only.** When true, periodically check for updates in the background. When false, automatic checks are off; users can still use **Check for Updates** unless that button is also disabled. If omitted, the default is `true`. Enabling checks without `autoDownloadUpdatesEnabled` surfaces the update UI when a new version exists (tray “Pangolin Update Available” and the update prompt). Intended for org admins / MDM so config is the source of truth.
+      **System config only.** When true, periodically check for updates in the background. When false, automatic checks are off; users can still use **Check for Updates** unless that button is also disabled. If omitted, the default is `true`. Enabling checks without `autoDownloadUpdatesEnabled` surfaces the update UI when a new version exists (tray “Praxis Update Available” and the update prompt). Intended for org admins / MDM so config is the source of truth.
     </ResponseField>
 
     <ResponseField name="autoDownloadUpdatesEnabled" type="boolean">
-      When true, matches the **Automatically Download and Install Updates** setting. Updates found by background checks are downloaded silently and installed the next time Pangolin quits or starts, instead of showing the update prompt. Only matters when `autoUpdateChecksEnabled` is true.
+      When true, matches the **Automatically Download and Install Updates** setting. Updates found by background checks are downloaded silently and installed the next time Praxis quits or starts, instead of showing the update prompt. Only matters when `autoUpdateChecksEnabled` is true.
     </ResponseField>
 
     <ResponseField name="updateCheckIntervalSeconds" type="integer">
@@ -169,7 +169,7 @@ Most keys in the `Config` object below can be set in either file. If the same ke
   </Expandable>
 </ResponseField>
 
-As a system administrator, you can script placing `pangolin.json` in `%ProgramData%\Pangolin\` to set defaults for every user, and/or in each user's `%LOCALAPPDATA%\Pangolin\` folder for per-user settings.
+As a system administrator, you can script placing `pangolin.json` in `%ProgramData%\Praxis\` to set defaults for every user, and/or in each user's `%LOCALAPPDATA%\Praxis\` folder for per-user settings.
 
 ### Per-Organization Settings
 
@@ -197,7 +197,7 @@ The two files are combined key by key first, with the user config winning, and o
 - A user's top-level setting does **not** replace an administrator's `orgs` entry in the system config. That organization keeps the administrator's value, and the user's setting applies to every other organization.
 - A user's value for the same key in the same organization's entry **does** replace the administrator's.
 
-For example, with this system config at `%ProgramData%\Pangolin\pangolin.json`:
+For example, with this system config at `%ProgramData%\Praxis\pangolin.json`:
 
 ```json
 {
@@ -211,7 +211,7 @@ For example, with this system config at `%ProgramData%\Pangolin\pangolin.json`:
 }
 ```
 
-and this user config at `%LOCALAPPDATA%\Pangolin\pangolin.json`:
+and this user config at `%LOCALAPPDATA%\Praxis\pangolin.json`:
 
 ```json
 {
@@ -233,7 +233,7 @@ the user's organizations use `9.9.9.9` and MTU `1400`, except `acme`, which uses
     user's own settings can replace.
 </Tip>
 
-After editing the system config, restart the Pangolin manager service and Pangolin.
+After editing the system config, restart the Praxis manager service and Praxis.
 
 
 <Tip>
@@ -246,36 +246,36 @@ After editing the system config, restart the Pangolin manager service and Pangol
 
 ### Automatic Updates
 
-The Windows client checks for updates automatically in the background. When a new version is available, Pangolin shows a notification and adds **Pangolin Update Available…** to the system tray menu. Open the notification or that menu item to see a dialog asking whether to install the update now.
+The Windows client checks for updates automatically in the background. When a new version is available, Praxis shows a notification and adds **Praxis Update Available…** to the system tray menu. Open the notification or that menu item to see a dialog asking whether to install the update now.
 
-**Install Update** downloads the new version and installs it. Pangolin restarts when the installation finishes, and the tunnel disconnects briefly while that happens. **Later** closes the dialog and leaves the current version in place.
+**Install Update** downloads the new version and installs it. Praxis restarts when the installation finishes, and the tunnel disconnects briefly while that happens. **Later** closes the dialog and leaves the current version in place.
 
 You can also check from the system tray: **More** > **Check for Updates…**.
 
-Automatic installation can be turned on with the **Automatically Download and Install Updates** setting, or by setting `autoDownloadUpdatesEnabled` to `true` in the [config file](#config-file). Pangolin then downloads the update in the background while you keep using the current version, without a notification. The update installs:
+Automatic installation can be turned on with the **Automatically Download and Install Updates** setting, or by setting `autoDownloadUpdatesEnabled` to `true` in the [config file](#config-file). Praxis then downloads the update in the background while you keep using the current version, without a notification. The update installs:
 
-- **When you quit Pangolin** from the system tray. Pangolin stays closed afterwards.
-- **When Pangolin starts**, including at sign-in. 
-- **When Windows starts**, before Pangolin opens, if the setting is on in the system config.
+- **When you quit Praxis** from the system tray. Praxis stays closed afterwards.
+- **When Praxis starts**, including at sign-in. 
+- **When Windows starts**, before Praxis opens, if the setting is on in the system config.
 
-The tunnel disconnects while the update installs. If Pangolin stays open for about a week with an update already downloaded, it asks you to install that update. You can also install it at any time from **Pangolin Update Available…** in the system tray menu.
+The tunnel disconnects while the update installs. If Praxis stays open for about a week with an update already downloaded, it asks you to install that update. You can also install it at any time from **Praxis Update Available…** in the system tray menu.
 
 ### Manual Updates
 
 Find the latest version in the [GitHub releases](https://github.com/fosrl/windows-linux/releases).
 
-You can download the latest installer and run it again to install the latest version. Visit [https://pangolin.net/downloads](https://pangolin.net/downloads) for the official installer.
+You can download the latest installer and run it again to install the latest version. Visit [https://praxis.net/downloads](https://praxis.net/downloads) for the official installer.
 
 ## Uninstall
 
-1. Quit Pangolin from the system tray if it is running.
-2. Open **Settings** > **Apps** > **Installed apps**, find **Pangolin**, and select **Uninstall**. Tip: search for "Add or Remove Programs" to find the uninstall option.
+1. Quit Praxis from the system tray if it is running.
+2. Open **Settings** > **Apps** > **Installed apps**, find **Praxis**, and select **Uninstall**. Tip: search for "Add or Remove Programs" to find the uninstall option.
 
-The MSI removes the app, the Pangolin Manager service, and Start Menu / Desktop shortcuts. It does not always delete the user or system config. To clear those as well:
+The MSI removes the app, the Praxis Manager service, and Start Menu / Desktop shortcuts. It does not always delete the user or system config. To clear those as well:
 
 ```powershell
-Remove-Item -Recurse -Force "$env:LOCALAPPDATA\Pangolin"
-Remove-Item -Recurse -Force "$env:PROGRAMDATA\Pangolin"
+Remove-Item -Recurse -Force "$env:LOCALAPPDATA\Praxis"
+Remove-Item -Recurse -Force "$env:PROGRAMDATA\Praxis"
 ```
 
-If you also installed [Pangolin CLI](/manage/clients/platforms/cli), uninstall it separately. See [Uninstall Pangolin CLI](/manage/clients/platforms/uninstall-cli).
+If you also installed [Praxis CLI](/manage/clients/platforms/cli), uninstall it separately. See [Uninstall Praxis CLI](/manage/clients/platforms/uninstall-cli).

@@ -6,7 +6,7 @@ description: "How to manage and rotate Traefik access logs when CrowdSec is inst
 When CrowdSec is installed, Traefik access logging is enabled automatically so CrowdSec can analyze traffic. This means `config/traefik/logs/access.log` will grow indefinitely without log rotation in place.
 
 <Note>
-  The default Pangolin install (without CrowdSec) does not enable access
+  The default Praxis install (without CrowdSec) does not enable access
   logging, so this only applies if you have CrowdSec installed.
 </Note>
 
@@ -18,16 +18,16 @@ Without rotation, that file grows forever. The fix is `logrotate` with `copytrun
 
 ## Automatic setup (installer v1.x+)
 
-If you installed CrowdSec using a recent version of the Pangolin installer, logrotate is configured automatically at `/etc/logrotate.d/pangolin-traefik`. You can verify it's there:
+If you installed CrowdSec using a recent version of the Praxis installer, logrotate is configured automatically at `/etc/logrotate.d/praxis-traefik`. You can verify it's there:
 
 ```bash
-cat /etc/logrotate.d/pangolin-traefik
+cat /etc/logrotate.d/praxis-traefik
 ```
 
 You should see something like:
 
 ```
-/opt/pangolin/config/traefik/logs/access.log {
+/opt/praxis/config/traefik/logs/access.log {
     daily
     rotate 7
     compress
@@ -44,11 +44,11 @@ If you installed CrowdSec before automatic log rotation was added, set it up man
 
 <Steps>
 <Step title="Create the logrotate config">
-  Replace `/opt/pangolin` with your actual Pangolin install directory if it differs.
+  Replace `/opt/praxis` with your actual Praxis install directory if it differs.
 
 ```bash
-sudo tee /etc/logrotate.d/pangolin-traefik > /dev/null <<'EOF'
-/opt/pangolin/config/traefik/logs/access.log {
+sudo tee /etc/logrotate.d/praxis-traefik > /dev/null <<'EOF'
+/opt/praxis/config/traefik/logs/access.log {
     daily
     rotate 7
     compress
@@ -65,13 +65,13 @@ EOF
   Do a dry run to confirm logrotate picks it up without errors:
 
 ```bash
-sudo logrotate --debug /etc/logrotate.d/pangolin-traefik
+sudo logrotate --debug /etc/logrotate.d/praxis-traefik
 ```
 
 No errors means you're good. You can also force a rotation immediately to verify end-to-end:
 
 ```bash
-sudo logrotate --force /etc/logrotate.d/pangolin-traefik
+sudo logrotate --force /etc/logrotate.d/praxis-traefik
 ```
 
 </Step>
@@ -91,7 +91,7 @@ The defaults (daily rotation, 7 compressed copies) work for most setups. To adju
 For example, to keep 30 days of compressed weekly logs:
 
 ```
-/opt/pangolin/config/traefik/logs/access.log {
+/opt/praxis/config/traefik/logs/access.log {
     weekly
     rotate 30
     compress
@@ -107,7 +107,7 @@ For example, to keep 30 days of compressed weekly logs:
 Check that rotated files are appearing in the logs directory:
 
 ```bash
-ls -lh /opt/pangolin/config/traefik/logs/
+ls -lh /opt/praxis/config/traefik/logs/
 ```
 
 After the first rotation you should see files like `access.log.1` and `access.log.2.gz` alongside the active `access.log`.

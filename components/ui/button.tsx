@@ -2,7 +2,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 /**
  * Same buttons as pangolin.net (landing-v5 `components/ui/button.tsx`), which ports
- * them from the Pangolin dashboard.
+ * them from the Praxis dashboard.
  */
 export const buttonVariants = cva(
   'cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',

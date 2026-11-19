@@ -31,7 +31,7 @@ import { SITE } from '@/lib/site';
 /**
  * Docs search (Cmd/Ctrl+K or "/"), the same dialog as pangolin.net's site search.
  * Results come from the docs' own index (`/api/search`); a 3+ word query also offers
- * to ask Pangolin AI. Each search is logged once for analytics (see `useSearchLog`).
+ * to ask Praxis AI. Each search is logged once for analytics (see `useSearchLog`).
  */
 
 type SearchContextValue = { open: boolean; setOpen: (open: boolean) => void };
@@ -135,7 +135,7 @@ type Item =
 
 const QUICK_LINKS: Item[] = [
   { kind: 'docs', key: 'q-install', url: '/self-host/quick-install', title: 'Quick install' },
-  { kind: 'docs', key: 'q-how', url: '/about/how-pangolin-works', title: 'How Pangolin works' },
+  { kind: 'docs', key: 'q-how', url: '/about/how-pangolin-works', title: 'How Praxis works' },
   { kind: 'docs', key: 'q-sites', url: '/manage/sites/understanding-sites', title: 'Sites' },
   {
     kind: 'docs',
@@ -446,7 +446,7 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
           {q && !loading && data && !data.length && (
             <p className="px-2 py-6 text-center text-sm text-muted-foreground">
               No pages match <q>{q}</q>
-              {showAsk ? '. Try asking Pangolin AI instead.' : '.'}
+              {showAsk ? '. Try asking Praxis AI instead.' : '.'}
             </p>
           )}
           {q && error && !data && (
@@ -523,7 +523,7 @@ function ResultRow({
       </span>
       {item.kind === 'ask' ? (
         <div className="min-w-0 flex-1 py-1 text-sm">
-          <span className="font-medium text-foreground">Ask Pangolin AI:</span>{' '}
+          <span className="font-medium text-foreground">Ask Praxis AI:</span>{' '}
           <span className="text-muted-foreground">&ldquo;{item.query}&rdquo;</span>
         </div>
       ) : (

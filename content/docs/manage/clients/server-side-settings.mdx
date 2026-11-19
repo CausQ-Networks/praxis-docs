@@ -5,7 +5,7 @@ description:
 ---
 
 <Note>
-	Only available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) on the Enterprise plan and self-hosted [Enterprise Edition](/self-host/enterprise-edition).
+	Only available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) on the Enterprise plan and self-hosted [Enterprise Edition](/self-host/enterprise-edition).
 </Note>
 
 Server-side client settings let an admin set the [connection settings](/manage/clients/platforms#connection-settings) for every user in a role, instead of asking each user to configure their own device. Use them to roll out a DNS setup, require an exit node, or tune the tunnel for a whole team at once.
@@ -14,7 +14,7 @@ Settings are configured per role. Each setting can be managed by the server or l
 
 ## How It Works
 
-Each time a Pangolin client connects to an organization, it fetches the settings for the signed-in user from the server. Settings managed by the server replace the device's own values and can't be changed on the device. Settings not managed by the server keep whatever the user chose.
+Each time a Praxis client connects to an organization, it fetches the settings for the signed-in user from the server. Settings managed by the server replace the device's own values and can't be changed on the device. Settings not managed by the server keep whatever the user chose.
 
 On Mac, iOS/iPadOS, Windows, Linux, and Android, the client shows in **Settings** > **Connection** how many of its settings the organization manages, with a lock next to each one.
 
@@ -51,9 +51,9 @@ The settings below match the client connection settings. See [Connection Setting
 
 | Setting | Description |
 | --- | --- |
-| Enable Aliases (DNS Override) | Use Pangolin's DNS to resolve internal resources and aliases, overriding the device's default DNS settings. |
-| DNS Over Tunnel | Send DNS queries through the tunnel for remote resolution. The DNS server must be defined as a Pangolin resource. |
-| Primary Upstream DNS Server | The DNS server for queries that aren't Pangolin aliases. Must be an IPv4 or IPv6 address. |
+| Enable Aliases (DNS Override) | Use Praxis's DNS to resolve internal resources and aliases, overriding the device's default DNS settings. |
+| DNS Over Tunnel | Send DNS queries through the tunnel for remote resolution. The DNS server must be defined as a Praxis resource. |
+| Primary Upstream DNS Server | The DNS server for queries that aren't Praxis aliases. Must be an IPv4 or IPv6 address. |
 | Secondary Upstream DNS Server | A fallback upstream DNS server. Must be an IPv4 or IPv6 address. |
 | Match Domains | One wildcard pattern per line, such as `*.proxy.internal`. Only matching queries go to the upstream DNS servers; everything else uses the device's DNS servers. |
 

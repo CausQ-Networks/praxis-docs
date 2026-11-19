@@ -1,21 +1,21 @@
 ---
 title: "Metrics and Observability"
-description: "Understand metrics, traces, logs, and profiling support across Pangolin components"
+description: "Understand metrics, traces, logs, and profiling support across Praxis components"
 ---
 
-Pangolin exposes observability signals across multiple components, but not every component provides the same telemetry surface. This page explains which metrics, traces, logs, and profiling endpoints are available today, how they are exposed, and which collection patterns are recommended for production deployments.
+Praxis exposes observability signals across multiple components, but not every component provides the same telemetry surface. This page explains which metrics, traces, logs, and profiling endpoints are available today, how they are exposed, and which collection patterns are recommended for production deployments.
 
-**Newt** provides the broadest native observability support with Prometheus metrics, OTLP metrics, OTLP traces, health checks, and optional `pprof`. **Gerbil** supports metrics through either a Prometheus backend or an OTLP backend. The **Pangolin Kubernetes Controller** exposes a Prometheus-compatible scrape endpoint and includes additional OTel-backed metric instruments on that endpoint.
+**Newt** provides the broadest native observability support with Prometheus metrics, OTLP metrics, OTLP traces, health checks, and optional `pprof`. **Gerbil** supports metrics through either a Prometheus backend or an OTLP backend. The **Praxis Kubernetes Controller** exposes a Prometheus-compatible scrape endpoint and includes additional OTel-backed metric instruments on that endpoint.
 
 <Note>
-This page focuses on Pangolin-native observability. For a community walkthrough that collects Traefik metrics with Prometheus and Grafana, see the [community metrics guide](/self-host/community-guides/metrics).
+This page focuses on Praxis-native observability. For a community walkthrough that collects Traefik metrics with Prometheus and Grafana, see the [community metrics guide](/self-host/community-guides/metrics).
 
 All currently documented component metrics are listed in the [Full Metric Reference](#full-metric-reference).
 </Note>
 
 <CardGroup cols={2}>
   <Card title="Capability Matrix" icon="chart-line" href="#observability-capability-matrix">
-    Compare metrics, traces, logs, and profiling support across Pangolin components.
+    Compare metrics, traces, logs, and profiling support across Praxis components.
   </Card>
   <Card title="Newt" icon="route" href="#newt">
     Native Prometheus metrics, OTLP metrics, OTLP traces, health checks, and optional pprof.
@@ -146,7 +146,7 @@ controller:
 ```
 
 <Note>
-Helm values for Newt are documented on the [Kubernetes Newt configuration page](/manage/sites/kubernetes/configuration). Controller and Gerbil ServiceMonitor values are documented on the [Kubernetes Pangolin configuration page](/self-host/manual/kubernetes/pangolin/configuration).
+Helm values for Newt are documented on the [Kubernetes Newt configuration page](/manage/sites/kubernetes/configuration). Controller and Gerbil ServiceMonitor values are documented on the [Kubernetes Praxis configuration page](/self-host/manual/kubernetes/praxis/configuration).
 </Note>
 
   </Tab>
@@ -201,7 +201,7 @@ Newt metrics are not typically enabled in default deployments. Turn them on expl
       --otlp=true \
       --metrics-admin-addr=:2112 \
       --pprof=false \
-      --endpoint=https://pangolin.example.com \
+      --endpoint=https://praxis.example.com \
       --id=saz281jfa8z37zg \
       --secret=your-secret
     ```
@@ -383,7 +383,7 @@ Gerbil supports **metrics only**. Choose either a native Prometheus backend or a
 </Accordion>
 </AccordionGroup>
 
-## Pangolin Kubernetes Controller
+## Praxis Kubernetes Controller
 
 The controller exposes a Prometheus-compatible `/metrics` endpoint and standard health probes. It also registers additional OpenTelemetry metric instruments, but those instruments are exported on the same scrape endpoint rather than pushed through OTLP. Available metrics are listed in [Controller metrics](#pangolin-kubernetes-controller-metrics).
 
@@ -521,7 +521,7 @@ increase(pangolin_kube_controller_reconcile_errors_total[10m]) > 5
   <Card title="Newt Kubernetes Monitoring" icon="cubes" href="/manage/sites/kubernetes/configuration">
     Verified Newt chart values for metrics, Services, and ServiceMonitor resources.
   </Card>
-  <Card title="Controller Monitoring Values" icon="cubes" href="/self-host/manual/kubernetes/pangolin/configuration">
+  <Card title="Controller Monitoring Values" icon="cubes" href="/self-host/manual/kubernetes/praxis/configuration">
     Verified chart values for controller Services, ServiceMonitor, PodMonitor, and PrometheusRule resources.
   </Card>
 </CardGroup>
@@ -536,7 +536,7 @@ increase(pangolin_kube_controller_reconcile_errors_total[10m]) > 5
 | Newt | pprof | `v1.10.4` |
 | Gerbil | Prometheus scrape metrics | `v1.4.0` |
 | Gerbil | OTLP metrics | `v1.4.0` |
-| Pangolin Kubernetes Controller | Prometheus scrape metrics | `v0.1.0-alpha.1` |
+| Praxis Kubernetes Controller | Prometheus scrape metrics | `v0.1.0-alpha.1` |
 
 ## Full Metric Reference
 
@@ -544,7 +544,7 @@ The full reference below is grouped by component.
 
 - Newt: Prometheus metrics, OTLP metrics, OTLP traces
 - Gerbil: Prometheus or OTLP metrics
-- Pangolin Kubernetes Controller: Prometheus-native metrics and additional OTel-backed scrape metrics
+- Praxis Kubernetes Controller: Prometheus-native metrics and additional OTel-backed scrape metrics
 
 <Info>
 Metric names, labels, and defaults can change between component releases.
@@ -559,7 +559,7 @@ Metric names, labels, and defaults can change between component releases.
 
       <Expandable title="Site & Build">
         <ResponseField name="newt_site_registrations_total" type="Counter">
-          Counts Pangolin registration attempts keyed by result.
+          Counts Praxis registration attempts keyed by result.
           <Expandable title="Details">
             **Unit:** 1  
             **Labels:** `result` (`success`|`failure`), `site_id`  
@@ -579,7 +579,7 @@ Metric names, labels, and defaults can change between component releases.
         </ResponseField>
 
         <ResponseField name="newt_site_last_heartbeat_seconds" type="ObservableGauge">
-          Seconds since last Pangolin heartbeat.
+          Seconds since last Praxis heartbeat.
           <Expandable title="Details">
             **Unit:** seconds  
             **Labels:** `site_id`  
@@ -705,7 +705,7 @@ Metric names, labels, and defaults can change between component releases.
 
       <Expandable title="WebSocket">
         <ResponseField name="newt_websocket_connect_latency_seconds" type="Histogram (s)">
-          Dial latency for Pangolin WebSocket.
+          Dial latency for Praxis WebSocket.
           <Expandable title="Details">
             **Unit:** seconds  
             **Labels:** `result`, `transport`  
@@ -855,7 +855,7 @@ Metric names, labels, and defaults can change between component releases.
 
       <Expandable title="Site & Build">
         <ResponseField name="newt_site_registrations_total" type="counter">
-          Counts Pangolin registration attempts keyed by result.
+          Counts Praxis registration attempts keyed by result.
           <Expandable title="Details">
             **Labels:** `result`, `site_id` • **Unit:** 1 • **Path:** `telemetry.IncSiteRegistration`  
             **Example:** `newt_site_registrations_total{result="success",site_id="abc"} 1`
@@ -871,7 +871,7 @@ Metric names, labels, and defaults can change between component releases.
         </ResponseField>
 
         <ResponseField name="newt_site_last_heartbeat_seconds" type="gauge">
-          Seconds since last Pangolin heartbeat.
+          Seconds since last Praxis heartbeat.
           <Expandable title="Details">
             **Labels:** `site_id` • **Unit:** seconds • **Path:** `TouchHeartbeat`  
             **Example:** `newt_site_last_heartbeat_seconds{site_id="self"} 3.2`
@@ -973,7 +973,7 @@ Metric names, labels, and defaults can change between component releases.
 
       <Expandable title="WebSocket">
         <ResponseField name="newt_websocket_connect_latency_seconds" type="histogram">
-          Dial latency for Pangolin WebSocket.
+          Dial latency for Praxis WebSocket.
           <Expandable title="Details">
             **Labels:** `result`, `transport` • **Unit:** seconds • **Path:** `ObserveWSConnectLatency`  
             **Example:** `newt_websocket_connect_latency_seconds_bucket{result="success",transport="websocket",le="0.5"} 1`
@@ -2183,12 +2183,12 @@ Metric names, labels, and defaults can change between component releases.
   </Tab>
 </Tabs>
 
-### Pangolin Kubernetes Controller metrics
+### Praxis Kubernetes Controller metrics
 
 <Tabs>
   <Tab title="OpenTelemetry (OTel)">
     <ResponseField name="pangolin-kube-controller">
-      Additional OpenTelemetry metric instruments exposed by the Pangolin Kubernetes Controller.
+      Additional OpenTelemetry metric instruments exposed by the Praxis Kubernetes Controller.
 
       <Note>
         The controller exposes Prometheus-native metrics and additional OTel-backed metrics on the same `/metrics` endpoint.
@@ -2315,7 +2315,7 @@ Metric names, labels, and defaults can change between component releases.
 
   <Tab title="Prometheus">
     <ResponseField name="pangolin-kube-controller">
-      Prometheus-native metrics exposed by the Pangolin Kubernetes Controller. These use the `pangolin_kube_controller_*` prefix.
+      Prometheus-native metrics exposed by the Praxis Kubernetes Controller. These use the `pangolin_kube_controller_*` prefix.
 
       <Note>
         The metrics endpoint is exposed at `GET /metrics` on `METRICS_ADDR`, default `:9090`.

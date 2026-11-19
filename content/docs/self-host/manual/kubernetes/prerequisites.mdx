@@ -1,9 +1,9 @@
 ---
 title: "Prerequisites"
-description: "Cluster, tooling, networking, and storage requirements for deploying Pangolin and Sites (Newt) on Kubernetes."
+description: "Cluster, tooling, networking, and storage requirements for deploying Praxis and Sites (Newt) on Kubernetes."
 ---
 
-Before installing Pangolin or Sites (Newt) on Kubernetes, check that your cluster, tools, networking, and storage setup match the deployment path you want to use.
+Before installing Praxis or Sites (Newt) on Kubernetes, check that your cluster, tools, networking, and storage setup match the deployment path you want to use.
 
 ## Kubernetes cluster
 
@@ -16,16 +16,16 @@ kubectl version
 ```
 
 <Info>
-See the [Version Matrix](https://github.com/fosrl/helm-charts/VERSION_MATRIX.md) for the supported Kubernetes versions of the Pangolin and Newt Helm charts.
+See the [Version Matrix](https://github.com/fosrl/helm-charts/VERSION_MATRIX.md) for the supported Kubernetes versions of the Praxis and Newt Helm charts.
 </Info>
 
 ## Controller access and RBAC
 
-Controller mode is the default and recommended Kubernetes deployment mode for Pangolin.
+Controller mode is the default and recommended Kubernetes deployment mode for Praxis.
 
-When controller mode is enabled, the Pangolin Kube Controller runs with its own ServiceAccount and needs permission to watch and manage the Kubernetes and Traefik resources it reconciles. The chart creates the required RBAC resources for you, unless RBAC creation is disabled.
+When controller mode is enabled, the Praxis Kube Controller runs with its own ServiceAccount and needs permission to watch and manage the Kubernetes and Traefik resources it reconciles. The chart creates the required RBAC resources for you, unless RBAC creation is disabled.
 
-By default, the controller is scoped to the namespace of a single Pangolin deployment. It can also be configured for a broader scope when one controller should reconcile resources for multiple Pangolin deployments.
+By default, the controller is scoped to the namespace of a single Praxis deployment. It can also be configured for a broader scope when one controller should reconcile resources for multiple Praxis deployments.
 
 Depending on the configured controller scope, the controller needs namespace-scoped or cluster-scoped access to the resources it reconciles:
 
@@ -55,7 +55,7 @@ For namespace-scoped deployments, the chart creates namespaced RBAC for the cont
 
 ## Database and storage
 
-Pangolin requires a database backend. The Helm chart supports multiple database modes, including CloudNativePG, external PostgreSQL, embedded PostgreSQL, and SQLite.
+Praxis requires a database backend. The Helm chart supports multiple database modes, including CloudNativePG, external PostgreSQL, embedded PostgreSQL, and SQLite.
 
 For persistent database-backed deployments, make sure your cluster has a usable StorageClass or configure the StorageClass explicitly in your chart values.
 
@@ -81,7 +81,7 @@ Use writable configuration persistence only if your deployment needs runtime con
 
 ### Ingress and routing
 
-Pangolin needs an external entrypoint for the dashboard, API, and site traffic.
+Praxis needs an external entrypoint for the dashboard, API, and site traffic.
 
 Depending on your chart values, this can use:
 
@@ -103,9 +103,9 @@ kubectl get ingress -A
 
 ### DNS
 
-Configure DNS records for the domains used by Pangolin before exposing it publicly.
+Configure DNS records for the domains used by Praxis before exposing it publicly.
 
-At minimum, the Pangolin dashboard domain should resolve to the ingress controller, load balancer, or public endpoint used by your deployment.
+At minimum, the Praxis dashboard domain should resolve to the ingress controller, load balancer, or public endpoint used by your deployment.
 
 Example:
 
@@ -117,7 +117,7 @@ For tunneled site deployments, also verify the DNS name used by the site connect
 
 ### TLS
 
-Use HTTPS for the Pangolin dashboard and API.
+Use HTTPS for the Praxis dashboard and API.
 
 Common TLS options include:
 
@@ -136,7 +136,7 @@ kubectl get crd certificates.cert-manager.io
 
 ## Namespace and security
 
-Choose the namespace where Pangolin and related components should run.
+Choose the namespace where Praxis and related components should run.
 
 Example:
 
@@ -147,8 +147,8 @@ kubectl create namespace pangolin
 When using Helm, you can also let Helm create the namespace:
 
 ```bash
-helm upgrade --install pangolin fossorial/pangolin \
-  --namespace pangolin \
+helm upgrade --install praxis fossorial/praxis \
+  --namespace praxis \
   --create-namespace
 ```
 
@@ -156,13 +156,13 @@ If your cluster enforces Pod Security Admission, make sure the namespace labels 
 
 ## NetworkPolicy
 
-The Pangolin and Newt charts can manage NetworkPolicies for the required application traffic.
+The Praxis and Newt charts can manage NetworkPolicies for the required application traffic.
 
-If you enable chart-managed NetworkPolicies, review the generated policies before adding custom deny rules. If you replace them with your own policies, allow the required traffic between the components you deploy, such as Pangolin, Traefik, Gerbil, the database, DNS, and Site connectors.
+If you enable chart-managed NetworkPolicies, review the generated policies before adding custom deny rules. If you replace them with your own policies, allow the required traffic between the components you deploy, such as Praxis, Traefik, Gerbil, the database, DNS, and Site connectors.
 
 ## Resource planning
 
-Pangolin and Site (Newt) Kubernetes deployments include predefined resource profiles for the supported deployment methods. These profiles set CPU and memory requests and limits for the components used by the selected deployment mode.
+Praxis and Site (Newt) Kubernetes deployments include predefined resource profiles for the supported deployment methods. These profiles set CPU and memory requests and limits for the components used by the selected deployment mode.
 
 The available profiles are:
 
@@ -176,8 +176,8 @@ The selected profile applies to the workloads that are part of your deployment, 
 
 | Component | Resource considerations |
 | --- | --- |
-| Pangolin | Main application workload. Size according to dashboard/API usage, users, and traffic. |
-| Pangolin Kube Controller | Required in controller mode. Size according to the number of reconciled Kubernetes and Traefik resources. |
+| Praxis | Main application workload. Size according to dashboard/API usage, users, and traffic. |
+| Praxis Kube Controller | Required in controller mode. Size according to the number of reconciled Kubernetes and Traefik resources. |
 | Traefik | Size according to ingress and proxy traffic. |
 | Gerbil | Required when the tunnel stack is enabled. Size according to tunnel traffic and number of connected Sites. |
 | PostgreSQL / CloudNativePG | Size according to database mode, stored state, and expected write/read activity. |
@@ -190,7 +190,7 @@ The Standard profile is intended to be enough for most standard deployments. Use
 After installation, monitor CPU and memory usage and adjust the selected profile or individual resource overrides if needed.
 
 <Warning>
-Avoid setting CPU limits on latency-sensitive Pangolin components unless your cluster policy requires them or you intentionally want to cap CPU usage.
+Avoid setting CPU limits on latency-sensitive Praxis components unless your cluster policy requires them or you intentionally want to cap CPU usage.
 
 CPU limits can cause throttling when a workload temporarily needs more CPU, even if spare CPU capacity is available on the node. This can negatively affect ingress, tunnel, proxy, database, and controller workloads.
 
@@ -204,18 +204,18 @@ For most deployments, use CPU requests to reserve baseline capacity and memory l
 		Pick the Kubernetes workflow that matches how you deploy applications.
 	</Card>
 	<Card title="Helm Quick-Start" href="/self-host/manual/kubernetes/helm" icon="box">
-		Install Pangolin or Sites (Newt) with Helm.
+		Install Praxis or Sites (Newt) with Helm.
 	</Card>
 	<Card title="Kustomize Quick-Start" href="/self-host/manual/kubernetes/kustomize" icon="layer-group">
 		Use Kustomize overlays and patches.
 	</Card>
 	<Card title="Argo CD Guide" href="/self-host/manual/kubernetes/gitops/argocd" icon="code-branch">
-		Deploy Pangolin or Sites (Newt) with Argo CD.
+		Deploy Praxis or Sites (Newt) with Argo CD.
 	</Card>
 	<Card title="Flux Guide" href="/self-host/manual/kubernetes/gitops/flux" icon="code-branch">
-		Deploy Pangolin or Sites (Newt) with Flux.
+		Deploy Praxis or Sites (Newt) with Flux.
 	</Card>
-	<Card title="Pangolin Helm" href="/self-host/manual/kubernetes/pangolin/helm" icon="server">
-		Start with the Pangolin Helm installation guide.
+	<Card title="Praxis Helm" href="/self-host/manual/kubernetes/praxis/helm" icon="server">
+		Start with the Praxis Helm installation guide.
 	</Card>
 </CardGroup>

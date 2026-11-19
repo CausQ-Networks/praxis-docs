@@ -1,9 +1,9 @@
 ---
 title: "Troubleshooting"
-description: "Diagnose and resolve Pangolin Kubernetes deployment issues."
+description: "Diagnose and resolve Praxis Kubernetes deployment issues."
 ---
 
-This page covers troubleshooting Pangolin Kubernetes deployments across Helm, Kustomize, Argo CD, and Flux workflows.
+This page covers troubleshooting Praxis Kubernetes deployments across Helm, Kustomize, Argo CD, and Flux workflows.
 
 Start with the core checks, then use the section that matches the symptom.
 
@@ -31,7 +31,7 @@ Render the chart locally with your values file:
 ```bash
 helm repo update fossorial
 
-helm template "$PANGOLIN_RELEASE" fossorial/pangolin \
+helm template "$PANGOLIN_RELEASE" fossorial/praxis \
   --namespace "$PANGOLIN_NAMESPACE" \
   --values values-pangolin.yaml
 ```
@@ -39,14 +39,14 @@ helm template "$PANGOLIN_RELEASE" fossorial/pangolin \
 Preview an upgrade:
 
 ```bash
-helm upgrade "$PANGOLIN_RELEASE" fossorial/pangolin \
+helm upgrade "$PANGOLIN_RELEASE" fossorial/praxis \
   --namespace "$PANGOLIN_NAMESPACE" \
   --values values-pangolin.yaml \
   --dry-run
 ```
 
 <Note>
-`helm lint charts/pangolin` is only useful when you are working inside the Helm chart repository. For normal installs, use `helm template` and `helm upgrade --dry-run`.
+`helm lint charts/praxis` is only useful when you are working inside the Helm chart repository. For normal installs, use `helm template` and `helm upgrade --dry-run`.
 </Note>
 
 ### Kubernetes diagnostics
@@ -136,11 +136,11 @@ Do not decode and paste database credentials into logs, screenshots, or issue re
 
 * Gerbil pod crashes during a fresh install.
 * Logs mention missing setup data, missing exit node, or tunnel configuration not being ready.
-* Pangolin itself is not initialized yet.
+* Praxis itself is not initialized yet.
 
 **Cause**
 
-On first install, Gerbil may start before Pangolin has completed the initial setup. The chart supports `gerbil.startupMode` for this case.
+On first install, Gerbil may start before Praxis has completed the initial setup. The chart supports `gerbil.startupMode` for this case.
 
 **Resolution**
 
@@ -154,15 +154,15 @@ gerbil:
 Install or upgrade with the values file:
 
 ```bash
-helm upgrade --install "$PANGOLIN_RELEASE" fossorial/pangolin \
+helm upgrade --install "$PANGOLIN_RELEASE" fossorial/praxis \
   --namespace "$PANGOLIN_NAMESPACE" \
   --values values-pangolin.yaml
 ```
 
-After Pangolin setup is complete, switch Gerbil to normal startup:
+After Praxis setup is complete, switch Gerbil to normal startup:
 
 ```bash
-helm upgrade "$PANGOLIN_RELEASE" fossorial/pangolin \
+helm upgrade "$PANGOLIN_RELEASE" fossorial/praxis \
   --namespace "$PANGOLIN_NAMESPACE" \
   --reuse-values \
   --set gerbil.startupMode=normal
@@ -273,7 +273,7 @@ kubectl logs --namespace traefik -l app.kubernetes.io/name=traefik --tail=100
 Temporary local check for the dashboard/UI service port:
 
 ```bash
-kubectl port-forward --namespace "$PANGOLIN_NAMESPACE" svc/pangolin 8080:3002
+kubectl port-forward --namespace "$PANGOLIN_NAMESPACE" svc/praxis 8080:3002
 ```
 
 Then open:
@@ -428,7 +428,7 @@ kubectl get svc --namespace "$PANGOLIN_NAMESPACE" \
 
 **Symptoms**
 
-* Pangolin pod crashes.
+* Praxis pod crashes.
 * Logs mention database connection errors.
 * Events mention missing Secret or missing Secret key.
 
@@ -443,7 +443,7 @@ Create a connection Secret:
 ```bash
 kubectl create secret generic pangolin-db-connection \
   --namespace "$PANGOLIN_NAMESPACE" \
-  --from-literal=connectionString='postgresql://pangolin:password@postgres.example.com:5432/pangolin?sslmode=require'
+  --from-literal=connectionString='postgresql://praxis:password@postgres.example.com:5432/praxis?sslmode=require'
 ```
 
 Reference it in values:
@@ -474,7 +474,7 @@ Do not put database passwords directly in values files for production. Use an ex
 
 * CNPG Cluster resource is missing.
 * CNPG pods do not start.
-* Pangolin cannot connect to the generated CNPG database.
+* Praxis cannot connect to the generated CNPG database.
 * Secret such as `pangolin-db-app` is missing.
 
 **Common causes**
@@ -533,7 +533,7 @@ cnpg-cluster:
 **Symptoms**
 
 * DNS lookups fail.
-* Pangolin cannot connect to the database.
+* Praxis cannot connect to the database.
 * Controller cannot reach the Kubernetes API.
 * Gerbil or Newt traffic does not work.
 * External services such as SMTP, OIDC, or webhooks time out.
@@ -591,11 +591,11 @@ If this fixes the issue, re-enable policies and add the missing rules.
 
 </Accordion>
 
-  <Accordion title="Pangolin pod is CrashLoopBackOff or Pending">
+  <Accordion title="Praxis pod is CrashLoopBackOff or Pending">
 
 **Symptoms**
 
-* Pangolin pod restarts repeatedly.
+* Praxis pod restarts repeatedly.
 * Pod stays Pending.
 * Readiness never becomes true.
 
@@ -632,7 +632,7 @@ Common causes:
 | `ImagePullBackOff` | Wrong image override, registry access issue, missing imagePullSecret                                  |
 
 <Note>
-Do not assume tools such as `psql`, `curl`, or `dig` are available inside the Pangolin container. Use logs, Events, or a temporary debug pod when needed.
+Do not assume tools such as `psql`, `curl`, or `dig` are available inside the Praxis container. Use logs, Events, or a temporary debug pod when needed.
 </Note>
 
 Run a temporary debug pod for network tests:
@@ -675,7 +675,7 @@ deployment:
   installTraefikController: true
 ```
 
-If Traefik is already installed elsewhere, keep it disabled and make sure the controller watches the namespace and labels used by the Pangolin `IngressRoute`.
+If Traefik is already installed elsewhere, keep it disabled and make sure the controller watches the namespace and labels used by the Praxis `IngressRoute`.
 
 </Accordion>
 
@@ -693,7 +693,7 @@ If Traefik is already installed elsewhere, keep it disabled and make sure the co
 Render before upgrading:
 
 ```bash
-helm template "$PANGOLIN_RELEASE" fossorial/pangolin \
+helm template "$PANGOLIN_RELEASE" fossorial/praxis \
   --namespace "$PANGOLIN_NAMESPACE" \
   --values values-pangolin.yaml > rendered.yaml
 ```
@@ -763,7 +763,7 @@ Use modern Kustomize `patches` syntax:
 
 ```yaml
 patches:
-  - path: patches/pangolin-resources.patch.yaml
+  - path: patches/praxis-resources.patch.yaml
     target:
       group: apps
       version: v1
@@ -788,7 +788,7 @@ For Helm-rendered bases, do not assume resource names. Check the rendered manife
 **Argo CD checks**
 
 ```bash
-kubectl describe application pangolin --namespace argocd
+kubectl describe application praxis --namespace argocd
 kubectl logs --namespace argocd deployment/argocd-application-controller --tail=100
 argocd app diff pangolin
 argocd app sync pangolin
@@ -806,8 +806,8 @@ flux logs --all-namespaces --follow
 Reconcile manually:
 
 ```bash
-flux reconcile helmrelease pangolin --namespace "$PANGOLIN_NAMESPACE"
-flux reconcile kustomization pangolin --namespace flux-system
+flux reconcile helmrelease praxis --namespace "$PANGOLIN_NAMESPACE"
+flux reconcile kustomization praxis --namespace flux-system
 ```
 
 Common causes:
@@ -830,8 +830,8 @@ Use the repository that matches the failing area:
 | Area                                                  | Repository          |
 | ----------------------------------------------------- | ------------------- |
 | Chart templates, values, examples, rendered manifests | `fosrl/helm-charts` |
-| Pangolin runtime, API, UI, auth, application behavior | `fosrl/pangolin`    |
-| Newt client behavior or connectivity                  | `fosrl/newt`        |
+| Praxis runtime, API, UI, auth, application behavior | `causq-networks/praxis`    |
+| Newt client behavior or connectivity                  | `causq-networks/praxis-newt`        |
 | Documentation                                         | `fosrl/docs-v2`     |
 
 ## Before opening an issue, collect
@@ -839,7 +839,7 @@ Use the repository that matches the failing area:
 Collect this information before opening an issue:
 
 * chart version
-* Pangolin app version
+* Praxis app version
 * Kubernetes version
 * Helm version
 * deployment method: Helm, Kustomize, Argo CD, or Flux
@@ -896,7 +896,7 @@ kubectl logs --namespace "$PANGOLIN_NAMESPACE" \
   --tail=200
 
 # Dashboard local test
-kubectl port-forward --namespace "$PANGOLIN_NAMESPACE" svc/pangolin 8080:3002
+kubectl port-forward --namespace "$PANGOLIN_NAMESPACE" svc/praxis 8080:3002
 
 # Traefik resources
 kubectl get ingressroute --namespace "$PANGOLIN_NAMESPACE"
@@ -909,16 +909,16 @@ kubectl top node
 ## Next steps
 
 <CardGroup cols={2}>
-	<Card title="Pangolin Configuration" href="/self-host/manual/kubernetes/pangolin/configuration" icon="sliders">
-		Review Pangolin chart options.
+	<Card title="Praxis Configuration" href="/self-host/manual/kubernetes/praxis/configuration" icon="sliders">
+		Review Praxis chart options.
 	</Card>
-	<Card title="Helm Quick-Start" href="/self-host/manual/kubernetes/pangolin/helm" icon="box">
-		Install Pangolin with Helm.
+	<Card title="Helm Quick-Start" href="/self-host/manual/kubernetes/praxis/helm" icon="box">
+		Install Praxis with Helm.
 	</Card>
-	<Card title="Kustomize Quick-Start" href="/self-host/manual/kubernetes/pangolin/kustomize" icon="layer-group">
-		Install Pangolin with rendered manifests and Kustomize overlays.
+	<Card title="Kustomize Quick-Start" href="/self-host/manual/kubernetes/praxis/kustomize" icon="layer-group">
+		Install Praxis with rendered manifests and Kustomize overlays.
 	</Card>
 	<Card title="GitOps Overview" href="/self-host/manual/kubernetes/gitops/overview" icon="code-branch">
-		Deploy Pangolin with Argo CD or Flux.
+		Deploy Praxis with Argo CD or Flux.
 	</Card>
 </CardGroup>

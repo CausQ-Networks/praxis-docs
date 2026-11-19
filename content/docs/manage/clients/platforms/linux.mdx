@@ -1,31 +1,31 @@
 ---
 title: "Linux"
-description: "Install, configure, and update the Pangolin client for Linux"
+description: "Install, configure, and update the Praxis client for Linux"
 ---
 
 ## Install
 
-- [Pangolin for Linux](https://pangolin.net/downloads/linux) - This is the official page to download the latest packages for Linux.
+- [Praxis for Linux](https://praxis.net/downloads/linux) - This is the official page to download the latest packages for Linux.
 - [All Versions](https://github.com/fosrl/windows-linux/releases) - The releases section of this repository contains release notes and download artifacts for the latest version and all older versions.
 
-Pangolin for Linux runs on Ubuntu 22.04 or later, Debian 12 or later, and current Fedora, openSUSE, and Arch Linux. Packages are available for x86_64 (`amd64`) and ARM64 (`arm64`). RHEL 9 and its rebuilds do not ship WebKitGTK 4.1, so they cannot install the package.
+Praxis for Linux runs on Ubuntu 22.04 or later, Debian 12 or later, and current Fedora, openSUSE, and Arch Linux. Packages are available for x86_64 (`amd64`) and ARM64 (`arm64`). RHEL 9 and its rebuilds do not ship WebKitGTK 4.1, so they cannot install the package.
 
 On other distributions, such as Gentoo or Void Linux, install the `.tar.gz` archive instead (see [Other distributions](#other-distributions)). It needs glibc 2.35 or later, GTK 3, and WebKitGTK 4.1, and runs the background service with systemd or OpenRC.
 
 ### Installation Steps
 
-1. **Download and install the Pangolin client**
+1. **Download and install the Praxis client**
 
-   Install Pangolin using the installation script. It detects your distribution and architecture, downloads the latest package, and installs it with your package manager:
+   Install Praxis using the installation script. It detects your distribution and architecture, downloads the latest package, and installs it with your package manager:
 
    ```bash
-   curl -fsSL https://static.pangolin.net/get-linux.sh | sh
+   curl -fsSL https://praxis.causq.com/get-linux.sh | sh
    ```
 
    The script asks for your password through `sudo` (or `doas`) if you are not root. If it cannot detect your distribution, it installs the `.tar.gz` archive instead. To choose the format yourself, pass `--format deb`, `--format rpm`, `--format arch`, or `--format tar`. To install a specific version, add `--version <version>`. For example:
 
    ```bash
-   curl -fsSL https://static.pangolin.net/get-linux.sh | sh -s -- --format rpm
+   curl -fsSL https://praxis.causq.com/get-linux.sh | sh -s -- --format rpm
    ```
 
    To install manually instead, download the package for your distribution and architecture from the download page above, then install it with your package manager from the folder you saved it to. Replace `<arch>` and `<version>` with the values in the file name.
@@ -33,52 +33,52 @@ On other distributions, such as Gentoo or Void Linux, install the `.tar.gz` arch
    <Tabs>
      <Tab title="Debian / Ubuntu">
        ```bash
-       sudo apt install ./pangolin-client-<arch>-<version>.deb
+       sudo apt install ./praxis-client-<arch>-<version>.deb
        ```
      </Tab>
      <Tab title="Fedora">
        ```bash
-       sudo dnf install ./pangolin-client-<arch>-<version>.rpm
+       sudo dnf install ./praxis-client-<arch>-<version>.rpm
        ```
      </Tab>
      <Tab title="openSUSE">
        ```bash
-       sudo zypper install --allow-unsigned-rpm ./pangolin-client-<arch>-<version>.rpm
+       sudo zypper install --allow-unsigned-rpm ./praxis-client-<arch>-<version>.rpm
        ```
      </Tab>
      <Tab title="Arch Linux">
        ```bash
-       sudo pacman -U ./pangolin-client-<arch>-<version>.pkg.tar.zst
+       sudo pacman -U ./praxis-client-<arch>-<version>.pkg.tar.zst
        ```
      </Tab>
      <Tab title="Other distributions">
        ```bash
-       tar xzf pangolin-client-<arch>-<version>.tar.gz
-       cd pangolin-client-<arch>-<version>
+       tar xzf praxis-client-<arch>-<version>.tar.gz
+       cd praxis-client-<arch>-<version>
        sudo ./install.sh
        ```
      </Tab>
    </Tabs>
 
-   The package installs the `pangolin-client` app, the `pangolin-client` systemd service, an app menu entry, and the [GNOME Shell extension](#gnome). The service is enabled and started during installation.
+   The package installs the `praxis-client` app, the `praxis-client` systemd service, an app menu entry, and the [GNOME Shell extension](#gnome). The service is enabled and started during installation.
 
-2. **Launch Pangolin**
+2. **Launch Praxis**
 
-   Open Pangolin from your desktop's app menu, or run `pangolin-client` in a terminal.
+   Open Praxis from your desktop's app menu, or run `praxis-client` in a terminal.
 
-3. **Log in with your Pangolin account**
+3. **Log in with your Praxis account**
 
-   Log in on your Pangolin Cloud account or your self-hosted Pangolin instance.
+   Log in on your Praxis Cloud account or your self-hosted Praxis instance.
 
-   - Click the Pangolin icon in the system tray (or the GNOME top bar) and select Log in.
+   - Click the Praxis icon in the system tray (or the GNOME top bar) and select Log in.
 
 ### Other Distributions
 
-The `.tar.gz` archive is for distributions without a Pangolin package. It contains the same files as the packages, an OpenRC service, and an `install.sh` that installs them:
+The `.tar.gz` archive is for distributions without a Praxis package. It contains the same files as the packages, an OpenRC service, and an `install.sh` that installs them:
 
-- The app, app menu entry, icon, and GNOME Shell extension go under `/usr/local`. Set `PREFIX` to install somewhere else, for example `sudo PREFIX=/opt/pangolin ./install.sh`.
+- The app, app menu entry, icon, and GNOME Shell extension go under `/usr/local`. Set `PREFIX` to install somewhere else, for example `sudo PREFIX=/opt/praxis ./install.sh`.
 - The autostart entry goes in `/etc/xdg/autostart` and the polkit policy in `/usr/share/polkit-1/actions`.
-- On systemd, the service goes in `/etc/systemd/system/pangolin-client.service`. On OpenRC, it goes in `/etc/init.d/pangolin-client` and is added to the `default` runlevel. Either way it starts at once. With neither, start `pangolin-client --daemon` as root at boot yourself.
+- On systemd, the service goes in `/etc/systemd/system/praxis-client.service`. On OpenRC, it goes in `/etc/init.d/praxis-client` and is added to the `default` runlevel. Either way it starts at once. With neither, start `praxis-client --daemon` as root at boot yourself.
 
 Install GTK 3 and WebKitGTK 4.1 with your package manager first, for example `net-libs/webkit-gtk:4.1` on Gentoo or `libwebkit2gtk41` on Void Linux. The app is built against glibc, so musl distributions such as Alpine need a glibc compatibility layer.
 
@@ -86,13 +86,13 @@ Run `./install.sh --help` for all options, including `DESTDIR` for building your
 
 ## System Tray
 
-Pangolin lives in the system tray. Click the tray icon to open the Pangolin menu.
+Praxis lives in the system tray. Click the tray icon to open the Praxis menu.
 
 Most desktops, including KDE Plasma, Cinnamon, XFCE, and Budgie, show the tray icon without any extra setup.
 
 ### GNOME
 
-GNOME has no system tray of its own. Pangolin ships a GNOME Shell extension that adds a Pangolin button to the top bar. Click it to open the Pangolin menu. Right-click it to quit Pangolin.
+GNOME has no system tray of its own. Praxis ships a GNOME Shell extension that adds a Praxis button to the top bar. Click it to open the Praxis menu. Right-click it to quit Praxis.
 
 The extension is installed with the package but is not turned on automatically. To turn it on:
 
@@ -103,52 +103,52 @@ The extension is installed with the package but is not turned on automatically. 
 gnome-extensions enable pangolin@pangolin.net
 ```
 
-If you use the AppIndicator extension instead, Pangolin's icon appears there too, but it opens the menu only on a double-click. While the Pangolin extension is on, Pangolin hides its AppIndicator icon so only one icon shows.
+If you use the AppIndicator extension instead, Praxis's icon appears there too, but it opens the menu only on a double-click. While the Praxis extension is on, Praxis hides its AppIndicator icon so only one icon shows.
 
-If Pangolin cannot find a system tray or the GNOME extension, it opens the Settings window when it starts so you can still use it.
+If Praxis cannot find a system tray or the GNOME extension, it opens the Settings window when it starts so you can still use it.
 
 ## Background Service
 
-The `pangolin-client` systemd service runs as root and manages the tunnel, routes, and DNS. It also keeps your sign-in. The Pangolin app runs as your user and connects to the service. On OpenRC systems that installed the `.tar.gz`, it is the `pangolin-client` OpenRC service instead.
+The `praxis-client` systemd service runs as root and manages the tunnel, routes, and DNS. It also keeps your sign-in. The Praxis app runs as your user and connects to the service. On OpenRC systems that installed the `.tar.gz`, it is the `praxis-client` OpenRC service instead.
 
-If the service is not running, Pangolin shows a warning when it opens and cannot connect. Start it with:
+If the service is not running, Praxis shows a warning when it opens and cannot connect. Start it with:
 
 <Tabs>
   <Tab title="systemd">
     ```bash
-    sudo systemctl enable --now pangolin-client
+    sudo systemctl enable --now praxis-client
     ```
   </Tab>
   <Tab title="OpenRC">
     ```bash
-    sudo rc-update add pangolin-client default
-    sudo rc-service pangolin-client start
+    sudo rc-update add praxis-client default
+    sudo rc-service praxis-client start
     ```
   </Tab>
 </Tabs>
 
 Logs are written to:
 
-- Service and tunnel logs: `/var/log/pangolin-client/`, also available with `journalctl -u pangolin-client` on systemd
-- App logs: `~/.local/state/pangolin-client/logs/` (or `$XDG_STATE_HOME/pangolin-client/logs/`)
+- Service and tunnel logs: `/var/log/praxis-client/`, also available with `journalctl -u praxis-client` on systemd
+- App logs: `~/.local/state/praxis-client/logs/` (or `$XDG_STATE_HOME/praxis-client/logs/`)
 
 ## Companion Mode
 
-Companion mode lets [Pangolin CLI](/manage/clients/platforms/cli) use this app's login and tunnel. Sign in and connect here, then run CLI commands as that same account. You do not run `pangolin login` again.
+Companion mode lets [Praxis CLI](/manage/clients/platforms/cli) use this app's login and tunnel. Sign in and connect here, then run CLI commands as that same account. You do not run `praxis login` again.
 
 On Linux, companion mode is on by default once both the desktop app and the CLI are installed. On machines without the desktop app, the CLI keeps its own login.
 
 1. Log in with the Linux client and connect.
-2. Install Pangolin CLI if it is not already installed. From the Pangolin menu, choose **More** > **Install Pangolin CLI…**, or follow the [CLI install steps](/manage/clients/platforms/cli). The app installs the CLI to `/usr/local/bin/pangolin`. Members of the `sudo`, `wheel`, or `admin` group can install it directly; other users are asked for an administrator's password.
+2. Install Praxis CLI if it is not already installed. From the Praxis menu, choose **More** > **Install Praxis CLI…**, or follow the [CLI install steps](/manage/clients/platforms/cli). The app installs the CLI to `/usr/local/bin/praxis`. Members of the `sudo`, `wheel`, or `admin` group can install it directly; other users are asked for an administrator's password.
 3. Run CLI commands in a terminal. For example, open SSH to a [private SSH resource](/manage/resources/private/ssh):
 
 ```bash
 pangolin ssh username@alias
 ```
 
-The CLI follows the account, organization, and exit node selected in the desktop app. Change those in the app. While companion mode is on, `pangolin login`, `pangolin logout`, and `pangolin select` for account, organization, or exit node are blocked.
+The CLI follows the account, organization, and exit node selected in the desktop app. Change those in the app. While companion mode is on, `praxis login`, `praxis logout`, and `praxis select` for account, organization, or exit node are blocked.
 
-The desktop app has to be open and logged in. If it is not, the CLI asks you to start Pangolin and log in.
+The desktop app has to be open and logged in. If it is not, the CLI asks you to start Praxis and log in.
 
 Commands to check status or turn companion mode off are on the [CLI companion mode section](/manage/clients/platforms/cli#companion-mode).
 
@@ -160,33 +160,33 @@ This section covers the general settings for this platform. DNS, MTU, and other 
 
 ### Start at Login
 
-When enabled, Pangolin starts when you sign in to your desktop session. This uses the XDG autostart entry the package installs at `/etc/xdg/autostart/pangolin-client-autostart.desktop`; the entry does nothing unless this setting is on.
+When enabled, Praxis starts when you sign in to your desktop session. This uses the XDG autostart entry the package installs at `/etc/xdg/autostart/praxis-client-autostart.desktop`; the entry does nothing unless this setting is on.
 
 ### Connect at Start
 
-When enabled, the tunnel connects whenever Pangolin starts. This also opens Pangolin at sign-in.
+When enabled, the tunnel connects whenever Praxis starts. This also opens Praxis at sign-in.
 
 ### Config File
 
-On Linux, the Pangolin GUI reads configuration from two `pangolin.json` files:
+On Linux, the Praxis GUI reads configuration from two `pangolin.json` files:
 
-- User config: `~/.config/pangolin-client/pangolin.json` (or `$XDG_CONFIG_HOME/pangolin-client/pangolin.json`)
-- System config: `/etc/pangolin-client/pangolin.json`, for every user of the computer
+- User config: `~/.config/praxis-client/praxis.json` (or `$XDG_CONFIG_HOME/praxis-client/praxis.json`)
+- System config: `/etc/praxis-client/praxis.json`, for every user of the computer
 
-These are separate from Pangolin CLI's files in `~/.config/pangolin`.
+These are separate from Praxis CLI's files in `~/.config/praxis`.
 
-Most keys in the `Config` object below can be set in either file. If the same key is in both, the user config's value is used, so administrators can set defaults in the system config while each user can still change their own. Keys marked **System config only** must be set in `/etc/pangolin-client/pangolin.json`; after changing them, restart the background service (`sudo systemctl restart pangolin-client`, or `sudo rc-service pangolin-client restart` on OpenRC) and reopen Pangolin. See [Which Setting Applies](#which-setting-applies) for how the two files combine with per-organization settings and server-side client settings.
+Most keys in the `Config` object below can be set in either file. If the same key is in both, the user config's value is used, so administrators can set defaults in the system config while each user can still change their own. Keys marked **System config only** must be set in `/etc/praxis-client/praxis.json`; after changing them, restart the background service (`sudo systemctl restart praxis-client`, or `sudo rc-service praxis-client restart` on OpenRC) and reopen Praxis. See [Which Setting Applies](#which-setting-applies) for how the two files combine with per-organization settings and server-side client settings.
 
 <ResponseField name="Config" type="object">
-  JSON configuration for the Linux Pangolin client stored in `pangolin.json`.
+  JSON configuration for the Linux Praxis client stored in `pangolin.json`.
 
   <Expandable title="Config">
     <ResponseField name="dnsOverride" type="boolean">
-      **Can be set per organization.** When true, matches the [Enable Aliases (Override DNS)](/manage/clients/platforms#enable-aliases-override-dns) setting and lets the client take over DNS resolution for Pangolin resources.
+      **Can be set per organization.** When true, matches the [Enable Aliases (Override DNS)](/manage/clients/platforms#enable-aliases-override-dns) setting and lets the client take over DNS resolution for Praxis resources.
     </ResponseField>
 
     <ResponseField name="dnsTunnel" type="boolean">
-      **Can be set per organization.** When true, matches the [DNS Over Tunnel](/manage/clients/platforms#dns-over-tunnel) setting and sends DNS queries through the Pangolin tunnel.
+      **Can be set per organization.** When true, matches the [DNS Over Tunnel](/manage/clients/platforms#dns-over-tunnel) setting and sends DNS queries through the Praxis tunnel.
     </ResponseField>
 
     <ResponseField name="primaryDNS" type="string">
@@ -222,7 +222,7 @@ Most keys in the `Config` object below can be set in either file. If the same ke
     </ResponseField>
 
     <ResponseField name="preferLocalRoutes" type="boolean">
-      **Can be set per organization.** When true, prioritizes local routes over remote ones by adding an arbitrary metric to the WireGuard routes. This is useful when you want to ensure that local network traffic (for example, to a printer or NAS) is not routed through the Pangolin tunnel.
+      **Can be set per organization.** When true, prioritizes local routes over remote ones by adding an arbitrary metric to the WireGuard routes. This is useful when you want to ensure that local network traffic (for example, to a printer or NAS) is not routed through the Praxis tunnel.
     </ResponseField>
 
     <ResponseField name="exitNodeTakesPrecedence" type="boolean">
@@ -230,15 +230,15 @@ Most keys in the `Config` object below can be set in either file. If the same ke
     </ResponseField>
 
     <ResponseField name="openUIAtLogin" type="boolean">
-      When true, matches the **Start at Login** setting and starts Pangolin when you sign in to your desktop session. If omitted, the default is `false`.
+      When true, matches the **Start at Login** setting and starts Praxis when you sign in to your desktop session. If omitted, the default is `false`.
     </ResponseField>
 
     <ResponseField name="autoConnectAtLogin" type="boolean">
-      When true, matches the **Connect at Start** setting. The tunnel connects whenever Pangolin starts, and Pangolin also opens at sign-in, regardless of `openUIAtLogin`. If omitted, the default is `false`.
+      When true, matches the **Connect at Start** setting. The tunnel connects whenever Praxis starts, and Praxis also opens at sign-in, regardless of `openUIAtLogin`. If omitted, the default is `false`.
     </ResponseField>
 
     <ResponseField name="autoUpdateChecksEnabled" type="boolean">
-      **System config only.** When true, periodically check for updates in the background. When false, automatic checks are off; users can still use **Check for Updates** unless that button is also disabled. If omitted, the default is `true`. When a new version exists, Pangolin adds **Pangolin Update Available…** to the system tray menu. Intended for org admins so config is the source of truth.
+      **System config only.** When true, periodically check for updates in the background. When false, automatic checks are off; users can still use **Check for Updates** unless that button is also disabled. If omitted, the default is `true`. When a new version exists, Praxis adds **Praxis Update Available…** to the system tray menu. Intended for org admins so config is the source of truth.
     </ResponseField>
 
     <ResponseField name="updateCheckIntervalSeconds" type="integer">
@@ -264,7 +264,7 @@ Most keys in the `Config` object below can be set in either file. If the same ke
   </Expandable>
 </ResponseField>
 
-As a system administrator, you can script placing `pangolin.json` in `/etc/pangolin-client/` to set defaults for every user, and/or in each user's `~/.config/pangolin-client/` folder for per-user settings.
+As a system administrator, you can script placing `pangolin.json` in `/etc/praxis-client/` to set defaults for every user, and/or in each user's `~/.config/praxis-client/` folder for per-user settings.
 
 ### Per-Organization Settings
 
@@ -292,7 +292,7 @@ The two files are combined key by key first, with the user config winning, and o
 - A user's top-level setting does **not** replace an administrator's `orgs` entry in the system config. That organization keeps the administrator's value, and the user's setting applies to every other organization.
 - A user's value for the same key in the same organization's entry **does** replace the administrator's.
 
-For example, with this system config at `/etc/pangolin-client/pangolin.json`:
+For example, with this system config at `/etc/praxis-client/praxis.json`:
 
 ```json
 {
@@ -306,7 +306,7 @@ For example, with this system config at `/etc/pangolin-client/pangolin.json`:
 }
 ```
 
-and this user config at `~/.config/pangolin-client/pangolin.json`:
+and this user config at `~/.config/praxis-client/praxis.json`:
 
 ```json
 {
@@ -328,79 +328,79 @@ the user's organizations use `9.9.9.9` and MTU `1400`, except `acme`, which uses
     user's own settings can replace.
 </Tip>
 
-After editing the system config, restart the background service (`sudo systemctl restart pangolin-client`, or `sudo rc-service pangolin-client restart` on OpenRC) and reopen Pangolin.
+After editing the system config, restart the background service (`sudo systemctl restart praxis-client`, or `sudo rc-service praxis-client restart` on OpenRC) and reopen Praxis.
 
 
 ## Update
 
 ### Automatic Updates
 
-The Linux client checks for updates automatically in the background. When a new version is available, Pangolin adds **Pangolin Update Available…** to the system tray menu. Open that menu item to see a dialog asking whether to install the update now.
+The Linux client checks for updates automatically in the background. When a new version is available, Praxis adds **Praxis Update Available…** to the system tray menu. Open that menu item to see a dialog asking whether to install the update now.
 
-**Install Update** downloads the new package, checks it against Pangolin's signed update manifest, and installs it with your system package manager (`apt-get`, `dnf`, `zypper`, `rpm`, or `pacman`). The background service restarts during the install, so the tunnel disconnects briefly. Pangolin reopens when the update finishes. **Later** closes the dialog and leaves the current version in place.
+**Install Update** downloads the new package, checks it against Praxis's signed update manifest, and installs it with your system package manager (`apt-get`, `dnf`, `zypper`, `rpm`, or `pacman`). The background service restarts during the install, so the tunnel disconnects briefly. Praxis reopens when the update finishes. **Later** closes the dialog and leaves the current version in place.
 
 Installing updates from the app requires an administrator: root, or a member of the `sudo`, `wheel`, or `admin` group. Other users can update with the manual steps below.
 
-If Pangolin was not installed from a `.deb`, `.rpm`, or `.pkg.tar.zst` package, for example from the `.tar.gz` archive, the dialog shows a download link instead of installing the update.
+If Praxis was not installed from a `.deb`, `.rpm`, or `.pkg.tar.zst` package, for example from the `.tar.gz` archive, the dialog shows a download link instead of installing the update.
 
 You can also check from the system tray: **More** > **Check for Updates…**.
 
 ### Manual Updates
 
-Find the latest version in the [GitHub releases](https://github.com/fosrl/windows-linux/releases), or on [https://pangolin.net/downloads/linux](https://pangolin.net/downloads/linux).
+Find the latest version in the [GitHub releases](https://github.com/fosrl/windows-linux/releases), or on [https://praxis.net/downloads/linux](https://praxis.net/downloads/linux).
 
 Re-run the installation script to upgrade to the latest version:
 
 ```bash
-curl -fsSL https://static.pangolin.net/get-linux.sh | sh
+curl -fsSL https://praxis.causq.com/get-linux.sh | sh
 ```
 
-Or download the new package and install it with the same command you used to [install](#installation-steps) Pangolin. The package manager upgrades the existing installation and restarts the background service.
+Or download the new package and install it with the same command you used to [install](#installation-steps) Praxis. The package manager upgrades the existing installation and restarts the background service.
 
 For the `.tar.gz` archive, extract the new version and run its `sudo ./install.sh` again. It replaces the installed files and restarts the background service, keeping your sign-in.
 
 ## Uninstall
 
-1. Quit Pangolin from the system tray if it is running.
+1. Quit Praxis from the system tray if it is running.
 2. Remove the package with your package manager, or run the uninstaller the `.tar.gz` installed:
 
 <Tabs>
   <Tab title="Debian / Ubuntu">
     ```bash
-    sudo apt remove pangolin-client
+    sudo apt remove praxis-client
     ```
 
-    To also remove the saved sign-in, service state, logs, and system config, use `sudo apt purge pangolin-client` instead.
+    To also remove the saved sign-in, service state, logs, and system config, use `sudo apt purge praxis-client` instead.
   </Tab>
   <Tab title="Fedora">
     ```bash
-    sudo dnf remove pangolin-client
+    sudo dnf remove praxis-client
     ```
   </Tab>
   <Tab title="openSUSE">
     ```bash
-    sudo zypper remove pangolin-client
+    sudo zypper remove praxis-client
     ```
   </Tab>
   <Tab title="Arch Linux">
     ```bash
-    sudo pacman -R pangolin-client
+    sudo pacman -R praxis-client
     ```
   </Tab>
   <Tab title="Other distributions">
     ```bash
-    sudo /usr/local/lib/pangolin-client/uninstall.sh
+    sudo /usr/local/lib/praxis-client/uninstall.sh
     ```
 
-    If you installed with a different `PREFIX`, run `uninstall.sh` from `<PREFIX>/lib/pangolin-client/` instead.
+    If you installed with a different `PREFIX`, run `uninstall.sh` from `<PREFIX>/lib/praxis-client/` instead.
   </Tab>
 </Tabs>
 
 Removing the package stops and disables the background service and removes the app, the GNOME extension, and the app menu and autostart entries. It does not always delete the user or system config. To clear those as well:
 
 ```bash
-rm -rf ~/.config/pangolin-client ~/.local/state/pangolin-client
-sudo rm -rf /etc/pangolin-client /var/lib/pangolin-client /var/log/pangolin-client
+rm -rf ~/.config/praxis-client ~/.local/state/praxis-client
+sudo rm -rf /etc/praxis-client /var/lib/praxis-client /var/log/praxis-client
 ```
 
-If you also installed [Pangolin CLI](/manage/clients/platforms/cli), uninstall it separately. See [Uninstall Pangolin CLI](/manage/clients/platforms/uninstall-cli).
+If you also installed [Praxis CLI](/manage/clients/platforms/cli), uninstall it separately. See [Uninstall Praxis CLI](/manage/clients/platforms/uninstall-cli).

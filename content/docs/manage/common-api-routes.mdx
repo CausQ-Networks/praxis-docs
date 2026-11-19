@@ -6,14 +6,14 @@ description: "API routes and patterns for the most common actions and flows"
 All routes in this guide require an API key. See [Integration API](/manage/integration-api) for creating and using API keys (Bearer token in the `Authorization` header). Many routes use an organization ID in the path — see [Organization ID](/manage/organizations/org-id) for where to find it.
 
 <Note>
-This guide is a **minimal** walkthrough for creating core Pangolin components (sites, resources, targets) via the API. It is not exhaustive — some elements are omitted for simplicity — but everything shown here works and illustrates patterns used elsewhere in the API. For full coverage of endpoints (get, update, delete, list, etc.), use the [Swagger docs](https://api.pangolin.net/v1/docs).
+This guide is a **minimal** walkthrough for creating core Praxis components (sites, resources, targets) via the API. It is not exhaustive — some elements are omitted for simplicity — but everything shown here works and illustrates patterns used elsewhere in the API. For full coverage of endpoints (get, update, delete, list, etc.), use the [Swagger docs](https://api.pangolin.net/v1/docs).
 </Note>
 
 OpenAPI-compliant documentation is available at https://api.pangolin.net/v1/openapi.json and https://api.pangolin.net/v1/openapi.yaml
 
 ## What is an identifier?
 
-In the Pangolin app, sites, public resources, private resources, and clients have an **Identifier**. In the API, this value is called `niceId`.
+In the Praxis app, sites, public resources, private resources, and clients have an **Identifier**. In the API, this value is called `niceId`.
 
 The identifier is a human-readable value that is unique within an organization. Use it when you want something more stable and memorable than a numeric ID. For example, a site might have a numeric `siteId` like `8723` and a `niceId` like `warehouse-west`.
 
@@ -33,7 +33,7 @@ Use the numeric ID when an endpoint asks for `siteId`, `resourceId`, or `siteRes
 
 ## Create site
 
-This section assumes you're creating a **Pangolin Site**. For all Site endpoints, see [Site API (Swagger)](https://api.pangolin.net/v1/docs/#/Site).
+This section assumes you're creating a **Praxis Site**. For all Site endpoints, see [Site API (Swagger)](https://api.pangolin.net/v1/docs/#/Site).
 
 **PUT** `/org/{orgId}/site`
 
@@ -47,7 +47,7 @@ This section assumes you're creating a **Pangolin Site**. For all Site endpoints
 | `type` | string | Yes | Use `"newt"` |
 | `niceId` | string | No | Identifier for the site. Must be unique in the org. Generated if omitted. |
 
-If you omit them, Pangolin generates the Newt credentials (`newtId` and `secret`) and the site's address. Only the create response includes the secret, so save it then.
+If you omit them, Praxis generates the Newt credentials (`newtId` and `secret`) and the site's address. Only the create response includes the secret, so save it then.
 
 **Example Response**
 ```json
@@ -218,7 +218,7 @@ Older integrations sent `http: true` and `protocol: "tcp"` instead of `mode`. Th
 Domains come in three types: **ns** | **cname** | **wildcard**.
 
 <Note>
-**Wildcard** is only available in self-hosted Pangolin. Pangolin Cloud uses **ns** and **cname** only.
+**Wildcard** is only available in self-hosted Praxis. Praxis Cloud uses **ns** and **cname** only.
 </Note>
 
 - **ns** — You can use the base domain (set `subdomain` to `null`) or set a subdomain (e.g. `my-app` → `my-app.digpangolin.io`).
@@ -270,7 +270,7 @@ Add a target (backend) to a resource. Use the numeric `resourceId` from the crea
 | `siteId` | number | Yes | Site that hosts the backend (from create-site or list sites) |
 | `ip` | string | Yes | Backend IP or hostname |
 | `port` | number | Yes | Backend port |
-| `method` | string | Yes (HTTP) | Scheme Pangolin uses to reach the backend: `"http"`, `"https"`, or `"h2c"`. HTTP resources need it; Pangolin skips HTTP targets that have no method. |
+| `method` | string | Yes (HTTP) | Scheme Praxis uses to reach the backend: `"http"`, `"https"`, or `"h2c"`. HTTP resources need it; Praxis skips HTTP targets that have no method. |
 
 **Example request**
 ```json

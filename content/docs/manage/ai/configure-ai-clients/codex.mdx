@@ -1,6 +1,6 @@
 ---
 title: "Codex"
-description: "Connect Codex to a Pangolin AI Gateway resource"
+description: "Connect Codex to a Praxis AI Gateway resource"
 ---
 
 Codex talks the OpenAI API, so the resource you point it at needs an OpenAI-compatible provider attached — OpenAI, OpenRouter, Vercel AI Gateway, Microsoft Foundry, or a custom OpenAI-compatible endpoint. See [AI Gateway Overview](/manage/ai/overview) if you haven't set that up yet.
@@ -10,9 +10,9 @@ You'll need the resource's URL (its `<endpoint>`) and its API key (`<key>`). Bot
 
 <include>../../../../snippets/ai-gateway-key.mdx</include>
 
-## Fastest: Pangolin CLI
+## Fastest: Praxis CLI
 
-[Install the Pangolin CLI](/manage/clients/platforms/cli#install) if you don't have it, then log in:
+[Install the Praxis CLI](/manage/clients/platforms/cli#install) if you don't have it, then log in:
 
 ```bash
 pangolin login
@@ -41,10 +41,10 @@ pangolin configure codex --reset
 Merge this into `~/.codex/config.toml` (honors `$CODEX_HOME` if you've set it):
 
 ```toml
-model_provider = "pangolin"
+model_provider = "praxis"
 
 [model_providers.pangolin]
-name = "Pangolin AI Gateway"
+name = "Praxis AI Gateway"
 base_url = "<endpoint>/v1"
 wire_api = "responses"
 env_key = "PANGOLIN_API_KEY"

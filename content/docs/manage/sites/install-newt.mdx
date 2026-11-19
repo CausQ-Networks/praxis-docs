@@ -3,11 +3,11 @@ title: "Install Newt"
 description: "Install Newt as a binary or Docker container"
 ---
 
-Newt is the lighter-weight site connector. It provides the same tunneling and NAT traversal as a Pangolin Site, without the rest of the [Pangolin CLI](/manage/sites/install-site) bundled in.
+Newt is the lighter-weight site connector. It provides the same tunneling and NAT traversal as a Praxis Site, without the rest of the [Praxis CLI](/manage/sites/install-site) bundled in.
 
-For new sites, install with the Pangolin CLI. Existing Newt deployments keep working. Leave them as they are, or switch to the CLI when you want to. Newt continues to be provided in all of its current forms. Use Newt directly when you need the smallest possible binary or container. The dashboard reports which agent a site is using, whether that is the CLI or Newt, and the version.
+For new sites, install with the Praxis CLI. Existing Newt deployments keep working. Leave them as they are, or switch to the CLI when you want to. Newt continues to be provided in all of its current forms. Use Newt directly when you need the smallest possible binary or container. The dashboard reports which agent a site is using, whether that is the CLI or Newt, and the version.
 
-You must first create a site and copy the Newt config in Pangolin before running Newt.
+You must first create a site and copy the Newt config in Praxis before running Newt.
 
 <Note>
 Deploying Newt in Kubernetes instead? See the dedicated [Kubernetes](/manage/sites/kubernetes/newt-helm) docs: install guides for [Helm (Newt)](/manage/sites/kubernetes/newt-helm) and [Kustomize](/manage/sites/kubernetes/kustomize), a full [Configuration](/manage/sites/kubernetes/configuration) reference, and [Troubleshooting](/manage/sites/kubernetes/troubleshooting).
@@ -20,46 +20,46 @@ Deploying Newt in Kubernetes instead? See the dedicated [Kubernetes](/manage/sit
 Use this command to automatically install Newt. It detects your system architecture automatically and always pulls the latest version, adding Newt to your PATH:
 
 ```bash
-curl -fsSL https://static.pangolin.net/get-newt.sh | bash
+curl -fsSL https://praxis.causq.com/get-newt.sh | bash
 ```
 
 #### Windows
 
-To run Newt on Windows, use the latest installer from [GitHub releases](https://github.com/fosrl/newt/releases/latest).
+To run Newt on Windows, use the latest installer from [GitHub releases](https://github.com/CausQ-Networks/praxis-newt/releases/latest).
 
 ### Manual Download
 
-Binaries for Linux, macOS, and Windows are available in the [GitHub releases](https://github.com/fosrl/newt/releases/latest) for ARM and AMD64 (x86_64) architectures.
+Binaries for Linux, macOS, and Windows are available in the [GitHub releases](https://github.com/CausQ-Networks/praxis-newt/releases/latest) for ARM and AMD64 (x86_64) architectures.
 
 Download and install manually:
 
 ```bash
-wget -O newt "https://github.com/fosrl/newt/releases/download/{version}/newt_{architecture}" && chmod +x ./newt
+wget -O newt "https://github.com/CausQ-Networks/praxis-newt/releases/download/{version}/newt_{architecture}" && chmod +x ./newt
 ```
 
 <Note>
-Replace `{version}` with the desired version and `{architecture}` with your architecture. Check the [release notes](https://github.com/fosrl/newt/releases) for the latest information.
+Replace `{version}` with the desired version and `{architecture}` with your architecture. Check the [release notes](https://github.com/CausQ-Networks/praxis-newt/releases) for the latest information.
 </Note>
 
 ### Running Newt
 
-Run Newt with the configuration from Pangolin:
+Run Newt with the configuration from Praxis:
 
 ```bash
 newt \
 --id 31frd0uzbjvp721 \
 --secret h51mmlknrvrwv8s4r1i210azhumt6isgbpyavxodibx1k2d6 \
---endpoint https://app.pangolin.net
+--endpoint https://app.praxis.causq.com
 ```
 
 ### Systemd Service
 
-Create `/etc/newt/newt.env` with the initial values from your Pangolin site configuration:
+Create `/etc/newt/newt.env` with the initial values from your Praxis site configuration:
 
 ```bash title="/etc/newt/newt.env"
 NEWT_ID=31frd0uzbjvp721
 NEWT_SECRET=h51mmlknrvrwv8s4r1i210azhumt6isgbpyavxodibx1k2d6
-PANGOLIN_ENDPOINT=https://app.pangolin.net
+PRAXIS_ENDPOINT=https://app.praxis.causq.com
 ```
 
 Create the directory, write the file, and restrict its permissions:
@@ -121,17 +121,17 @@ See [Configure Sites](/manage/sites/configure-site) for more environment variabl
 Pull the latest Newt image from Docker Hub:
 
 ```bash
-docker pull fosrl/newt:latest
+docker pull causq-networks/praxis-newt:latest
 ```
 
 ### Run with Docker
 
-Run Newt with CLI arguments from Pangolin:
+Run Newt with CLI arguments from Praxis:
 
 ```bash
-docker run -it fosrl/newt --id 31frd0uzbjvp721 \
+docker run -it causq-networks/praxis-newt --id 31frd0uzbjvp721 \
 --secret h51mmlknrvrwv8s4r1i210azhumt6isgbpyavxodibx1k2d6 \
---endpoint https://app.pangolin.net
+--endpoint https://app.praxis.causq.com
 ```
 
 <Note>
@@ -145,11 +145,11 @@ On a bridge network, Newt only sees the container's internal addresses, so clien
 ```yaml title="docker-compose.yml"
 services:
   newt:
-    image: fosrl/newt
+    image: causq-networks/praxis-newt
     container_name: newt
     restart: unless-stopped
     environment:
-      - PANGOLIN_ENDPOINT=https://app.pangolin.net
+      - PRAXIS_ENDPOINT=https://app.praxis.causq.com
       - NEWT_ID=2ix2t8xk22ubpfy
       - NEWT_SECRET=nnisrfsdfc7prqsp9ewo1dvtvci50j5uiqotez00dgap0ii2
 ```
@@ -162,7 +162,7 @@ A safer but slightly more complex way is to use [Compose Secrets](https://docs.d
 {
   "id": "2ix2t8xk22ubpfy",
   "secret": "nnisrfsdfc7prqsp9ewo1dvtvci50j5uiqotez00dgap0ii2",
-  "endpoint": "https://app.pangolin.net"
+  "endpoint": "https://app.praxis.causq.com"
 }
 ```
 
@@ -171,7 +171,7 @@ Then register and reference the secret in your `docker-compose.yml`:
 ```yaml title="docker-compose.yml"
 services:
   newt:
-    image: fosrl/newt
+    image: causq-networks/praxis-newt
     container_name: newt
     restart: unless-stopped
     environment:
@@ -191,13 +191,13 @@ This allows you to separate sensitive secrets from plain configuration, improvin
 ```yaml title="docker-compose.yml"
 services:
   newt:
-    image: fosrl/newt
+    image: causq-networks/praxis-newt
     container_name: newt
     restart: unless-stopped
     command:
       - --id 31frd0uzbjvp721
       - --secret h51mmlknrvrwv8s4r1i210azhumt6isgbpyavxodibx1k2d6
-      - --endpoint https://app.pangolin.net
+      - --endpoint https://app.praxis.causq.com
 ```
 
 #### Docker Healthcheck
@@ -231,7 +231,7 @@ Running Newt in a Kubernetes cluster is covered separately from the Docker instr
 
 <CardGroup cols={2}>
 	<Card title="Helm (Newt)" href="/manage/sites/kubernetes/newt-helm" icon="box">
-		Quick-start guide for installing Newt with Helm. New sites should use the Pangolin CLI chart.
+		Quick-start guide for installing Newt with Helm. New sites should use the Praxis CLI chart.
 	</Card>
 	<Card title="Kustomize" href="/manage/sites/kubernetes/kustomize" icon="layer-group">
 		Install Newt with rendered manifests and Kustomize overlays.
@@ -246,7 +246,7 @@ Running Newt in a Kubernetes cluster is covered separately from the Docker instr
 
 ### Unraid
 
-Newt is available in the Unraid Community Applications store. Search for "Newt" and follow the installation prompts. Enter the ID, secret, and endpoint from Pangolin in the template fields.
+Newt is available in the Unraid Community Applications store. Search for "Newt" and follow the installation prompts. Enter the ID, secret, and endpoint from Praxis in the template fields.
 
 <Frame caption="Newt available in Unraid Community Applications store">
 <img src="/images/unraid_store.png" alt="Newt on CA" />
@@ -266,7 +266,7 @@ If you are installing the service, we recommend writing the config into the conf
 
 ```
 newt install
-newt start --endpoint https://app.pangolin.net --provisioning-key <provisioning-key>
+newt start --endpoint https://app.praxis.causq.com --provisioning-key <provisioning-key>
 ```
 
 This will provision a new service, start it, and create the config file for future starts.
@@ -318,7 +318,7 @@ Get-EventLog -LogName Application -Source "newtWireguardService" -Newest 10
 
 ### Advantech Router App
 
-Download the correct version of the router app for your device from the [GitHub releases](https://github.com/fosrl/newt/releases/latest). You can find more information about router apps along with the right version information for your hardware on the [Advantech engineering portal](https://icr.advantech.com/products/software/router-apps).
+Download the correct version of the router app for your device from the [GitHub releases](https://github.com/CausQ-Networks/praxis-newt/releases/latest). You can find more information about router apps along with the right version information for your hardware on the [Advantech engineering portal](https://icr.advantech.com/products/software/router-apps).
 
 To install the router app, log into your Advantech router and navigate to the Router Apps section. Upload the downloaded `.tgz` file and follow the prompts to install.
 
@@ -326,13 +326,13 @@ To install the router app, log into your Advantech router and navigate to the Ro
   <img src="/images/advantech_router_app_install.png" alt="Advantech router UI showing Newt router app installation" width="400"/>
 </Frame>
 
-After installation, click on the router app link at the top of the page to configure the app with your Newt credentials from Pangolin. Once you have entered the credentials, save and start the app. The router will now be connected to your Pangolin site and you can manage it like any other Newt site in the dashboard.
+After installation, click on the router app link at the top of the page to configure the app with your Newt credentials from Praxis. Once you have entered the credentials, save and start the app. The router will now be connected to your Praxis site and you can manage it like any other Newt site in the dashboard.
 
 <Frame caption="Screenshot of configuring the router app on an Advantech router UI">
   <img src="/images/advantech_router_app_configure.png" alt="Advantech router UI showing Newt credential configuration" width="400"/>
 </Frame>
 
-A complete config file is located at `/etc/newt/settings` on the router. You can edit this file directly to change credentials or add additional configuration options. After making changes, restart the router app to apply the new configuration. An example settings file can be found at: https://github.com/fosrl/newt/blob/main/packages/advantech/merge/etc/defaults
+A complete config file is located at `/etc/newt/settings` on the router. You can edit this file directly to change credentials or add additional configuration options. After making changes, restart the router app to apply the new configuration. An example settings file can be found at: https://github.com/CausQ-Networks/praxis-newt/blob/main/packages/advantech/merge/etc/defaults
 
 ## Uninstall
 
@@ -343,14 +343,14 @@ To stop Newt, remove services or containers, and delete local config, see [Unins
 If you used the auto installer, run it again to pull the latest version:
 
 ```bash
-curl -fsSL https://static.pangolin.net/get-newt.sh | bash
+curl -fsSL https://praxis.causq.com/get-newt.sh | bash
 ```
 
 For Docker, pull the latest image and recreate the container:
 
 ```bash
-docker pull fosrl/newt:latest
+docker pull causq-networks/praxis-newt:latest
 docker compose up -d
 ```
 
-Find release notes and manual binaries in the [GitHub releases](https://github.com/fosrl/newt/releases).
+Find release notes and manual binaries in the [GitHub releases](https://github.com/CausQ-Networks/praxis-newt/releases).

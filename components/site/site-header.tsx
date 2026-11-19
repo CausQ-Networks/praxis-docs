@@ -33,7 +33,7 @@ export function SiteHeader({ links, stars }: { links: NavLink[]; stars: string |
           <Link
             href="/"
             className="flex shrink-0 items-center gap-2.5"
-            aria-label="Pangolin Docs home"
+            aria-label="Praxis Docs home"
           >
             <Logo className="h-7" />
             <span className="rounded-md border bg-soft px-1.5 py-0.5 text-xs font-semibold text-muted-foreground">
@@ -54,7 +54,7 @@ export function SiteHeader({ links, stars }: { links: NavLink[]; stars: string |
             </div>
 
             <div className="ml-auto flex shrink-0 items-center gap-1">
-              <nav aria-label="Pangolin" className="docs-header-links hidden items-center gap-1 xl:flex">
+              <nav aria-label="Praxis" className="docs-header-links hidden items-center gap-1 xl:flex">
                 {textLinks.map((link) => (
                   <a
                     key={link.href}
@@ -73,7 +73,7 @@ export function SiteHeader({ links, stars }: { links: NavLink[]; stars: string |
                 href={LINKS.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={stars ? `Pangolin on GitHub, ${stars} stars` : 'Pangolin on GitHub'}
+                aria-label={stars ? `Praxis on GitHub, ${stars} stars` : 'Praxis on GitHub'}
                 className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-2 text-sm text-muted-foreground transition hover:text-foreground"
               >
                 <GitHubIcon className="size-4" />

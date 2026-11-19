@@ -1,19 +1,19 @@
 ---
 title: "TCP / UDP"
-description: "Expose raw TCP and UDP services on a Pangolin server port without authentication"
+description: "Expose raw TCP and UDP services on a Praxis server port without authentication"
 ---
 
-TCP and UDP public resources are protocol-agnostic proxies. Unlike HTTP/HTTPS, SSH, RDP, and VNC, they do **not** receive a fully qualified domain name or TLS certificate. Instead, each resource binds to a port on the Pangolin server host. Clients connect to `<pangolin-server>:<port>` and traffic is forwarded to the downstream service through a site connector.
+TCP and UDP public resources are protocol-agnostic proxies. Unlike HTTP/HTTPS, SSH, RDP, and VNC, they do **not** receive a fully qualified domain name or TLS certificate. Instead, each resource binds to a port on the Praxis server host. Clients connect to `<pangolin-server>:<port>` and traffic is forwarded to the downstream service through a site connector.
 
-Because TCP and UDP resources are not protocol-aware, they do **not** enforce Pangolin authentication or access rules. They are simple pipes—use them only when you need a raw public proxy and accept that traffic is unauthenticated at the Pangolin layer.
+Because TCP and UDP resources are not protocol-aware, they do **not** enforce Praxis authentication or access rules. They are simple pipes—use them only when you need a raw public proxy and accept that traffic is unauthenticated at the Praxis layer.
 
 For workloads that do not need a public proxy, prefer a [private host or CIDR resource](/manage/resources/understanding-resources#private-resource-types) so traffic stays on the zero-trust tunnel with full access control.
 
 ## Benefits
 
 - Expose any TCP or UDP service, whatever the protocol, without opening ports on the backend network.
-- The backend stays behind NAT or a firewall. Only the Pangolin server needs a public port.
-- Players or users connect with their normal client software, with no Pangolin client to install.
+- The backend stays behind NAT or a firewall. Only the Praxis server needs a public port.
+- Players or users connect with their normal client software, with no Praxis client to install.
 - Multiple targets across sites give round-robin routing and failover. Unlike HTTP resources, TCP/UDP always use round robin (no strategy picker).
 - Proxy Protocol can pass the original client IP through to backends that support it.
 
@@ -21,15 +21,15 @@ For workloads that do not need a public proxy, prefer a [private host or CIDR re
 
 - Host a game server, such as Minecraft, from a home network.
 - Publish a VoIP, MQTT, or other non-HTTP service that clients reach by host and port.
-- Give public access to a service that has its own authentication and needs no extra layer from Pangolin.
+- Give public access to a service that has its own authentication and needs no extra layer from Praxis.
 
 ## How TCP and UDP Resources Work
 
-1. You map a port on the Pangolin server to the resource.
+1. You map a port on the Praxis server to the resource.
 2. A client connects to `<pangolin-server>:<port>`.
-3. Pangolin forwards the traffic as-is through the tunnel to a site, which delivers it to the target.
+3. Praxis forwards the traffic as-is through the tunnel to a site, which delivers it to the target.
 
-Pangolin does not inspect or authenticate the traffic, so any security has to come from the service itself.
+Praxis does not inspect or authenticate the traffic, so any security has to come from the service itself.
 
 ## Target Configuration
 
@@ -41,10 +41,10 @@ TCP and UDP resources use **[targets](/manage/resources/public/targets)** like H
 ## Self-Hosted Setup
 
 <Note>
-This feature is only available in self-hosted Pangolin instances. If you're using Pangolin Cloud, you will need to deploy a remote node.
+This feature is only available in self-hosted Praxis instances. If you're using Praxis Cloud, you will need to deploy a remote node.
 </Note>
 
-Pangolin supports raw TCP and UDP traffic because a site can pass anything through the tunnel.
+Praxis supports raw TCP and UDP traffic because a site can pass anything through the tunnel.
 
 In Community Edition or Enterprise Edition, ensure you have the flag enabled in the config file:
 
@@ -53,15 +53,15 @@ flags:
   allow_raw_resources: true
 ```
 
-You map the resource to a port on the host Pangolin server, so you can access the resource from `<server-public-ip>:<mapped-port>`. This is useful if you want to access the resource over the public internet, such as exposing a game server like Minecraft.
+You map the resource to a port on the host Praxis server, so you can access the resource from `<server-public-ip>:<mapped-port>`. This is useful if you want to access the resource over the public internet, such as exposing a game server like Minecraft.
 
 ## Proxied Resources
 
-Proxied resources require extra configuration to expose on the Pangolin server. You'll need to configure firewall rules, Docker port mappings, and Traefik entry points. These steps require a server restart.
+Proxied resources require extra configuration to expose on the Praxis server. You'll need to configure firewall rules, Docker port mappings, and Traefik entry points. These steps require a server restart.
 
 <Steps>
 <Step title="Create the resource">
-  In the Pangolin dashboard, go to Resources and click Add Resource. Select "Raw TCP/UDP resource", and enter your desired publicly mapped port. This is the port you'll use to access the proxied resource.
+  In the Praxis dashboard, go to Resources and click Add Resource. Select "Raw TCP/UDP resource", and enter your desired publicly mapped port. This is the port you'll use to access the proxied resource.
 </Step>
 
 <Step title="Configure firewall">
@@ -106,7 +106,7 @@ Proxied resources require extra configuration to expose on the Pangolin server. 
   ```
 
   <Info>
-  **Important**: Always name your entry points in the format `protocol-port` (e.g., `tcp-1602`, `udp-1704`). This naming is required for Pangolin's dynamic configuration.
+  **Important**: Always name your entry points in the format `protocol-port` (e.g., `tcp-1602`, `udp-1704`). This naming is required for Praxis's dynamic configuration.
   </Info>
 </Step>
 

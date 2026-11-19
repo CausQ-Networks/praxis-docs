@@ -35,7 +35,7 @@ import { getVisitorId, randomId, sendFeedback, type Vote } from '@/lib/analytics
 import { cn } from '@/lib/cn';
 
 /**
- * "Ask Pangolin AI": the same floating bar and chat panel as pangolin.net
+ * "Ask Praxis AI": the same floating bar and chat panel as pangolin.net
  * (landing-v5 `components/ask-ai/ask-ai.tsx`). Answers come from `/api/chat`, which
  * searches and reads these docs. Conversations and answer votes go to analytics.
  */
@@ -61,7 +61,7 @@ function useAskAiContext() {
 const suggestions = [
   'How do I expose a web app running on my home server?',
   'What is the difference between a site and a client?',
-  'How do I self-host Pangolin with Docker Compose?',
+  'How do I self-host Praxis with Docker Compose?',
   'How do I connect Claude Code to the AI Gateway?',
 ];
 
@@ -142,7 +142,7 @@ export function AskAiButton({ onClick, ...props }: ComponentProps<'button'>) {
 const noopSubscribe = () => () => {};
 
 /**
- * Floating "Ask Pangolin AI…" bar: Enter opens the panel and asks right away; empty
+ * Floating "Ask Praxis AI…" bar: Enter opens the panel and asks right away; empty
  * just opens it. Hidden while the panel is open.
  */
 function AskAiFloatingBar() {
@@ -167,7 +167,7 @@ function AskAiFloatingBar() {
       {/* phones: just an icon */}
       <button
         type="button"
-        aria-label="Ask Pangolin AI"
+        aria-label="Ask Praxis AI"
         aria-expanded={open}
         tabIndex={open ? -1 : undefined}
         onClick={() => ask()}
@@ -188,7 +188,7 @@ function AskAiFloatingBar() {
       >
         <button
           type="button"
-          aria-label="Open Ask Pangolin AI"
+          aria-label="Open Ask Praxis AI"
           tabIndex={open ? -1 : undefined}
           className="inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-primary transition-colors hover:bg-accent"
           onClick={() => ask()}
@@ -198,8 +198,8 @@ function AskAiFloatingBar() {
         <input
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder="Ask Pangolin AI…"
-          aria-label="Ask Pangolin AI a question"
+          placeholder="Ask Praxis AI…"
+          aria-label="Ask Praxis AI a question"
           tabIndex={open ? -1 : undefined}
           className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-faint md:text-sm"
         />
@@ -254,7 +254,7 @@ function AskAiPanel() {
       />
       <div
         role="dialog"
-        aria-label="Ask Pangolin AI"
+        aria-label="Ask Praxis AI"
         className={cn(
           'fixed z-[1010] flex flex-col overflow-hidden bg-card text-card-foreground',
           // phones / tablets: an overlay card
@@ -287,7 +287,7 @@ function PanelHeader() {
       <div className="flex-1">
         <p className="flex items-center gap-1.5 text-sm font-bold">
           <HugeiconsIcon icon={AiMagicIcon} className="size-4 text-primary" strokeWidth={2} />
-          Ask Pangolin AI
+          Ask Praxis AI
         </p>
         <p className="mt-0.5 text-xs leading-5 text-muted-foreground">
           Answers are generated from the docs and can be wrong. Check the linked pages.
@@ -378,7 +378,7 @@ function ChatInput() {
           ref={textareaRef}
           rows={1}
           value={input}
-          placeholder={busy ? 'Pangolin AI is answering…' : 'Ask a question…'}
+          placeholder={busy ? 'Praxis AI is answering…' : 'Ask a question…'}
           aria-label="Ask a question"
           autoFocus
           disabled={busy}
@@ -450,7 +450,7 @@ function MessageList({ className }: { className?: string }) {
       {empty ? (
         <div className="flex flex-1 flex-col justify-end gap-2 px-3">
           <p className="mb-1 px-1 text-sm text-muted-foreground">
-            Ask anything about Pangolin. The assistant searches and reads these docs to answer.
+            Ask anything about Praxis. The assistant searches and reads these docs to answer.
           </p>
           {suggestions.map((q) => (
             <button
@@ -594,7 +594,7 @@ function Message({ message, complete }: { message: ChatUIMessage; complete: bool
 
   return (
     <div>
-      <p className="mb-1.5 text-sm font-bold text-primary">Pangolin AI</p>
+      <p className="mb-1.5 text-sm font-bold text-primary">Praxis AI</p>
       {toolCalls.length > 0 && (
         <div className="mb-2 flex flex-col gap-1">
           {toolCalls.map((call) => (

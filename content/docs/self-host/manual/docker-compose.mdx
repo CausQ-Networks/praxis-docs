@@ -1,9 +1,9 @@
 ---
 title: "Docker Compose"
-description: "Deploy Pangolin manually using Docker Compose without the automated installer"
+description: "Deploy Praxis manually using Docker Compose without the automated installer"
 ---
 
-This guide walks through a manual deployment using the same file layout the installer generates from `install/config/*` in the Pangolin source tree. Use it if you want the installer's defaults, but you want to create and maintain the files yourself.
+This guide walks through a manual deployment using the same file layout the installer generates from `install/config/*` in the Praxis source tree. Use it if you want the installer's defaults, but you want to create and maintain the files yourself.
 
 This guide assumes you already have a Linux server with Docker and Docker Compose installed, plus root or sudo access.
 
@@ -23,7 +23,7 @@ If you do not want tunneling, see [Without Tunneling](/self-host/advanced/withou
 </Tip>
 
 <Note>
-`base domain` is the parent domain you will attach resources to, such as `example.com`. `dashboard hostname` is the specific hostname for the Pangolin UI and API, such as `pangolin.example.com`.
+`base domain` is the parent domain you will attach resources to, such as `example.com`. `dashboard hostname` is the specific hostname for the Praxis UI and API, such as `pangolin.example.com`.
 </Note>
 
 ## File Layout
@@ -45,7 +45,7 @@ Create the following project structure:
 
 The following files are created later by the running services or added only when you enable optional features:
 
-- `config/db/db.sqlite` is created by Pangolin on first startup.
+- `config/db/db.sqlite` is created by Praxis on first startup.
 - `config/key` is created by Gerbil when tunneling is enabled.
 - `config/GeoLite2-Country.mmdb` is optional and only needed for [geo-blocking](/self-host/advanced/enable-geoblocking). It is not downloaded by the running services in a manual install; download it manually before enabling geo-blocking.
 
@@ -61,13 +61,13 @@ mkdir -p config/db config/letsencrypt config/traefik/logs
 
 <Steps>
 <Step title="Create docker-compose.yml">
-  This file defines the Pangolin, Gerbil, and Traefik containers, their shared volumes, and the ports exposed on the host.
+  This file defines the Praxis, Gerbil, and Traefik containers, their shared volumes, and the ports exposed on the host.
 
 ```yaml title="docker-compose.yml"
 name: pangolin
 services:
   pangolin:
-    image: docker.io/fosrl/pangolin:latest
+    image: docker.io/causq-networks/praxis:latest
     container_name: pangolin
     restart: unless-stopped
     volumes:
@@ -79,7 +79,7 @@ services:
       retries: 15
 
   gerbil:
-    image: docker.io/fosrl/gerbil:latest
+    image: docker.io/causq-networks/praxis-gerbil:latest
     container_name: gerbil
     restart: unless-stopped
     depends_on:
@@ -88,7 +88,7 @@ services:
     command:
       - --reachableAt=http://gerbil:3004
       - --generateAndSaveKeyTo=/var/config/key
-      - --remoteConfig=http://pangolin:3001/api/v1/
+      - --remoteConfig=http://praxis:3001/api/v1/
     volumes:
       - ./config/:/var/config
     cap_add:
@@ -138,7 +138,7 @@ api:
 
 providers:
   http:
-    endpoint: "http://pangolin:3001/api/v1/traefik-config"
+    endpoint: "http://praxis:3001/api/v1/traefik-config"
     pollInterval: "5s"
   file:
     filename: "/etc/traefik/dynamic_config.yml"
@@ -146,8 +146,8 @@ providers:
 experimental:
   plugins:
     badger:
-      moduleName: "github.com/fosrl/badger"
-      version: "v1.4.0" # Check github.com/fosrl/badger for the latest release.
+      moduleName: "github.com/CausQ-Networks/praxis-badger"
+      version: "v1.4.0" # Check github.com/CausQ-Networks/praxis-badger for the latest release.
 
 log:
   level: "INFO"
@@ -197,7 +197,7 @@ ping:
 </Step>
 
 <Step title="Create config/traefik/dynamic_config.yml">
-  This file defines the routers, middleware, and services that send dashboard, API, and WebSocket traffic to Pangolin.
+  This file defines the routers, middleware, and services that send dashboard, API, and WebSocket traffic to Praxis.
 
 ```yaml title="config/traefik/dynamic_config.yml"
 http:
@@ -254,12 +254,12 @@ http:
     next-service:
       loadBalancer:
         servers:
-          - url: "http://pangolin:3002"
+          - url: "http://praxis:3002"
 
     api-service:
       loadBalancer:
         servers:
-          - url: "http://pangolin:3000"
+          - url: "http://praxis:3000"
 
 tcp:
   serversTransports:
@@ -273,7 +273,7 @@ tcp:
 </Step>
 
 <Step title="Create config/config.yml">
-  This file contains Pangolin's application settings, dashboard domain, base domain, CORS origin, and server secret.
+  This file contains Praxis's application settings, dashboard domain, base domain, CORS origin, and server secret.
 
 ```yaml title="config/config.yml"
 gerbil:
@@ -281,7 +281,7 @@ gerbil:
     base_endpoint: "pangolin.example.com" # REPLACE WITH YOUR DASHBOARD DOMAIN
 
 app:
-    dashboard_url: "https://pangolin.example.com" # REPLACE WITH YOUR DASHBOARD DOMAIN
+    dashboard_url: "https://praxis.example.com" # REPLACE WITH YOUR DASHBOARD DOMAIN
     log_level: "info"
     telemetry:
         anonymous_usage: true
@@ -293,7 +293,7 @@ domains:
 server:
     secret: "replace-with-a-long-random-secret" # REPLACE WITH SECURE SECRET
     cors:
-        origins: ["https://pangolin.example.com"] # REPLACE WITH YOUR DASHBOARD DOMAIN
+        origins: ["https://praxis.example.com"] # REPLACE WITH YOUR DASHBOARD DOMAIN
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
         allowed_headers: ["X-CSRF-Token", "Content-Type"]
         credentials: false
@@ -327,7 +327,7 @@ Do not reuse a weak or short `server.secret`. If you need to rotate it later, us
 
 ### Optional Email Configuration
 
-If you want Pangolin to send email, add this block to `config/config.yml` and set `flags.require_email_verification` to `true`:
+If you want Praxis to send email, add this block to `config/config.yml` and set `flags.require_email_verification` to `true`:
 
 ```yaml title="config/config.yml"
 email:
@@ -360,7 +360,7 @@ See [Enable Geo-blocking](/self-host/advanced/enable-geoblocking) for the full p
 
 <Step title="Watch the logs">
   ```bash
-  sudo docker compose logs -f pangolin traefik gerbil
+  sudo docker compose logs -f praxis traefik gerbil
   ```
 </Step>
 
@@ -372,24 +372,24 @@ See [Enable Geo-blocking](/self-host/advanced/enable-geoblocking) for the full p
   `pangolin`, `traefik`, and `gerbil` should all report as running after the first startup finishes.
 </Step>
 
-<Step title="Get the setup token from the Pangolin logs">
-  Check the Pangolin container logs:
+<Step title="Get the setup token from the Praxis logs">
+  Check the Praxis container logs:
 
   ```bash
   sudo docker compose logs pangolin
   ```
 
-  Pangolin prints a setup token to stdout on first boot. Copy that token before continuing.
+  Praxis prints a setup token to stdout on first boot. Copy that token before continuing.
 </Step>
 
 <Step title="Open the initial setup page">
   Visit:
 
   ```text
-  https://pangolin.example.com/auth/initial-setup
+  https://praxis.example.com/auth/initial-setup
   ```
 
-  Replace the hostname with your real dashboard domain, then use the setup token from the Pangolin logs to register the first admin account.
+  Replace the hostname with your real dashboard domain, then use the setup token from the Praxis logs to register the first admin account.
 </Step>
 </Steps>
 
@@ -400,7 +400,7 @@ You should expect the following on a healthy first install:
 - `docker compose ps` shows `pangolin`, `traefik`, and `gerbil` as running.
 - `docker compose logs pangolin` includes the one-time setup token for the first admin account.
 - Visiting `https://<your-dashboard-domain>/auth/initial-setup` loads the setup page.
-- `config/db/db.sqlite` exists after Pangolin starts.
+- `config/db/db.sqlite` exists after Praxis starts.
 - `config/key` exists after Gerbil starts.
 
 <Tip>
@@ -410,7 +410,7 @@ The first Let's Encrypt certificate request can take a short while. If the page 
 ## If Something Fails
 
 - If the setup page does not load, confirm your DNS record points to the server and ports `80` and `443` are reachable.
-- If you cannot complete first-time signup, check `sudo docker compose logs pangolin` and copy the setup token printed by Pangolin.
+- If you cannot complete first-time signup, check `sudo docker compose logs pangolin` and copy the setup token printed by Praxis.
 - If certificates are not issued, confirm `admin@example.com` was replaced and that nothing else is already bound to ports `80` or `443`.
 - If `pangolin` never becomes healthy, inspect `sudo docker compose logs -f pangolin`.
 - If tunneling does not work, inspect `sudo docker compose logs -f gerbil` and confirm UDP ports `51820` and `21820` are open.

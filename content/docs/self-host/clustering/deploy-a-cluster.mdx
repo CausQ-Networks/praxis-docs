@@ -1,16 +1,16 @@
 ---
 title: "Deploy a Cluster"
-description: "Step-by-step walkthrough for deploying a two-node highly available Pangolin cluster"
+description: "Step-by-step walkthrough for deploying a two-node highly available Praxis cluster"
 ---
 
 <Note>
 Clustering is only available in [Enterprise Edition](/self-host/enterprise-edition).
 </Note>
 
-This guide walks through deploying a minimal two-node Pangolin cluster: two Pangolin nodes behind a load balancer, sharing a PostgreSQL database and a Valkey (Redis) server. Read [Understanding Clustering](/self-host/clustering/understanding-clustering) for the architecture and [Requirements](/self-host/clustering/requirements) for the hosts, ports, and DNS records you need before starting.
+This guide walks through deploying a minimal two-node Praxis cluster: two Praxis nodes behind a load balancer, sharing a PostgreSQL database and a Valkey (Redis) server. Read [Understanding Clustering](/self-host/clustering/understanding-clustering) for the architecture and [Requirements](/self-host/clustering/requirements) for the hosts, ports, and DNS records you need before starting.
 
-<Card icon="github" arrow="true" cta="View reference configuration" href="https://github.com/fosrl/pangolin/tree/main/config/ha-reference">
-  The complete, working set of files used in this guide lives in the Pangolin repository at [`config/ha-reference`](https://github.com/fosrl/pangolin/tree/main/config/ha-reference). Clone it as a starting point instead of assembling files by hand.
+<Card icon="github" arrow="true" cta="View reference configuration" href="https://github.com/CausQ-Networks/praxis/tree/main/config/ha-reference">
+  The complete, working set of files used in this guide lives in the Praxis repository at [`config/ha-reference`](https://github.com/CausQ-Networks/praxis/tree/main/config/ha-reference). Clone it as a starting point instead of assembling files by hand.
 </Card>
 
 <Warning>
@@ -21,7 +21,7 @@ Throughout this guide, replace the following placeholders with your own values:
 
 | Placeholder | Description |
 | --- | --- |
-| `NODE1_EXTERNAL_IP` / `NODE2_EXTERNAL_IP` | Public static IP of each Pangolin node |
+| `NODE1_EXTERNAL_IP` / `NODE2_EXTERNAL_IP` | Public static IP of each Praxis node |
 | `NODE1_INTERNAL_IP` / `NODE2_INTERNAL_IP` | Internal IP each node uses to address the other |
 | `POSTGRES_INTERNAL_HOST` | Address of your shared PostgreSQL server |
 | `POSTGRES_USERNAME` / `POSTGRES_PASSWORD` | Credentials for that PostgreSQL server |
@@ -31,7 +31,7 @@ Throughout this guide, replace the following placeholders with your own values:
 | `LOAD_BALANCER_IP` | IP address of the load balancer in front of the cluster |
 | `pangolin.example.com` | Your dashboard domain - DNS points at the load balancer, not at either node |
 
-You need a domain for the Pangolin UI and API (`pangolin.example.com` in this guide), pointed at your load balancer. **The load balancer is responsible for TLS on this domain** - terminate HTTPS there and forward plain HTTP to the nodes' dashboard port. The nodes' built-in ACME client only issues certificates for resource domains under the delegated nameserver zone, not for the dashboard domain itself. See [Requirements](/self-host/clustering/requirements#dashboard-domain).
+You need a domain for the Praxis UI and API (`pangolin.example.com` in this guide), pointed at your load balancer. **The load balancer is responsible for TLS on this domain** - terminate HTTPS there and forward plain HTTP to the nodes' dashboard port. The nodes' built-in ACME client only issues certificates for resource domains under the delegated nameserver zone, not for the dashboard domain itself. See [Requirements](/self-host/clustering/requirements#dashboard-domain).
 
 <Steps>
 
@@ -80,14 +80,14 @@ node/
 └── config/
     ├── config.yml
     ├── privateConfig.yml
-    ├── certificates/        # empty, Pangolin/Traefik populate this
+    ├── certificates/        # empty, Praxis/Traefik populate this
     ├── dynamic/
     │   └── dynamic_config.yml
     └── traefik/
         └── traefik_config.yml
 ```
 
-`config/certificates` and `config/dynamic` are shared volumes between the `pangolin` and `traefik` containers - Pangolin writes router configuration and certificates there for Traefik to read, since Traefik can only load certificates from files, not from the Pangolin API. This is `traefik.file_mode` in `config.yml`, covered below.
+`config/certificates` and `config/dynamic` are shared volumes between the `pangolin` and `traefik` containers - Praxis writes router configuration and certificates there for Traefik to read, since Traefik can only load certificates from files, not from the Praxis API. This is `traefik.file_mode` in `config.yml`, covered below.
 </Step>
 
 <Step title="Write docker-compose.yml">
@@ -99,7 +99,7 @@ Each node's `--reachableAt` flag must point at **that node's own** internal addr
 name: pangolin
 services:
   pangolin:
-    image: docker.io/fosrl/pangolin:ee-latest
+    image: docker.io/causq-networks/praxis:ee-latest
     container_name: pangolin
     restart: unless-stopped
     volumes:
@@ -113,7 +113,7 @@ services:
       retries: 15
 
   gerbil:
-    image: docker.io/fosrl/gerbil:latest
+    image: docker.io/causq-networks/praxis-gerbil:latest
     container_name: gerbil
     restart: unless-stopped
     depends_on:
@@ -122,7 +122,7 @@ services:
     command:
       - --reachableAt=http://<NODE1_INTERNAL_IP>:3004
       - --generateAndSaveKeyTo=/var/config/key
-      - --remoteConfig=http://pangolin:3001/api/v1/
+      - --remoteConfig=http://praxis:3001/api/v1/
       - --trusted-upstreams=<NODE1_EXTERNAL_IP>,<NODE2_EXTERNAL_IP> # All trusted nodes in the cluster
     volumes:
       - ./config/:/var/config
@@ -136,7 +136,7 @@ services:
       - 443:8443 # resources
       - 80:80 # web
       - 3004:3004 # gerbil api
-      - 3000:3000 # Pangolin UI
+      - 3000:3000 # Praxis UI
 
   traefik:
     image: docker.io/traefik:v3.7.11
@@ -164,7 +164,7 @@ networks:
 name: pangolin
 services:
   pangolin:
-    image: docker.io/fosrl/pangolin:ee-latest
+    image: docker.io/causq-networks/praxis:ee-latest
     container_name: pangolin
     restart: unless-stopped
     volumes:
@@ -178,7 +178,7 @@ services:
       retries: 15
 
   gerbil:
-    image: docker.io/fosrl/gerbil:latest
+    image: docker.io/causq-networks/praxis-gerbil:latest
     container_name: gerbil
     restart: unless-stopped
     depends_on:
@@ -187,7 +187,7 @@ services:
     command:
       - --reachableAt=http://<NODE2_INTERNAL_IP>:3004
       - --generateAndSaveKeyTo=/var/config/key
-      - --remoteConfig=http://pangolin:3001/api/v1/
+      - --remoteConfig=http://praxis:3001/api/v1/
       - --trusted-upstreams=<NODE1_EXTERNAL_IP>,<NODE2_EXTERNAL_IP> # All trusted nodes in the cluster
     volumes:
       - ./config/:/var/config
@@ -201,7 +201,7 @@ services:
       - 443:8443 # resources
       - 80:80 # web
       - 3004:3004 # gerbil api
-      - 3000:3000 # Pangolin UI
+      - 3000:3000 # Praxis UI
 
   traefik:
     image: docker.io/traefik:v3.7.11
@@ -226,12 +226,12 @@ networks:
 ```
 
 <Tip>
-If Pangolin can't reach the local Gerbil at the address in `--reachableAt` (a loopback issue), override it in `privateConfig.yml` - see [Troubleshooting](#troubleshooting) below.
+If Praxis can't reach the local Gerbil at the address in `--reachableAt` (a loopback issue), override it in `privateConfig.yml` - see [Troubleshooting](#troubleshooting) below.
 </Tip>
 </Step>
 
 <Step title="Write config.yml">
-`config.yml` holds the settings that legitimately differ per node - `gerbil.base_endpoint` and `gerbil.exit_node_name` - alongside the shared PostgreSQL connection and site-type restrictions. In clustered deployments, only Pangolin Sites are supported, so local and basic WireGuard sites are disabled.
+`config.yml` holds the settings that legitimately differ per node - `gerbil.base_endpoint` and `gerbil.exit_node_name` - alongside the shared PostgreSQL connection and site-type restrictions. In clustered deployments, only Praxis Sites are supported, so local and basic WireGuard sites are disabled.
 
 Set `app.dashboard_url` and `server.cors.origins` to your dashboard domain (the one pointed at your load balancer, not at either node) - both must match on every node.
 
@@ -242,7 +242,7 @@ gerbil:
     exit_node_name: "node1"
 
 app:
-    dashboard_url: "https://pangolin.example.com"
+    dashboard_url: "https://praxis.example.com"
     log_level: "info"
 
 postgres:
@@ -250,12 +250,12 @@ postgres:
 
 traefik:
     site_types: ["newt"] # Wireguard and local sites are not supported in clustering
-    file_mode: true # Pangolin will generate and save yaml files in a shared volume
+    file_mode: true # Praxis will generate and save yaml files in a shared volume
 
 server:
     secret: "<SECRET>" # Must be identical on every node
     cors:
-        origins: ["https://pangolin.example.com"]
+        origins: ["https://praxis.example.com"]
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
         allowed_headers: ["X-CSRF-Token", "Content-Type"]
         credentials: false
@@ -280,7 +280,7 @@ gerbil:
     exit_node_name: "node2"
 
 app:
-    dashboard_url: "https://pangolin.example.com"
+    dashboard_url: "https://praxis.example.com"
     log_level: "info"
 
 postgres:
@@ -288,12 +288,12 @@ postgres:
 
 traefik:
     site_types: ["newt"] # Wireguard and local sites are not supported in clustering
-    file_mode: true # Pangolin will generate and save yaml files in a shared volume
+    file_mode: true # Praxis will generate and save yaml files in a shared volume
 
 server:
     secret: "<SECRET>" # Must be identical on every node
     cors:
-        origins: ["https://pangolin.example.com"]
+        origins: ["https://praxis.example.com"]
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
         allowed_headers: ["X-CSRF-Token", "Content-Type"]
         credentials: false
@@ -315,7 +315,7 @@ See the [full configuration reference](/self-host/advanced/config-file) for ever
 </Step>
 
 <Step title="Write privateConfig.yml">
-`privateConfig.yml` enables Redis-backed cluster sync and Pangolin's built-in DNS and ACME client. **Only one node** - Node 1 in this example - should have `acme.enable_acme_client` set to `true`. That node issues and renews certificates via DNS-01 challenges and stores them encrypted in PostgreSQL; every other node reads the same certificates from the database.
+`privateConfig.yml` enables Redis-backed cluster sync and Praxis's built-in DNS and ACME client. **Only one node** - Node 1 in this example - should have `acme.enable_acme_client` set to `true`. That node issues and renews certificates via DNS-01 challenges and stores them encrypted in PostgreSQL; every other node reads the same certificates from the database.
 
 <Warning>
 Do not enable `acme.enable_acme_client` on more than one node. Multiple nodes issuing certificates simultaneously will conflict with each other.
@@ -332,7 +332,7 @@ flags:
   enable_redis: true
   use_pangolin_dns: true
 acme:
-  cert_mode: "pangolin"
+  cert_mode: "praxis"
   contact_email: "<CONTACT_EMAIL>"
   enable_acme_client: true
 dns:
@@ -353,7 +353,7 @@ flags:
   enable_redis: true
   use_pangolin_dns: true
 acme:
-  cert_mode: "pangolin"
+  cert_mode: "praxis"
 dns:
   enabled: true
   nameserver_name: "ns.example.com"
@@ -365,7 +365,7 @@ See the [private configuration reference](/self-host/advanced/private-config-fil
 </Step>
 
 <Step title="Write the Traefik configuration">
-`traefik/traefik_config.yml` and `dynamic/dynamic_config.yml` are identical on every node - copy them as-is. Traefik loads router and certificate configuration from the shared `dynamic` volume (`file_mode`) instead of Pangolin's API, and exposes a `:53/udp` DNS entry point that forwards to Pangolin's built-in DNS server.
+`traefik/traefik_config.yml` and `dynamic/dynamic_config.yml` are identical on every node - copy them as-is. Traefik loads router and certificate configuration from the shared `dynamic` volume (`file_mode`) instead of Praxis's API, and exposes a `:53/udp` DNS entry point that forwards to Praxis's built-in DNS server.
 
 ```yaml title="config/traefik/traefik_config.yml"
 providers:
@@ -376,7 +376,7 @@ providers:
 experimental:
   plugins:
     badger:
-      moduleName: "github.com/fosrl/badger"
+      moduleName: "github.com/CausQ-Networks/praxis-badger"
       version: "v1.7.0"
 
 log:
@@ -455,12 +455,12 @@ http:
     next-service:
       loadBalancer:
         servers:
-          - url: "http://pangolin:3002"  # Next.js server
+          - url: "http://praxis:3002"  # Next.js server
 
     api-service:
       loadBalancer:
         servers:
-          - url: "http://pangolin:3000"  # API/WebSocket server
+          - url: "http://praxis:3000"  # API/WebSocket server
 
 tcp:
   serversTransports:
@@ -491,16 +491,16 @@ This is also where you place the MaxMind databases referenced in `config.yml` - 
 <Step title="Point your load balancer at both nodes">
 Configure your load balancer - a cloud load balancer or a self-hosted one such as Traefik - to:
 
-- Route TCP `3000` to both nodes for your Pangolin domain. For example `pangolin.example.com` should resolve to the load balancer, which routes to either node's `:3000` port.
+- Route TCP `3000` to both nodes for your Praxis domain. For example `pangolin.example.com` should resolve to the load balancer, which routes to either node's `:3000` port.
 - Route UDP `53` to both nodes for DNS. For example `ns.example.com` should resolve to the load balancer, which routes to either node's `:53/udp` port.
-- Health-check the `:80/ping` endpoint on each node, and stop routing to a node that fails it. `:3000/api/v1/` can also be monitored for the Pangolin UI and API
+- Health-check the `:80/ping` endpoint on each node, and stop routing to a node that fails it. `:3000/api/v1/` can also be monitored for the Praxis UI and API
 - **Terminate TLS for the dashboard domain** (`pangolin.example.com`) at the load balancer, then forward plain HTTP to `:3000` on the nodes. Obtain and renew that certificate through the load balancer itself (a cloud provider's managed certificate, its own ACME client, etc.) - the nodes' built-in ACME client only covers resource domains, not the dashboard domain
 
 This is what makes the cluster appear as a single, consistent domain to users, and what drives failover when a node goes down.
 </Step>
 
 <Step title="Start the cluster">
-Bring the database up first, then start **one** Pangolin node - it initializes the database and prints an init token to its logs.
+Bring the database up first, then start **one** Praxis node - it initializes the database and prints an init token to its logs.
 
 ```bash
 # On the database host
@@ -535,7 +535,7 @@ Repeat the Node 2 steps for any additional nodes, incrementing the `exit_node_na
 
 ### Gerbil loopback addressing
 
-If Pangolin can't reach the local Gerbil instance at the IP configured in `--reachableAt`, force it to address the Docker container directly instead:
+If Praxis can't reach the local Gerbil instance at the IP configured in `--reachableAt`, force it to address the Docker container directly instead:
 
 ```yaml title="privateConfig.yml"
 gerbil:
@@ -544,6 +544,6 @@ gerbil:
 
 ## Reference Configuration
 
-<Card icon="github" arrow="true" cta="View reference configuration" href="https://github.com/fosrl/pangolin/tree/main/config/ha-reference">
-  A complete, working two-node reference configuration on GitHub - including both nodes' Docker Compose and config files - that you can clone and adapt: [github.com/fosrl/pangolin/tree/main/config/ha-reference](https://github.com/fosrl/pangolin/tree/main/config/ha-reference)
+<Card icon="github" arrow="true" cta="View reference configuration" href="https://github.com/CausQ-Networks/praxis/tree/main/config/ha-reference">
+  A complete, working two-node reference configuration on GitHub - including both nodes' Docker Compose and config files - that you can clone and adapt: [github.com/CausQ-Networks/praxis/tree/main/config/ha-reference](https://github.com/CausQ-Networks/praxis/tree/main/config/ha-reference)
 </Card>

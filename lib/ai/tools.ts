@@ -20,7 +20,7 @@ function findPage(pathOrUrl: string) {
 
 export const searchDocs = tool({
   description:
-    'Full-text search over the Pangolin documentation. Returns matching pages and sections with their URLs. Use several short keyword queries rather than one long question.',
+    'Full-text search over the Praxis documentation. Returns matching pages and sections with their URLs. Use several short keyword queries rather than one long question.',
   inputSchema: z.object({
     query: z.string().describe('keywords, e.g. "newt docker compose" or "OIDC auto provisioning"'),
     limit: z.number().int().min(1).max(25).default(10),

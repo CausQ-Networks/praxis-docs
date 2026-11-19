@@ -31,7 +31,7 @@ Every redirect attaches to exactly one of:
 Choose **Domain** when you want to enter a subdomain or the base domain for one of the domains you have attached to your organization regardless of whether a resource is attached to it.
 
 - You pick a domain and an optional subdomain. The listen host is `subdomain.baseDomain`, or the bare base domain if subdomain is empty.
-- The redirect owns its own TLS setting. Pangolin provisions a certificate for that host. On self-hosted installs you can turn SSL off to match plain HTTP; on Pangolin Cloud, HTTPS is always on.
+- The redirect owns its own TLS setting. Praxis provisions a certificate for that host. On self-hosted installs you can turn SSL off to match plain HTTP; on Praxis Cloud, HTTPS is always on.
 - No public resource is required on that hostname.
 - You can use the same hostname as an existing resource (same domain and subdomain). The redirect is not linked to the resource, so deleting or disabling the resource leaves the redirect in place.
 - Deleting the domain deletes every redirect attached to it.

@@ -2,10 +2,10 @@
 title: "Authentication Logs"
 description: "Authentication logs are a record of each authenticated access attempt to a resource"
 ---
-Authentication logs provide detailed information about each access attempt made to your Pangolin resources. These logs help you monitor and analyze user activity each time they attempt to authenticate.
+Authentication logs provide detailed information about each access attempt made to your Praxis resources. These logs help you monitor and analyze user activity each time they attempt to authenticate.
 
 <Note>
-Authentication logs are only available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
+Authentication logs are only available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
 </Note>
 
 ## What are Authentication Logs?
@@ -19,7 +19,7 @@ Authentication logs capture authentication events when users or API keys attempt
 - Analyzing user agent and device information
 
 <Frame>
-  <img src="/images/access_logs.png" alt="Authentication logs table in the Pangolin dashboard"/>
+  <img src="/images/access_logs.png" alt="Authentication logs table in the Praxis dashboard"/>
 </Frame>
 
 <Tip>Make sure to enable authentication logs in the org settings</Tip>
@@ -44,7 +44,7 @@ Each authentication log entry contains the following fields:
 
 ## Linked Sessions
 
-When an authentication attempt succeeds, Pangolin creates a [resource session](/manage/resources/public/resource-sessions) and stores its ID in the log entry.
+When an authentication attempt succeeds, Praxis creates a [resource session](/manage/resources/public/resource-sessions) and stores its ID in the log entry.
 
 Expand a log row in the dashboard to see a link to the [Resource Session](/manage/resources/public/resource-sessions) page filtered to that session. From there you can see the session's client details and revoke it, which makes the person authenticate to the resource again. If the session has already expired or been revoked, it no longer appears in the list.
 
@@ -54,4 +54,4 @@ Authentication log retention is controlled by the organization setting. By defau
 
 ## Exporting
 
-Logs can be exported into CSV format for external analysis and archival. Logs can be exported from the table view in the Pangolin dashboard or via the Pangolin API. When exporting, you can specify date ranges and filters to narrow down the logs you need.
+Logs can be exported into CSV format for external analysis and archival. Logs can be exported from the table view in the Praxis dashboard or via the Praxis API. When exporting, you can specify date ranges and filters to narrow down the logs you need.

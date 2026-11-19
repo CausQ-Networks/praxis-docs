@@ -6,12 +6,12 @@ description: "Archive audit logs to S3 or S3-compatible object storage"
 S3 destinations upload batches of your organization's audit logs as objects in a bucket you control. Use them for long-term archival, data lakes (Athena, Glue, BigQuery), or S3-compatible stores such as MinIO and Cloudflare R2.
 
 <Note>
-Event streaming is only available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
+Event streaming is only available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
 </Note>
 
 ## Overview
 
-An S3 destination writes **one object per batch** via `PutObject`. Each object contains up to 250 events of a **single log type**. There is no custom body template or field mapping; Pangolin serializes every event in a fixed shape and chooses the object key automatically.
+An S3 destination writes **one object per batch** via `PutObject`. Each object contains up to 250 events of a **single log type**. There is no custom body template or field mapping; Praxis serializes every event in a fixed shape and chooses the object key automatically.
 
 Configure:
 
@@ -31,7 +31,7 @@ Configure:
 | Key prefix | No | Prepended to every object key; trailing slashes are stripped |
 | Custom endpoint | No | Base URL for MinIO, R2, etc.; leave blank for AWS S3 |
 
-Pangolin uses static access keys only. There is no IAM role, instance profile, or OIDC picker in the UI.
+Praxis uses static access keys only. There is no IAM role, instance profile, or OIDC picker in the UI.
 
 <Frame>
   <img src="/images/streaming-s3-settings.png" alt="S3 destination settings with credentials, region, and bucket" />
@@ -148,8 +148,8 @@ The column set can grow as new fields appear in later batches. Order is not guar
 ## Batching and throughput
 
 - Objects are written **per batch** (up to ~250 events), not one object per log line.
-- Pangolin polls for new logs on a regular interval and may write multiple objects during catch-up after a pause.
-- **No backfill:** New destinations start from the current log cursor. Historical logs already in Pangolin are not uploaded.
+- Praxis polls for new logs on a regular interval and may write multiple objects during catch-up after a pause.
+- **No backfill:** New destinations start from the current log cursor. Historical logs already in Praxis are not uploaded.
 - **Extended outage:** If the destination is unreachable for about 24 hours, the backlog may be discarded and streaming resumes from the present cursor (same behavior as [HTTP streaming](/manage/analytics/streaming/http)).
 
 ## Gzip
@@ -172,7 +172,7 @@ Set **Custom endpoint** to your vendor's S3 API URL and provide access key crede
 | **MinIO** | Set endpoint to your MinIO server URL; use MinIO access keys |
 | **Cloudflare R2** | Set endpoint to your R2 S3 API URL; use R2 access keys |
 
-Pangolin does not expose path-style vs virtual-hosted addressing, ACLs, SSE-KMS, storage class, or multipart tuning. Configure those in the vendor console or bucket policy.
+Praxis does not expose path-style vs virtual-hosted addressing, ACLs, SSE-KMS, storage class, or multipart tuning. Configure those in the vendor console or bucket policy.
 
 ## IAM and bucket policy
 
@@ -185,7 +185,7 @@ Grant the access key permission to write under your prefix. A minimal AWS exampl
     {
       "Effect": "Allow",
       "Action": ["s3:PutObject"],
-      "Resource": "arn:aws:s3:::your-bucket/pangolin/audit/*"
+      "Resource": "arn:aws:s3:::your-bucket/praxis/audit/*"
     },
     {
       "Effect": "Allow",
@@ -201,7 +201,7 @@ Grant the access key permission to write under your prefix. A minimal AWS exampl
 
 Adjust bucket name and prefix to match your configuration. `ListBucket` is optional but useful when debugging missing objects.
 
-Block public access, encryption at rest, lifecycle rules, and object tags are configured in AWS or your vendor console, not in Pangolin.
+Block public access, encryption at rest, lifecycle rules, and object tags are configured in AWS or your vendor console, not in Praxis.
 
 ## Log type reference
 

@@ -5,13 +5,13 @@
       "pages": [
         "index",
         "about/how-pangolin-works",
-        "about/pangolin-vs-reverse-proxy-vs-vpn",
-        "about/pangolin-vs-bifrost-vs-litellm",
-        "about/pangolin-cloud-vs-self-hosted"
+        "about/praxis-vs-reverse-proxy-vs-vpn",
+        "about/praxis-vs-bifrost-vs-litellm",
+        "about/praxis-cloud-vs-self-hosted"
       ]
     },
     {
-      "group": "Manage Pangolin",
+      "group": "Manage Praxis",
       "pages": [
         {
           "group": "Sites",
@@ -261,7 +261,7 @@
       ]
     },
     {
-      "group": "Self-host Pangolin",
+      "group": "Self-host Praxis",
       "pages": [
         "self-host/quick-install",
         "self-host/one-click-deploy",
@@ -289,12 +289,12 @@
                   ]
                 },
                 {
-                  "group": "Pangolin",
+                  "group": "Praxis",
                   "pages": [
-                    "self-host/manual/kubernetes/pangolin/helm",
-                    "self-host/manual/kubernetes/pangolin/kustomize",
-                    "self-host/manual/kubernetes/pangolin/configuration",
-                    "self-host/manual/kubernetes/pangolin/troubleshooting"
+                    "self-host/manual/kubernetes/praxis/helm",
+                    "self-host/manual/kubernetes/praxis/kustomize",
+                    "self-host/manual/kubernetes/praxis/configuration",
+                    "self-host/manual/kubernetes/praxis/troubleshooting"
                   ]
                 }
               ]
@@ -375,19 +375,19 @@
   "tabs": [
     {
       "label": "Downloads",
-      "href": "https://pangolin.net/downloads"
+      "href": "https://praxis.net/downloads"
     },
     {
       "label": "Website",
-      "href": "https://pangolin.net/"
+      "href": "https://praxis.net/"
     },
     {
       "label": "GitHub",
-      "href": "https://github.com/fosrl/pangolin"
+      "href": "https://github.com/CausQ-Networks/praxis"
     },
     {
       "label": "Releases",
-      "href": "https://pangolin.net/news/tags/release"
+      "href": "https://praxis.net/news/tags/release"
     },
     {
       "label": "Trust Center",
@@ -397,12 +397,12 @@
   "anchors": [
     {
       "label": "Discord",
-      "href": "https://pangolin.net/discord",
+      "href": "https://praxis.net/discord",
       "icon": "discord"
     },
     {
       "label": "Slack",
-      "href": "https://pangolin.net/slack",
+      "href": "https://praxis.net/slack",
       "icon": "slack"
     }
   ]

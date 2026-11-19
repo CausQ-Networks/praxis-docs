@@ -1,9 +1,9 @@
 ---
 title: "GitOps Overview"
-description: "Deploy Pangolin and Sites (Newt) with GitOps workflows such as Argo CD or Flux."
+description: "Deploy Praxis and Sites (Newt) with GitOps workflows such as Argo CD or Flux."
 ---
 
-Use GitOps when Pangolin and Sites (Newt) should be reconciled from Git instead of being installed manually from a local shell.
+Use GitOps when Praxis and Sites (Newt) should be reconciled from Git instead of being installed manually from a local shell.
 Can be used together with Blueprints — see [Blueprint config reference](/self-host/advanced/config-file) for details.
 
 These guides assume you already use, or plan to use, a GitOps controller such as Argo CD or Flux.
@@ -13,10 +13,10 @@ General GitOps concepts such as reconciliation, desired state, and Git-driven wo
 
 <CardGroup cols={2}>
 	<Card title="Argo CD Guide" href="/self-host/manual/kubernetes/gitops/argocd" icon="code-branch">
-		Deploy Pangolin or Sites (Newt) with Argo CD Applications.
+		Deploy Praxis or Sites (Newt) with Argo CD Applications.
 	</Card>
 	<Card title="Flux Guide" href="/self-host/manual/kubernetes/gitops/flux" icon="code-branch">
-		Deploy Pangolin or Sites (Newt) with Flux HelmRelease or Kustomization resources.
+		Deploy Praxis or Sites (Newt) with Flux HelmRelease or Kustomization resources.
 	</Card>
 </CardGroup>
 
@@ -26,14 +26,14 @@ A GitOps workflow can reconcile the same deployment inputs used by the other Kub
 
 | Input | Used for |
 | --- | --- |
-| Helm chart values | Configure Pangolin, controller mode, database mode, ingress, Sites, and related components. |
+| Helm chart values | Configure Praxis, controller mode, database mode, ingress, Sites, and related components. |
 | Kustomize overlays | Patch or compose rendered manifests for environment-specific deployments. |
 | Kubernetes Secrets | Provide credentials, TLS material, database connection details, or Site connector credentials. |
 | Custom resources | Manage Argo CD Applications, Flux HelmReleases, Flux Kustomizations, or related controller resources. |
 
 ## Recommended layout
 
-Keep the Pangolin and Site configuration close to the cluster or environment that owns it.
+Keep the Praxis and Site configuration close to the cluster or environment that owns it.
 
 ```text
 infrastructure/
@@ -58,10 +58,10 @@ Use environment-specific directories for values, patches, and secrets that diffe
 
 <CardGroup cols={2}>
 	<Card title="Argo CD Guide" href="/self-host/manual/kubernetes/gitops/argocd" icon="code-branch">
-		Create Argo CD Applications for Pangolin and Sites (Newt).
+		Create Argo CD Applications for Praxis and Sites (Newt).
 	</Card>
 	<Card title="Flux Guide" href="/self-host/manual/kubernetes/gitops/flux" icon="code-branch">
-		Create Flux sources, HelmReleases, or Kustomizations for Pangolin and Sites (Newt).
+		Create Flux sources, HelmReleases, or Kustomizations for Praxis and Sites (Newt).
 	</Card>
 	<Card title="Choose an Installation Path" href="/self-host/manual/kubernetes/choose-method" icon="route">
 		Compare the supported Kubernetes deployment paths.

@@ -3,11 +3,11 @@ title: "Shareable Links"
 description: "Create Links and use access tokens for browser or programmatic access."
 ---
 
-Links are special URLs that grant access to one resource without requiring the recipient to sign in as a Pangolin user. Anyone with a web browser on the internet can access the resource if they have a valid Link.
+Links are special URLs that grant access to one resource without requiring the recipient to sign in as a Praxis user. Anyone with a web browser on the internet can access the resource if they have a valid Link.
 
-When you create a Link, Pangolin gives you two ways to use it:
+When you create a Link, Praxis gives you two ways to use it:
 
-- **Link**: This is a Pangolin-hosted URL that validates the validity of the Link and then redirects them to the resource.
+- **Link**: This is a Praxis-hosted URL that validates the validity of the Link and then redirects them to the resource.
 - **Access Token Usage**: Use this only when making direct requests to the resource URL from scripts, tools, or integrations.
 
 ## Create a Link
@@ -29,7 +29,7 @@ Anyone with the Link or access token can use it. Treat both like credentials.
 
 ## Use the Access Token
 
-Pangolin can accept a Link access token in either the query string or request headers.
+Praxis can accept a Link access token in either the query string or request headers.
 
 If you are sending access to a person, use the copied **Link** shown at the top of the modal.
 
@@ -37,7 +37,7 @@ Use **Access Token Usage** only when you are calling the resource URL directly o
 
 This is why the two URLs often look different:
 
-- The **Link** is usually on your Pangolin domain.
+- The **Link** is usually on your Praxis domain.
 - The **Access Token Usage** examples use the resource URL directly.
 
 <Frame>
@@ -46,7 +46,7 @@ This is why the two URLs often look different:
 
 ### Query Parameter
 
-Pangolin accepts the access token in the `p_token` query parameter:
+Praxis accepts the access token in the `p_token` query parameter:
 
 ```bash
 curl "https://resource.example.com/?p_token=<token-id>.<access-token>"
@@ -60,7 +60,7 @@ The query parameter must be sent in every request to the resource, not just the 
 
 ### Request Headers
 
-By default, Pangolin accepts these headers:
+By default, Praxis accepts these headers:
 
 - `P-Access-Token-Id`
 - `P-Access-Token`

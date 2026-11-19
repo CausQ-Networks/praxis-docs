@@ -6,7 +6,7 @@ description: "Forward audit logs to any HTTP endpoint with optional custom body 
 HTTP destinations POST your organization’s audit logs to a URL you control. Use them for generic webhooks, Splunk HEC, Elastic or OpenSearch ingest, Grafana Loki push endpoints, or any receiver that accepts JSON over HTTP.
 
 <Note>
-Event streaming is only available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
+Event streaming is only available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
 </Note>
 
 ## Overview
@@ -18,7 +18,7 @@ An HTTP destination sends **POST** requests to your endpoint. Configure:
 3. **Body:** Default JSON shape or a custom body template, plus payload format (how batches are packaged).
 4. **Logs:** Which log types are forwarded.
 
-Enable **Custom body template** when your receiver expects a different JSON layout than Pangolin’s default. Leave it off to send the standard `{ event, timestamp, data }` object per log record.
+Enable **Custom body template** when your receiver expects a different JSON layout than Praxis’s default. Leave it off to send the standard `{ event, timestamp, data }` object per log record.
 
 ## Configure the connection
 
@@ -39,7 +39,7 @@ All delivery uses **POST**. Requests time out after 30 seconds.
 
 ## Authentication and headers
 
-On the **Headers** tab, add optional static headers sent with every request, for example a vendor-specific API key or a non-default `Content-Type`. When you do not override it, Pangolin sends `Content-Type: application/json` (or `application/x-ndjson` when using the NDJSON payload format).
+On the **Headers** tab, add optional static headers sent with every request, for example a vendor-specific API key or a non-default `Content-Type`. When you do not override it, Praxis sends `Content-Type: application/json` (or `application/x-ndjson` when using the NDJSON payload format).
 
 <Frame>
   <img src="/images/streaming-http-headers.png" alt="Headers tab for adding static HTTP headers" />
@@ -76,7 +76,7 @@ Some columns are stored as JSON strings in the database (`headers`, `query`, and
 
 ## Custom body template
 
-On the **Body** tab, enable **Custom body template** and provide a JSON template string. Pangolin performs simple placeholder substitution, **not** a full templating language like Handlebars.
+On the **Body** tab, enable **Custom body template** and provide a JSON template string. Praxis performs simple placeholder substitution, **not** a full templating language like Handlebars.
 
 <Frame>
   <img src="/images/streaming-http-body.png" alt="Body tab with custom body template editor" />
@@ -121,7 +121,7 @@ You may use the same token multiple times and nest placeholders at any depth in 
 - **Quote `{{data}}` correctly:** `"field": {{data}}` is valid; `"field": "{{data}}"` stringifies the object incorrectly and produces invalid or useless JSON.
 - **One template per destination:** The same template applies to every log type enabled on that destination. You cannot define different templates per log type on one HTTP destination.
 - **String escaping:** `{{event}}` and `{{timestamp}}` are JSON-escaped for safe use inside quoted strings.
-- **Invalid JSON:** Pangolin does not validate templates at save time. If the rendered body is not valid JSON, delivery may still occur but your receiver may reject it. Validate templates with a JSON linter before saving.
+- **Invalid JSON:** Praxis does not validate templates at save time. If the rendered body is not valid JSON, delivery may still occur but your receiver may reject it. Validate templates with a JSON linter before saving.
 - **Not available on other destination types:** Body templates apply to HTTP streaming only, not S3 or Datadog destinations.
 
 ## Payload format
@@ -180,7 +180,7 @@ If a tool expects your log row under a specific key, wrap `{{data}}` without quo
 
 ```json
 {
-  "source": "pangolin",
+  "source": "praxis",
   "sourcetype": "_json",
   "time": "{{timestamp}}",
   "event": {{data}}
@@ -196,4 +196,4 @@ Adjust property names to match the vendor; field extraction beyond the three tem
 - **Historical logs:** New destinations do not backfill. Only events recorded after the destination is created are streamed.
 - **Delivery errors:** Check the destination’s **last error** in the dashboard. Common causes: wrong URL, auth failure, TLS issues, or receiver rejecting malformed JSON.
 - **Quoting `{{data}}`:** `"payload": "{{data}}"` treats the entire row as a string, which is almost always wrong. Use `"payload": {{data}}`.
-- **Splunk field extraction:** Pangolin does not emit Splunk-style indexed fields in the template. Parse `data` or use a receiver-side pipeline.
+- **Splunk field extraction:** Praxis does not emit Splunk-style indexed fields in the template. Parse `data` or use a receiver-side pipeline.

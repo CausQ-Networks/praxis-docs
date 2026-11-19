@@ -1,13 +1,13 @@
 ---
 title: "Argo CD"
-description: "Deploy Pangolin and Newt using Argo CD for Git-driven GitOps reconciliation."
+description: "Deploy Praxis and Newt using Argo CD for Git-driven GitOps reconciliation."
 ---
 
-Argo CD is a declarative GitOps tool that continuously syncs your cluster state to your Git repository. This guide covers installing Pangolin and Newt using Argo CD.
+Argo CD is a declarative GitOps tool that continuously syncs your cluster state to your Git repository. This guide covers installing Praxis and Newt using Argo CD.
 
-## Install Pangolin with Argo CD using Helm
+## Install Praxis with Argo CD using Helm
 
-### Step 1: Create Pangolin namespace
+### Step 1: Create Praxis namespace
 
 ```bash
 kubectl create namespace pangolin
@@ -15,7 +15,7 @@ kubectl create namespace pangolin
 
 ### Step 2: Create Application
 
-Create an Argo CD Application resource that tells Argo CD to deploy Pangolin using the Helm chart:
+Create an Argo CD Application resource that tells Argo CD to deploy Praxis using the Helm chart:
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -42,7 +42,7 @@ spec:
         pangolin:
           config:
             app:
-              dashboard_url: https://pangolin.example.com
+              dashboard_url: https://praxis.example.com
             domains:
               domain1:
                 base_domain: example.com
@@ -105,8 +105,8 @@ kubectl get pods -n pangolin
 
 ```bash
 kubectl create secret generic newt-auth \
-  -n pangolin \
-  --from-literal=PANGOLIN_ENDPOINT=https://pangolin.example.com \
+  -n praxis \
+  --from-literal=PRAXIS_ENDPOINT=https://praxis.example.com \
   --from-literal=NEWT_ID=<your-newt-id> \
   --from-literal=NEWT_SECRET=<your-newt-secret>
 ```
@@ -187,7 +187,7 @@ spec:
 
   source:
     repoURL: https://github.com/my-org/infrastructure
-    path: apps/pangolin
+    path: apps/praxis
     targetRevision: main
     helm:
       valuesObject:
@@ -208,11 +208,11 @@ spec:
       selfHeal: true
 ```
 
-Argo CD will watch the Git repository and auto-sync on changes to `apps/pangolin`.
+Argo CD will watch the Git repository and auto-sync on changes to `apps/praxis`.
 
 ## Using Argo CD with Kustomize
 
-Deploy Pangolin using Kustomize overlays:
+Deploy Praxis using Kustomize overlays:
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -275,7 +275,7 @@ argocd app sync pangolin
 
 ## Advanced: ApplicationSet for multi-environment
 
-Deploy Pangolin and Newt across multiple clusters or environments:
+Deploy Praxis and Newt across multiple clusters or environments:
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -298,7 +298,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/my-org/infrastructure
-        path: clusters/{{ .cluster }}/pangolin
+        path: clusters/{{ .cluster }}/praxis
         targetRevision: main
       destination:
         name: '{{ .cluster }}'
@@ -331,7 +331,7 @@ OCI chart references work the same as traditional Helm repository references in 
 
 ```bash
 kubectl describe app -n argocd pangolin
-kubectl get app -n argocd pangolin -o yaml
+kubectl get app -n argocd praxis -o yaml
 ```
 
 ### Check sync status
@@ -344,7 +344,7 @@ argocd app logs pangolin
 ### Manual sync
 
 ```bash
-argocd app sync pangolin --force
+argocd app sync praxis --force
 ```
 
 ### Refresh from repository
@@ -366,7 +366,7 @@ kubectl delete app -n argocd pangolin
 Use multiple Applications:
 
 ```yaml
-# production/pangolin-app.yaml
+# production/praxis-app.yaml
 spec:
   source:
     helm:
@@ -377,7 +377,7 @@ spec:
             memory: 2Gi
         replicas: 3
 
-# staging/pangolin-app.yaml
+# staging/praxis-app.yaml
 spec:
   source:
     helm:
@@ -402,7 +402,7 @@ metadata:
   namespace: pangolin
 spec:
   encryptedData:
-    PANGOLIN_ENDPOINT: AgC4F5qd...
+    PRAXIS_ENDPOINT: AgC4F5qd...
     NEWT_ID: AgB9l2pK...
     NEWT_SECRET: AgDq3jX...
 ```
@@ -414,6 +414,6 @@ Argo CD applies the sealed secret; the cluster decrypts it.
 <CardGroup cols={2}>
 	<Card title="GitOps Overview" href="/self-host/manual/kubernetes/gitops/overview" icon="code-branch" />
 	<Card title="Flux" href="/self-host/manual/kubernetes/gitops/flux" icon="code-branch" />
-	<Card title="Pangolin Configuration" href="/self-host/manual/kubernetes/pangolin/configuration" icon="sliders" />
-	<Card title="Troubleshooting" href="/self-host/manual/kubernetes/pangolin/troubleshooting" icon="circle-question" />
+	<Card title="Praxis Configuration" href="/self-host/manual/kubernetes/praxis/configuration" icon="sliders" />
+	<Card title="Troubleshooting" href="/self-host/manual/kubernetes/praxis/troubleshooting" icon="circle-question" />
 </CardGroup>

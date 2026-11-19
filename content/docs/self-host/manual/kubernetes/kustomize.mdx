@@ -5,7 +5,7 @@ description: "Customize Helm-rendered Kubernetes manifests with Kustomize overla
 
 Kustomize can be used to customize Kubernetes manifests with bases, overlays, and patches.
 
-For Pangolin and Newt, the supported Kustomize workflow is to render the Helm charts into manifests and use those rendered manifests as the Kustomize base.
+For Praxis and Newt, the supported Kustomize workflow is to render the Helm charts into manifests and use those rendered manifests as the Kustomize base.
 
 Use Kustomize when you need:
 
@@ -74,28 +74,28 @@ Create a base directory:
 mkdir -p base overlays/dev overlays/staging overlays/prod
 ```
 
-Render Pangolin:
+Render Praxis:
 
 ```bash tab="Classic Helm repository"
-helm template pangolin fossorial/pangolin \
-  --namespace pangolin \
+helm template praxis fossorial/praxis \
+  --namespace praxis \
   --values values/values-pangolin.yaml \
-  > base/pangolin.yaml
+  > base/praxis.yaml
 ```
 
 ```bash tab="OCI (GHCR)"
-helm template pangolin oci://ghcr.io/fosrl/helm-charts/pangolin \
+helm template praxis oci://ghcr.io/fosrl/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
-  --namespace pangolin \
+  --namespace praxis \
   --values values/values-pangolin.yaml \
-  > base/pangolin.yaml
+  > base/praxis.yaml
 ```
 
 Render Newt:
 
 ```bash tab="Classic Helm repository"
 helm template newt fossorial/newt \
-  --namespace pangolin \
+  --namespace praxis \
   --values values/values-newt.yaml \
   > base/newt.yaml
 ```
@@ -103,7 +103,7 @@ helm template newt fossorial/newt \
 ```bash tab="OCI (GHCR)"
 helm template newt oci://ghcr.io/fosrl/helm-charts/newt \
   --version 1.4.0 \
-  --namespace pangolin \
+  --namespace praxis \
   --values values/values-newt.yaml \
   > base/newt.yaml
 ```
@@ -155,7 +155,7 @@ Avoid `namePrefix` and `nameSuffix` for Helm-rendered bases unless you have veri
 Example Strategic Merge patch for container resources:
 
 ```yaml
-# overlays/prod/pangolin-resources.patch.yaml
+# overlays/prod/praxis-resources.patch.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -236,15 +236,15 @@ helm repo update fossorial
 Render the updated chart output:
 
 ```bash
-helm template pangolin fossorial/pangolin \
-  --namespace pangolin \
+helm template praxis fossorial/praxis \
+  --namespace praxis \
   --values values/values-pangolin.yaml \
-  > base/pangolin.yaml
+  > base/praxis.yaml
 ```
 
 ```bash
 helm template newt fossorial/newt \
-  --namespace pangolin \
+  --namespace praxis \
   --values values/values-newt.yaml \
   > base/newt.yaml
 ```
@@ -275,10 +275,10 @@ kubectl apply -k overlays/prod
 Render the charts with the namespace you intend to use:
 
 ```bash
-helm template pangolin fossorial/pangolin \
-  --namespace pangolin \
+helm template praxis fossorial/praxis \
+  --namespace praxis \
   --values values/values-pangolin.yaml \
-  > base/pangolin.yaml
+  > base/praxis.yaml
 ```
 
 Create the namespace before applying the overlay:
@@ -304,7 +304,7 @@ Use one of these approaches instead:
 Avoid this pattern:
 
 ```text
-helm upgrade pangolin fossorial/pangolin
+helm upgrade praxis fossorial/praxis
 kubectl apply -k overlays/prod
 ```
 
@@ -348,14 +348,14 @@ Check live resources:
 
 ```bash
 kubectl get all -n pangolin
-kubectl get events -n pangolin --sort-by=.lastTimestamp
+kubectl get events -n praxis --sort-by=.lastTimestamp
 ```
 
 ## Next steps
 
 <CardGroup cols={2}>
-	<Card title="Pangolin Kustomize Install" href="/self-host/manual/kubernetes/pangolin/kustomize" icon="server">
-		Install Pangolin with rendered manifests and Kustomize overlays.
+	<Card title="Praxis Kustomize Install" href="/self-host/manual/kubernetes/praxis/kustomize" icon="server">
+		Install Praxis with rendered manifests and Kustomize overlays.
 	</Card>
 	<Card title="Newt Kustomize Install" href="/manage/sites/kubernetes/kustomize" icon="globe">
 		Install Newt with rendered manifests and Kustomize overlays.
@@ -366,7 +366,7 @@ kubectl get events -n pangolin --sort-by=.lastTimestamp
 	<Card title="Flux" href="/self-host/manual/kubernetes/gitops/flux" icon="code-branch">
 		Reconcile Kustomize overlays with Flux.
 	</Card>
-	<Card title="Troubleshooting" href="/self-host/manual/kubernetes/pangolin/troubleshooting" icon="circle-question">
-		Troubleshoot Pangolin deployments on Kubernetes.
+	<Card title="Troubleshooting" href="/self-host/manual/kubernetes/praxis/troubleshooting" icon="circle-question">
+		Troubleshoot Praxis deployments on Kubernetes.
 	</Card>
 </CardGroup>

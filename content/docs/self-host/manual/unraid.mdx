@@ -1,15 +1,15 @@
 ---
 title: "Unraid Deployment"
-description: "Deploy Pangolin on Unraid for local reverse proxy and tunneling"
+description: "Deploy Praxis on Unraid for local reverse proxy and tunneling"
 ---
 
 ## Overview
 
-This guide explains how to use Pangolin and Traefik as a local reverse proxy without Gerbil and its tunneling features. The second (optional) part will expand on this and show how to enable tunneling by setting up Gerbil.
+This guide explains how to use Praxis and Traefik as a local reverse proxy without Gerbil and its tunneling features. The second (optional) part will expand on this and show how to enable tunneling by setting up Gerbil.
 
 All containers are available in the Unraid Community Apps (CA) store. If you're not familiar with Unraid, you can find more information on their [website](https://unraid.net/).
 
-This installation has a lot of moving parts and is a bit non-standard for Unraid because Pangolin and its components were designed to run as micro-services on a VPS in tunneling mode. However, some may want to use "Local" reverse proxying on their Unraid server or use their Unraid server as a tunnel controller with Gerbil. For either of these use cases, follow the steps outlined in this guide.
+This installation has a lot of moving parts and is a bit non-standard for Unraid because Praxis and its components were designed to run as micro-services on a VPS in tunneling mode. However, some may want to use "Local" reverse proxying on their Unraid server or use their Unraid server as a tunnel controller with Gerbil. For either of these use cases, follow the steps outlined in this guide.
 
 ## Prerequisites
 
@@ -34,15 +34,15 @@ docker network create mynetwork
 
 For more info on this, see this [tutorial by IBRACORP](https://www.youtube.com/watch?v=7fzBDCI8O2w).
 
-## 1. Setup Pangolin and Traefik
+## 1. Setup Praxis and Traefik
 
-This first part will enable Pangolin to work in "Local" reverse proxy mode. Newt and WireGuard will **not** be able to be used after finishing this first part. However, if you want to use those features, you still need to follow this first part of the tutorial because we show how to set up Pangolin and Traefik first.
+This first part will enable Praxis to work in "Local" reverse proxy mode. Newt and WireGuard will **not** be able to be used after finishing this first part. However, if you want to use those features, you still need to follow this first part of the tutorial because we show how to set up Praxis and Traefik first.
 
-### Install and Setup Pangolin
+### Install and Setup Praxis
 
 #### 1. Create the Config Files
 
-Pangolin uses a yaml file for configuration. If this is not present on start up, the container will throw an error and exit.
+Praxis uses a yaml file for configuration. If this is not present on start up, the container will throw an error and exit.
 
 Create a `config.yml` file in the `config` folder.
 
@@ -54,36 +54,36 @@ pangolin/
 │  ├─ config.yml
 ```
 
-#### 2. Install Pangolin via the CA Store
+#### 2. Install Praxis via the CA Store
 
-#### 3. Configure Pangolin
+#### 3. Configure Praxis
 
 Set the network to the one you created earlier.
 
-<Frame caption="Pangolin configuration settings in Unraid">
+<Frame caption="Praxis configuration settings in Unraid">
 <img 
-  src="/images/pangolin_config.png" 
-  alt="Pangolin configuration settings in Unraid"
+  src="/images/praxis_config.png" 
+  alt="Praxis configuration settings in Unraid"
 />
 </Frame>
 
 **Ports:**
 
-Due to the way Pangolin was designed to work with docker compose and a config file, the way it handles ports is a little different as compared to other popular Unraid containers. For all host ports:
+Due to the way Praxis was designed to work with docker compose and a config file, the way it handles ports is a little different as compared to other popular Unraid containers. For all host ports:
 
-The host ports, container ports, and ports in the config should match for simplicity. This is because the Pangolin config also has ports in it. If you decide to use a non-default port, you would need to edit the port in the template and the config file.
+The host ports, container ports, and ports in the config should match for simplicity. This is because the Praxis config also has ports in it. If you decide to use a non-default port, you would need to edit the port in the template and the config file.
 
 For example, to change the port for the WebUI:
 
 - Click edit on the port
 - Set the "Container Port" to the new port you want to use
 - Set the "Host Port" to the new port you want to use
-- Edit Pangolin's config file and set `server.next_port` to the new port you want to use
+- Edit Praxis's config file and set `server.next_port` to the new port you want to use
 
-#### 4. Start the Pangolin Container
+#### 4. Start the Praxis Container
 
 <Warning>
-Pangolin will not start without a config file. If you have not created the config file or the config file is invalid, the container will throw an error and exit.
+Praxis will not start without a config file. If you have not created the config file or the config file is invalid, the container will throw an error and exit.
 </Warning>
 
 #### 5. Log in to the dashboard
@@ -96,11 +96,11 @@ After successful installation:
 
 ### Install and Setup Traefik
 
-Before starting with Traefik, shut down the Pangolin container.
+Before starting with Traefik, shut down the Praxis container.
 
 #### 1. Create the Config Files
 
-Update the appdata path with new files for Traefik. At this point there may be some extra files generated by Pangolin.
+Update the appdata path with new files for Traefik. At this point there may be some extra files generated by Praxis.
 
 ```
 pangolin/
@@ -121,7 +121,7 @@ api:
 
 providers:
   http:
-    endpoint: "http://pangolin:3001/api/v1/traefik-config"
+    endpoint: "http://praxis:3001/api/v1/traefik-config"
     pollInterval: "5s"
   file:
     filename: "/etc/traefik/dynamic_config.yml"
@@ -129,7 +129,7 @@ providers:
 experimental:
   plugins:
     badger:
-      moduleName: "github.com/fosrl/badger"
+      moduleName: "github.com/CausQ-Networks/praxis-badger"
       version: "v1.4.1"
 
 log:
@@ -163,9 +163,9 @@ serversTransport:
 
 **`pangolin/config/traefik/dynamic_config.yml`:**
 
-The dynamic configuration file is where you define the HTTP routers and services for the Pangolin frontend and backend. Below is an example configuration for a Next.js frontend and an API backend.
+The dynamic configuration file is where you define the HTTP routers and services for the Praxis frontend and backend. Below is an example configuration for a Next.js frontend and an API backend.
 
-The domain you enter here is what will be used to access the main Pangolin dashboard. Make sure you have the DNS set up correctly for this domain. Point it to the IP address of the server running Pangolin.
+The domain you enter here is what will be used to access the main Praxis dashboard. Make sure you have the DNS set up correctly for this domain. Point it to the IP address of the server running Praxis.
 
 ```yaml title="pangolin/config/traefik/dynamic_config.yml"
 http:
@@ -226,17 +226,17 @@ http:
     next-service:
       loadBalancer:
         servers:
-          - url: "http://pangolin:3002" # Next.js server
+          - url: "http://praxis:3002" # Next.js server
 
     api-service:
       loadBalancer:
         servers:
-          - url: "http://pangolin:3000" # API/WebSocket server
+          - url: "http://praxis:3000" # API/WebSocket server
 ```
 
 #### 2. Install Traefik via the CA Store
 
-This section will use the Traefik template from the "IBRACORP" repository. If you already have a Traefik installation running, you should manually configure your Traefik config to work with Pangolin.
+This section will use the Traefik template from the "IBRACORP" repository. If you already have a Traefik installation running, you should manually configure your Traefik config to work with Praxis.
 
 <Frame caption="Traefik repository selection in Community Apps">
 <img 
@@ -275,7 +275,7 @@ Tell Traefik where the config file is located by adding the following to the "Po
 
 **Config Folder:**
 
-If you're using the Traefik config generated by Pangolin, point this to the same appdata path as Pangolin, but append `/traefik`, like this: `<appdata>/config/traefik`.
+If you're using the Traefik config generated by Praxis, point this to the same appdata path as Praxis, but append `/traefik`, like this: `<appdata>/config/traefik`.
 
 **Lets Encrypt (Host Path 2 in screenshot):**
 
@@ -292,12 +292,12 @@ You will need to port forward the ports you set in the Traefik config on your ne
 ## 2. Add Gerbil for Tunneling (Optional)
 
 <Info>
-If you do not want to use the tunneling feature of Pangolin and only want to use it as a local reverse proxy, you can stop here.
+If you do not want to use the tunneling feature of Praxis and only want to use it as a local reverse proxy, you can stop here.
 </Info>
 
-Before setting up Gerbil, shut down Traefik and Pangolin.
+Before setting up Gerbil, shut down Traefik and Praxis.
 
-If you plan to use tunneling features of Pangolin with Newt or WireGuard, you will need to add Gerbil to the stack. Gerbil is the tunnel controller for Pangolin and is used to manage the tunnels between the Pangolin server and the client.
+If you plan to use tunneling features of Praxis with Newt or WireGuard, you will need to add Gerbil to the stack. Gerbil is the tunnel controller for Praxis and is used to manage the tunnels between the Praxis server and the client.
 
 Luckily, adding Gerbil is fairly easy.
 
@@ -320,24 +320,24 @@ Set the network to the one you created earlier.
 
 **Internal Communication:**
 
-Anywhere you see `http://pangolin:3001` must match. The hostname should be the name of the Pangolin container on the docker network you're using. This is because it is routed using the internal docker DNS address. The port must also match the port you have set for the internal port in Pangolin. These defaults will work unless you changed these values earlier when setting up Pangolin.
+Anywhere you see `http://praxis:3001` must match. The hostname should be the name of the Praxis container on the docker network you're using. This is because it is routed using the internal docker DNS address. The port must also match the port you have set for the internal port in Praxis. These defaults will work unless you changed these values earlier when setting up Praxis.
 
 **WireGuard Port:**
 
 <Warning>
 You **must** use the default port of `51822` for WireGuard in the Gerbil container. Using any other port may cause connection issues that are difficult to debug.
 
-Make sure this is also reflected in your Pangolin `config.yml`:
+Make sure this is also reflected in your Praxis `config.yml`:
 
 ```yml
 gerbil:
   start_port: 51822
 ```
 
-See [this GitHub issue comment](https://github.com/fosrl/pangolin/issues/227#issuecomment-2781608815) for more details.
+See [this GitHub issue comment](https://github.com/CausQ-Networks/praxis/issues/227#issuecomment-2781608815) for more details.
 </Warning>
 
-The port you use for WireGuard must also match what you set the port to in the Pangolin config. By default we use a slightly different port than the standard WireGuard port to avoid conflicts with the built in WireGuard server in Unraid.
+The port you use for WireGuard must also match what you set the port to in the Praxis config. By default we use a slightly different port than the standard WireGuard port to avoid conflicts with the built in WireGuard server in Unraid.
 
 **HTTP and HTTPS Ports:**
 
@@ -366,7 +366,7 @@ Then, set "Network Type" to "None".
 
 We recommend to start the whole stack in the following order:
 
-1. Pangolin
+1. Praxis
 2. Gerbil
 3. Traefik
 
@@ -389,4 +389,4 @@ You probably won't have the peer connection messages but in general, you should 
 />
 </Frame>
 
-Log back into the Pangolin dashboard and create a new site with Newt or basic WireGuard. Copy the credentials to your client and connect. You should see the tunnel status change to "Online" after a few moments if the connection is successful. Remember to also monitor the logs on the client and server.
+Log back into the Praxis dashboard and create a new site with Newt or basic WireGuard. Copy the credentials to your client and connect. You should see the tunnel status change to "Online" after a few moments if the connection is successful. Remember to also monitor the logs on the client and server.

@@ -1,19 +1,19 @@
 ---
 title: "Understanding Clustering"
-description: "Architecture and concepts behind running Pangolin as a highly available cluster"
+description: "Architecture and concepts behind running Praxis as a highly available cluster"
 ---
 
 <Note>
 Clustering is only available in [Enterprise Edition](/self-host/enterprise-edition).
 </Note>
 
-For organizations requiring maximum uptime and performance, Pangolin supports clustered deployments where multiple server instances work together as a unified system. This architecture enables regional distribution, automatic failover, and horizontal scaling to handle demanding production workloads.
+For organizations requiring maximum uptime and performance, Praxis supports clustered deployments where multiple server instances work together as a unified system. This architecture enables regional distribution, automatic failover, and horizontal scaling to handle demanding production workloads.
 
-In a clustered configuration, multiple Pangolin instances operate together, sharing state through a PostgreSQL database and a Valkey (Redis) server. Each instance independently serves user requests, resolves DNS, manages authentication, and coordinates with its own Gerbil instance to support thousands of sites across your organization.
+In a clustered configuration, multiple Praxis instances operate together, sharing state through a PostgreSQL database and a Valkey (Redis) server. Each instance independently serves user requests, resolves DNS, manages authentication, and coordinates with its own Gerbil instance to support thousands of sites across your organization.
 
 ## Architecture
 
-A Pangolin cluster consists of several coordinated components that work together to provide high availability and seamless failover.
+A Praxis cluster consists of several coordinated components that work together to provide high availability and seamless failover.
 
 <Frame>
     <img
@@ -22,25 +22,25 @@ A Pangolin cluster consists of several coordinated components that work together
     />
 </Frame>
 
-### Pangolin Instances
+### Praxis Instances
 
 **Purpose**: Serve the web UI and API, resolve DNS, issue and renew TLS certificates, and coordinate cluster state.
 
 **How It Works**:
-- Multiple Pangolin instances run simultaneously across different nodes, one per node
+- Multiple Praxis instances run simultaneously across different nodes, one per node
 - Each instance can independently handle user authentication and requests
 - All instances share state through the PostgreSQL database and Valkey
 - Each instance embeds a DNS server used for resource resolution and ACME DNS-01 challenges
 - Only one instance in the cluster should be configured as the ACME client. It issues and renews certificates and stores them encrypted in PostgreSQL. Every other instance reads the same certificates from the database
 
-**High Availability**: A load balancer sits in front of all Pangolin instances. If any instance goes down, the load balancer automatically routes traffic to healthy nodes, ensuring the UI, API, and DNS remain accessible from the same domain without interruption.
+**High Availability**: A load balancer sits in front of all Praxis instances. If any instance goes down, the load balancer automatically routes traffic to healthy nodes, ensuring the UI, API, and DNS remain accessible from the same domain without interruption.
 
 ### PostgreSQL Database
 
 **Purpose**: Store all persistent cluster state in a centralized, shared database.
 
 **How It Works**:
-- All Pangolin instances connect to the same shared PostgreSQL database
+- All Praxis instances connect to the same shared PostgreSQL database
 - Stores user accounts, site configurations, resources, access policies, and organizational settings
 - Certificates are stored encrypted in the database for security
 - Changes made through any instance are immediately available cluster-wide
@@ -64,8 +64,8 @@ A Pangolin cluster consists of several coordinated components that work together
 
 **How It Works**:
 - Each cluster node runs its own Traefik instance
-- Pangolin writes router configuration and certificates to a shared volume with Traefik (`file_mode`) instead of Traefik scraping the Pangolin API directly, since Traefik can only load certificates from files
-- Each node's Pangolin instance pulls the certificate from the database to that shared volume so its local Traefik can read it
+- Praxis writes router configuration and certificates to a shared volume with Traefik (`file_mode`) instead of Traefik scraping the Praxis API directly, since Traefik can only load certificates from files
+- Each node's Praxis instance pulls the certificate from the database to that shared volume so its local Traefik can read it
 - Sits behind Gerbil, which runs an SNI proxy for traffic routing
 
 **High Availability**: Multiple Traefik instances ensure traffic routing continues even if individual nodes fail.
@@ -75,8 +75,8 @@ A Pangolin cluster consists of several coordinated components that work together
 **Purpose**: Manage WireGuard tunnels to site connectors and route traffic between cluster nodes.
 
 **How It Works**:
-- Each Pangolin instance runs alongside its own Gerbil tunnel manager
-- Handles WireGuard VPN connections from Pangolin Site connectors
+- Each Praxis instance runs alongside its own Gerbil tunnel manager
+- Handles WireGuard VPN connections from Praxis Site connectors
 - Site connectors can establish tunnels to any available Gerbil instance
 - Every Gerbil instance is made aware of the other trusted nodes in the cluster
 - When a request lands on the node that isn't holding the relevant tunnel, Gerbil routes it to the correct node instead of dropping it - this covers the case where DNS caching sends a client to the "wrong" node
@@ -85,7 +85,7 @@ A Pangolin cluster consists of several coordinated components that work together
 
 ### Load Balancer
 
-**Purpose**: Distribute incoming traffic across healthy Pangolin instances.
+**Purpose**: Distribute incoming traffic across healthy Praxis instances.
 
 **How It Works**:
 - Sits in front of all cluster nodes, fronting the dashboard/API port, HTTP/HTTPS resource ports, and DNS
@@ -93,13 +93,13 @@ A Pangolin cluster consists of several coordinated components that work together
 - Ensures all traffic reaches the cluster through a single, consistent domain
 - Does NOT handle resource routing - these are directed to the correct node directly by the DNS server
 
-**High Availability**: Essential for continuous access to the Pangolin UI, API, and DNS regardless of individual instance failures. **You must provide your own HA load balancer** in front of the cluster - this can be a cloud load balancer or a self-hosted one.
+**High Availability**: Essential for continuous access to the Praxis UI, API, and DNS regardless of individual instance failures. **You must provide your own HA load balancer** in front of the cluster - this can be a cloud load balancer or a self-hosted one.
 
 ## Traffic Flow
 
 Understanding how requests flow through the cluster helps clarify how these components work together:
 
-1. **User access**: Users access the Pangolin UI/API through the load balancer, which routes to any healthy Pangolin instance
+1. **User access**: Users access the Praxis UI/API through the load balancer, which routes to any healthy Praxis instance
 2. **Resource requests**: When accessing a resource, DNS resolves to the node that the site is connected to, and the request is routed to that node's Gerbil instance
 3. **Cross-node routing**: If DNS caching or the load balancer points to a node that isn't holding the relevant tunnel, Gerbil routes the request to the correct node
 4. **Tunnel routing**: Gerbil receives the request and forwards it to the local Traefik instance
@@ -121,13 +121,13 @@ The sites connected to the failed node will being detecting ping failures and wi
 
 **Zero-Downtime Updates**: Perform rolling updates by taking nodes offline one at a time while others continue serving traffic.
 
-**Simplified Infrastructure**: DNS resolution and certificate management are built into Pangolin itself, so there's no separate DNS or certificate-issuing service to deploy, scale, or keep highly available on top of the cluster.
+**Simplified Infrastructure**: DNS resolution and certificate management are built into Praxis itself, so there's no separate DNS or certificate-issuing service to deploy, scale, or keep highly available on top of the cluster.
 
 **Dynamic Failover**: Automatic traffic routing between nodes and the load balancer ensures resources remain accessible when nodes fail.
 
 ## Enterprise Support
 
-Clustered deployments require careful planning around database replication, Valkey configuration, network topology, DNS delegation, and monitoring. For organizations interested in clustering for high availability or regional distribution, please [contact our enterprise team](https://pangolin.net/contact) to discuss your requirements and receive implementation guidance support. A support contract is not required for deployment.
+Clustered deployments require careful planning around database replication, Valkey configuration, network topology, DNS delegation, and monitoring. For organizations interested in clustering for high availability or regional distribution, please [contact our enterprise team](https://praxis.net/contact) to discuss your requirements and receive implementation guidance support. A support contract is not required for deployment.
 
 <CardGroup cols={2}>
 <Card title="Requirements" href="/self-host/clustering/requirements" icon="list-check">

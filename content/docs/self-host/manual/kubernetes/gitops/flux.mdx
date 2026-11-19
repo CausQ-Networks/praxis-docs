@@ -1,9 +1,9 @@
 ---
 title: "Flux"
-description: "Deploy Pangolin and Newt using Flux for Git-driven GitOps reconciliation."
+description: "Deploy Praxis and Newt using Flux for Git-driven GitOps reconciliation."
 ---
 
-Flux is a declarative GitOps tool that uses Kubernetes-native Custom Resources to manage deployments. This guide covers installing Pangolin and Newt using Flux.
+Flux is a declarative GitOps tool that uses Kubernetes-native Custom Resources to manage deployments. This guide covers installing Praxis and Newt using Flux.
 
 
 ## Flux prerequisites
@@ -49,7 +49,7 @@ This creates the Git repository structure and installs Flux components.
 flux install --namespace=flux-system --network-policy=true
 ```
 
-## Install Pangolin with Flux using HelmRelease
+## Install Praxis with Flux using HelmRelease
 
 ### Step 1: Create HelmRepository
 
@@ -75,7 +75,7 @@ kubectl apply -f helmrepo.yaml
 kubectl get helmrepo -n flux-system
 ```
 
-### Step 2: Create Pangolin HelmRelease
+### Step 2: Create Praxis HelmRelease
 
 ```yaml
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -110,7 +110,7 @@ spec:
     pangolin:
       config:
         app:
-          dashboard_url: https://pangolin.example.com
+          dashboard_url: https://praxis.example.com
         domains:
           domain1:
             base_domain: example.com
@@ -150,10 +150,10 @@ kubectl apply -f pangolin-helmrelease.yaml
 kubectl get helmrelease -n pangolin
 
 # Watch live
-kubectl get helmrelease -n pangolin -w
+kubectl get helmrelease -n praxis -w
 
 # Describe for details
-kubectl describe helmrelease pangolin -n pangolin
+kubectl describe helmrelease praxis -n pangolin
 
 # Check Flux logs
 flux logs --all-namespaces --follow
@@ -165,8 +165,8 @@ flux logs --all-namespaces --follow
 
 ```bash
 kubectl create secret generic newt-auth \
-  -n pangolin \
-  --from-literal=PANGOLIN_ENDPOINT=https://pangolin.example.com \
+  -n praxis \
+  --from-literal=PRAXIS_ENDPOINT=https://praxis.example.com \
   --from-literal=NEWT_ID=<your-newt-id> \
   --from-literal=NEWT_SECRET=<your-newt-secret>
 ```
@@ -426,8 +426,8 @@ flux check --all-namespaces
 
 ```bash
 kubectl get helmrelease -n pangolin
-kubectl describe helmrelease pangolin -n pangolin
-kubectl get helmrelease pangolin -n pangolin -o yaml
+kubectl describe helmrelease praxis -n pangolin
+kubectl get helmrelease praxis -n praxis -o yaml
 ```
 
 ### View reconciliation logs
@@ -436,26 +436,26 @@ kubectl get helmrelease pangolin -n pangolin -o yaml
 flux logs --all-namespaces --follow
 
 # Specific resource
-kubectl logs -n pangolin deployment/helm-operator -f
+kubectl logs -n praxis deployment/helm-operator -f
 ```
 
 ### Manual reconciliation
 
 ```bash
-flux reconcile helmrelease pangolin -n pangolin
+flux reconcile helmrelease praxis -n pangolin
 flux reconcile kustomization production -n flux-system
 ```
 
 ### Suspend reconciliation
 
 ```bash
-flux suspend helmrelease pangolin -n pangolin
+flux suspend helmrelease praxis -n pangolin
 ```
 
 ### Resume reconciliation
 
 ```bash
-flux resume helmrelease pangolin -n pangolin
+flux resume helmrelease praxis -n pangolin
 ```
 
 ## Multi-environment example
@@ -507,6 +507,6 @@ Each environment's HelmRelease uses environment-specific values.
 <CardGroup cols={2}>
 	<Card title="GitOps Overview" href="/self-host/manual/kubernetes/gitops/overview" icon="code-branch" />
 	<Card title="Argo CD" href="/self-host/manual/kubernetes/gitops/argocd" icon="code-branch" />
-	<Card title="Pangolin Configuration" href="/self-host/manual/kubernetes/pangolin/configuration" icon="sliders" />
-	<Card title="Troubleshooting" href="/self-host/manual/kubernetes/pangolin/troubleshooting" icon="circle-question" />
+	<Card title="Praxis Configuration" href="/self-host/manual/kubernetes/praxis/configuration" icon="sliders" />
+	<Card title="Troubleshooting" href="/self-host/manual/kubernetes/praxis/troubleshooting" icon="circle-question" />
 </CardGroup>

@@ -4,12 +4,12 @@ description: "Configure OpenID Connect identity provider for external authentica
 ---
 This identity provider follows the OpenID Connect protocol. This means that it can be used to connect to any external identity provider that supports the OpenID Connect protocol such as Authentik, Keycloak, Okta, etc.
 
-## Creating a Generic OAuth2/OIDC IdP in Pangolin
+## Creating a Generic OAuth2/OIDC IdP in Praxis
 
-In Pangolin, go to "Identity Providers" and click "Add Identity Provider". Select the OAuth2/OIDC provider option.
+In Praxis, go to "Identity Providers" and click "Add Identity Provider". Select the OAuth2/OIDC provider option.
 
 <Frame>
-  <img src="/images/create-oidc-idp.png" alt="Pangolin dashboard form for adding an OAuth2/OIDC identity provider" />
+  <img src="/images/create-oidc-idp.png" alt="Praxis dashboard form for adding an OAuth2/OIDC identity provider" />
 </Frame>
 
 In the OAuth2/OIDC Configuration, you'll need the following fields:
@@ -34,7 +34,7 @@ In the OAuth2/OIDC Configuration, you'll need the following fields:
 
 Use JMESPath to select attributes from the claims token. See [JMESPath](https://jmespath.org/) for more information on how to use JMESPath.
 
-Determine how to access information from the claims token returned by the identity provider. This is used to map the user information from the identity provider to the user information in Pangolin.
+Determine how to access information from the claims token returned by the identity provider. This is used to map the user information from the identity provider to the user information in Praxis.
 
 <ResponseField name="Identifier Path" type="string" required>
   This must be unique for each user within an identity provider.

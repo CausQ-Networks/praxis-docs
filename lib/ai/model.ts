@@ -17,7 +17,7 @@ import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
  *   OPENAI_API_KEY                 for `openai`
  *   GOOGLE_GENERATIVE_AI_API_KEY   for `google`
  *   AI_BASE_URL + AI_API_KEY       for `openai-compatible` (OpenRouter, Ollama, vLLM,
- *                                  LiteLLM, a Pangolin AI Gateway resource, ...)
+ *                                  LiteLLM, a Praxis AI Gateway resource, ...)
  */
 export type Provider = 'anthropic' | 'openai' | 'google' | 'openai-compatible';
 

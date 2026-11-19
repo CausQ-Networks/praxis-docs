@@ -1,12 +1,12 @@
 ---
 title: "Event Streaming"
-description: "Stream Pangolin log events to external collectors and SIEM tools"
+description: "Stream Praxis log events to external collectors and SIEM tools"
 ---
 
-Log streaming forwards your organization's audit logs to external data collectors such as Datadog, Splunk, Microsoft Sentinel, Elastic, or any HTTP endpoint you operate. You add a **destination** (how events are delivered), choose which **log types** to include, and Pangolin pushes new events as they are recorded.
+Log streaming forwards your organization's audit logs to external data collectors such as Datadog, Splunk, Microsoft Sentinel, Elastic, or any HTTP endpoint you operate. You add a **destination** (how events are delivered), choose which **log types** to include, and Praxis pushes new events as they are recorded.
 
 <Note>
-Event streaming is only available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
+Event streaming is only available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
 </Note>
 
 ## In the dashboard
@@ -26,7 +26,7 @@ You choose which categories each destination receives. Only log types enabled fo
 Each destination type has its own configuration and payload behavior. Select **Add destination** and pick a delivery method.
 
 <Frame>
-  <img src="/images/streaming-add-destination.png" alt="Add destination dialog in the Pangolin dashboard" />
+  <img src="/images/streaming-add-destination.png" alt="Add destination dialog in the Praxis dashboard" />
 </Frame>
 
 <CardGroup cols={2}>
@@ -42,6 +42,6 @@ Each destination type has its own configuration and payload behavior. Select **A
 
 Amazon S3 and HTTP webhooks are documented above. For Datadog, Microsoft Sentinel, or other vendor-specific setups, contact [sales@pangolin.net](mailto:sales@pangolin.net).
 
-- **No backfill:** New destinations start from the current log cursor. Historical logs already in Pangolin are not replayed.
+- **No backfill:** New destinations start from the current log cursor. Historical logs already in Praxis are not replayed.
 - **Per-log-type cursors:** Each enabled log type on a destination is tracked independently.
 - **Errors in the UI:** When delivery fails, the destination's last error is shown in the dashboard so you can fix configuration or endpoint issues.

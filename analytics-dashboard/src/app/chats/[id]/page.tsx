@@ -54,7 +54,7 @@ export default async function ChatPage(props: PageProps<'/chats/[id]'>) {
           >
             <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
               <p className={cn('text-sm font-medium', m.role === 'assistant' && 'text-fd-primary')}>
-                {m.role === 'user' ? 'User' : 'Pangolin AI'}
+                {m.role === 'user' ? 'User' : 'Praxis AI'}
               </p>
               <div className="flex items-center gap-3 text-xs text-fd-muted-foreground">
                 {m.vote === 1 && <span className="rounded-full border px-2 py-0.5 text-fd-foreground">👍 Helpful</span>}

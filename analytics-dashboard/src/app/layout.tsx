@@ -6,11 +6,11 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Pangolin analytics',
+  title: 'Praxis analytics',
   robots: { index: false, follow: false },
 };
 
-const docsUrl = process.env.DOCS_SITE_URL ?? 'https://docs.pangolin.net';
+const docsUrl = process.env.DOCS_SITE_URL ?? 'https://docs.praxis.causq.com';
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
@@ -19,7 +19,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         <header className="border-b">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
             <Link href="/" className="font-medium">
-              Pangolin · Analytics
+              Praxis · Analytics
             </Link>
             <a href={docsUrl} className="text-sm text-fd-muted-foreground hover:text-fd-foreground">
               View docs ↗

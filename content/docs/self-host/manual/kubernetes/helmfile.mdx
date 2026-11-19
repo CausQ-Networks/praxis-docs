@@ -3,18 +3,18 @@ title: "Helmfile"
 description: "Advanced Kubernetes installation using Helmfile for multi-release orchestration."
 ---
 
-Helmfile is a declarative way to manage multiple Helm releases in a single workflow. Use Helmfile when you need to install Pangolin and/or Newt alongside other Kubernetes components or manage multiple releases together.
+Helmfile is a declarative way to manage multiple Helm releases in a single workflow. Use Helmfile when you need to install Praxis and/or Newt alongside other Kubernetes components or manage multiple releases together.
 
 ## When to use Helmfile
 
 Use Helmfile if you want to:
 
-- **Orchestrate multiple Helm releases** in a single file (Pangolin + Newt + dependencies).
-- **Manage dependencies** between releases (e.g., install cert-manager before Pangolin).
+- **Orchestrate multiple Helm releases** in a single file (Praxis + Newt + dependencies).
+- **Manage dependencies** between releases (e.g., install cert-manager before Praxis).
 - **Keep release definitions** in version control and synchronized.
 - **Avoid repeated `helm install` commands** for complex multi-release setups.
 
-**Not using Helmfile?** If you're installing only Pangolin or only Newt without additional services, [Helm quick-start](/self-host/manual/kubernetes/helm) is simpler.
+**Not using Helmfile?** If you're installing only Praxis or only Newt without additional services, [Helm quick-start](/self-host/manual/kubernetes/helm) is simpler.
 
 ## Helm vs. Helmfile
 
@@ -65,7 +65,7 @@ releases:
   - name: pangolin
     namespace: pangolin
     createNamespace: true
-    chart: fossorial/pangolin
+    chart: fossorial/praxis
     version: 0.1.0-alpha.0
     values:
       - pangolin-values.yaml
@@ -80,7 +80,7 @@ releases:
       - pangolin
 ```
 
-## Helmfile with Pangolin and Newt
+## Helmfile with Praxis and Newt
 
 ### 1. Add Helm repositories
 
@@ -121,10 +121,10 @@ releases:
   - name: pangolin
     namespace: pangolin
     createNamespace: true
-    chart: fossorial/pangolin
+    chart: fossorial/praxis
     version: 0.1.0-alpha.0
     values:
-      - ./values/pangolin.yaml
+      - ./values/praxis.yaml
     dependsOn:
       - cert-manager
     
@@ -140,7 +140,7 @@ releases:
 
 ### 3. Create values files
 
-Create `values/pangolin.yaml`:
+Create `values/praxis.yaml`:
 
 ```yaml
 deployment:
@@ -153,7 +153,7 @@ database:
 pangolin:
   config:
     app:
-      dashboard_url: https://pangolin.example.com
+      dashboard_url: https://praxis.example.com
     domains:
       domain1:
         base_domain: example.com
@@ -191,8 +191,8 @@ Before applying Helmfile:
 ```bash
 kubectl create namespace pangolin
 kubectl create secret generic newt-auth \
-  -n pangolin \
-  --from-literal=PANGOLIN_ENDPOINT=https://pangolin.example.com \
+  -n praxis \
+  --from-literal=PRAXIS_ENDPOINT=https://praxis.example.com \
   --from-literal=NEWT_ID=<your-newt-id> \
   --from-literal=NEWT_SECRET=<your-newt-secret>
 ```
@@ -217,7 +217,7 @@ helmfile status
 
 # Check individual releases
 helm status cert-manager -n cert-manager
-helm status pangolin -n pangolin
+helm status praxis -n pangolin
 helm status newt -n pangolin
 
 # Check pods
@@ -254,10 +254,10 @@ releases:
   - name: pangolin
     namespace: pangolin
     createNamespace: true
-    chart: fossorial/pangolin
+    chart: fossorial/praxis
     version: 0.1.0-alpha.0
     values:
-      - ./values/pangolin-{{ .Environment.Values.environment }}.yaml
+      - ./values/praxis-{{ .Environment.Values.environment }}.yaml
 ```
 
 Deploy to specific environment:
@@ -327,7 +327,7 @@ helmfile destroy
 releases:
   - name: pangolin
     namespace: pangolin
-    chart: ./charts/pangolin  # local path
+    chart: ./charts/praxis  # local path
     values:
       - values.yaml
 ```
@@ -338,7 +338,7 @@ releases:
 releases:
   - name: pangolin
     namespace: pangolin
-    chart: fossorial/pangolin
+    chart: fossorial/praxis
     set:
       deployment.type: controller
       deployment.mode: multi
@@ -359,7 +359,7 @@ releases:
 
 ### Official support
 
-Helmfile for Pangolin/Newt Kubernetes deployments is **advanced/community-supported**. The primary supported methods are:
+Helmfile for Praxis/Newt Kubernetes deployments is **advanced/community-supported**. The primary supported methods are:
 
 - Helm directly
 - Kustomize overlays
@@ -369,13 +369,13 @@ If you encounter Helmfile-specific issues, refer to the [Helmfile documentation]
 
 ### Helm chart dependencies
 
-The Pangolin Helm chart includes optional sub-chart dependencies (e.g., CloudNativePG operator). Helmfile does not manage these—they're handled by Helm. Ensure chart dependencies are available when installing.
+The Praxis Helm chart includes optional sub-chart dependencies (e.g., CloudNativePG operator). Helmfile does not manage these—they're handled by Helm. Ensure chart dependencies are available when installing.
 
 ## Next steps
 
 <CardGroup cols={2}>
 	<Card title="Helm Quick-Start" href="/self-host/manual/kubernetes/helm" icon="box" />
-	<Card title="Pangolin Configuration" href="/self-host/manual/kubernetes/pangolin/configuration" icon="sliders" />
+	<Card title="Praxis Configuration" href="/self-host/manual/kubernetes/praxis/configuration" icon="sliders" />
 	<Card title="GitOps with Flux" href="/self-host/manual/kubernetes/gitops/flux" icon="code-branch" />
-	<Card title="Troubleshooting" href="/self-host/manual/kubernetes/pangolin/troubleshooting" icon="circle-question" />
+	<Card title="Troubleshooting" href="/self-host/manual/kubernetes/praxis/troubleshooting" icon="circle-question" />
 </CardGroup>

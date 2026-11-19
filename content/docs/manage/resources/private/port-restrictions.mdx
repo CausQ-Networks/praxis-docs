@@ -7,7 +7,7 @@ For each private resource, TCP and UDP are configured separately. Each protocol 
 
 ## Port restrictions
 
-Port settings apply to users, roles, and machines that have access to the resource. They limit which application traffic can reach the resource’s destination through Pangolin.
+Port settings apply to users, roles, and machines that have access to the resource. They limit which application traffic can reach the resource’s destination through Praxis.
 
 ### All
 
@@ -17,7 +17,7 @@ Use All when the service needs arbitrary ports (for example ephemeral ports on t
 
 ### Blocked
 
-Blocked means that protocol is not allowed to the destination through Pangolin: no TCP or no UDP traffic passes, depending on which row you set. The other protocol can still be All or Custom independently-for example TCP Custom (only `443`) with UDP Blocked for a HTTPS-only workload that should not receive UDP to that destination.
+Blocked means that protocol is not allowed to the destination through Praxis: no TCP or no UDP traffic passes, depending on which row you set. The other protocol can still be All or Custom independently-for example TCP Custom (only `443`) with UDP Blocked for a HTTPS-only workload that should not receive UDP to that destination.
 
 Use Blocked when you want to turn off a protocol entirely for that resource.
 
@@ -30,7 +30,7 @@ Custom means only the ports you list are allowed; every other port for that prot
 * a range with a hyphen (e.g. `8000-8100`).
 * lists and ranges (e.g. `80,443,8080-8090,9000-9010`)
 
-Use Custom for least-privilege access: allow only the ports your application actually needs (see also [SSH](/manage/ssh) for allowing TCP `22` when using Pangolin SSH).
+Use Custom for least-privilege access: allow only the ports your application actually needs (see also [SSH](/manage/ssh) for allowing TCP `22` when using Praxis SSH).
 
 ## ICMP
 

@@ -1,6 +1,6 @@
 ---
 title: "OpenClaw"
-description: "Connect OpenClaw to a Pangolin AI Gateway resource"
+description: "Connect OpenClaw to a Praxis AI Gateway resource"
 ---
 
 [OpenClaw](https://openclaw.ai) is an open-source agent gateway that can run against any OpenAI- or Anthropic-compatible endpoint. Point it at an AI Gateway resource with a matching provider attached - OpenAI-compatible (OpenAI, OpenRouter, Vercel AI Gateway, Microsoft Foundry, custom) or Anthropic-compatible (Anthropic, Bedrock, Vertex AI, custom). See [AI Gateway Overview](/manage/ai/overview) if you haven't set that up yet.
@@ -50,14 +50,14 @@ Onboarding writes `~/.openclaw/openclaw.json`. You can edit it directly instead 
 {
     "models": {
         "providers": {
-            "pangolin": {
+            "praxis": {
                 "baseUrl": "<endpoint>/v1",
                 "apiKey": "<key>",
                 "api": "openai-completions",
                 "models": [
                     {
                         "id": "<model-id>",
-                        "name": "<model-id> via Pangolin"
+                        "name": "<model-id> via Praxis"
                     }
                 ]
             }
@@ -85,4 +85,4 @@ openclaw models status
 openclaw agent --agent main -m "Hello, what model are you?"
 ```
 
-For a private resource, keep `--custom-api-key`/`apiKey` and set it to `none`, and make sure the Pangolin client is connected on whichever machine runs the OpenClaw daemon.
+For a private resource, keep `--custom-api-key`/`apiKey` and set it to `none`, and make sure the Praxis client is connected on whichever machine runs the OpenClaw daemon.

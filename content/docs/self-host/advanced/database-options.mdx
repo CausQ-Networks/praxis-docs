@@ -1,8 +1,8 @@
 ---
 title: "Database Options"
-description: "Configure SQLite or PostgreSQL database for Pangolin"
+description: "Configure SQLite or PostgreSQL database for Praxis"
 ---
-Pangolin supports two database options: SQLite for simplicity and PostgreSQL for production deployments.
+Praxis supports two database options: SQLite for simplicity and PostgreSQL for production deployments.
 
 <CardGroup cols={2}>
 <Card title="SQLite (Default)" icon="database">
@@ -22,23 +22,23 @@ Pangolin supports two database options: SQLite for simplicity and PostgreSQL for
 
 ## SQLite
 
-By default, Pangolin uses SQLite for its ease of use and portability.
+By default, Praxis uses SQLite for its ease of use and portability.
 
-**Docker Image**: `fosrl/pangolin:<version>`
+**Docker Image**: `causq-networks/praxis:<version>`
 
 <Note>
-No configuration is required to use SQLite with Pangolin.
+No configuration is required to use SQLite with Praxis.
 </Note>
 
 ## PostgreSQL
 
 You can optionally use PostgreSQL for production deployments.
 
-**Docker Image**: `fosrl/pangolin:postgresql-<version>`
+**Docker Image**: `causq-networks/praxis:postgresql-<version>`
 
 ### Configuration
 
-Add the following section to your Pangolin configuration file:
+Add the following section to your Praxis configuration file:
 
 ```yaml title="config.yml"
 postgres:
@@ -51,13 +51,13 @@ Replace the placeholders with your actual PostgreSQL connection details.
 
 ### Docker Compose Example
 
-This example sets up PostgreSQL with health checks to ensure the database is ready before Pangolin starts:
+This example sets up PostgreSQL with health checks to ensure the database is ready before Praxis starts:
 
 ```yaml title="docker-compose.yml"
 name: pangolin
 services:
   pangolin:
-    image: fosrl/pangolin:postgresql-latest # Don't use latest in production
+    image: causq-networks/praxis:postgresql-latest # Don't use latest in production
     container_name: pangolin
     restart: unless-stopped
     depends_on:
@@ -99,7 +99,7 @@ Do not use `latest` tags in production. Use specific version tags for stability.
 
 ### Read Replicas
 
-Pangolin can distribute read queries across one or more PostgreSQL read replicas while always sending writes to the primary database. This is useful for scaling read-heavy workloads.
+Praxis can distribute read queries across one or more PostgreSQL read replicas while always sending writes to the primary database. This is useful for scaling read-heavy workloads.
 
 <Note>
 Replicas are chosen at random for each read query (not round-robin). Writes (`insert`, `update`, `delete`) always go to the primary database. A small number of time-sensitive reads (where the app must see its own recent writes) are also routed directly to the primary database regardless of replicas being configured.
@@ -129,7 +129,7 @@ POSTGRES_REPLICA_CONNECTION_STRINGS=postgresql://<user>:<password>@<replica-host
 ```yaml title="docker-compose.yml"
 services:
   pangolin:
-    image: fosrl/pangolin:postgresql-latest # Don't use latest in production
+    image: causq-networks/praxis:postgresql-latest # Don't use latest in production
     environment:
       POSTGRES_CONNECTION_STRING: postgresql://<user>:<password>@<primary-host>:<port>/<database>
       POSTGRES_REPLICA_CONNECTION_STRINGS: "postgresql://<user>:<password>@<replica-host-1>:<port>/<database>,postgresql://<user>:<password>@<replica-host-2>:<port>/<database>"

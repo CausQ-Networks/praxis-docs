@@ -4,15 +4,15 @@ description: "Configure a custom authentication page URL for your organization"
 ---
 
 <Note>
-Custom auth pages are only available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
+Custom auth pages are only available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
 </Note>
 
-Custom organization authentication pages let you serve the login page at your own domain instead of the default dashboard host (`app.pangolin.net` on Pangolin Cloud, or your configured dashboard domain when self-hosting). This provides better user experience and brand consistency.
+Custom organization authentication pages let you serve the login page at your own domain instead of the default dashboard host (`app.praxis.causq.com` on Praxis Cloud, or your configured dashboard domain when self-hosting). This provides better user experience and brand consistency.
 
-Custom login pages are most useful when [organization-scoped identity providers](/manage/identity-providers/add-an-idp#organization-identity-providers) are enabled. With per-org IdPs configured, the page lists those providers so users can pick how to sign in. Without per-org IdPs, the page only shows a button to log in with Pangolin credentials, which redirects back to the main login page.
+Custom login pages are most useful when [organization-scoped identity providers](/manage/identity-providers/add-an-idp#organization-identity-providers) are enabled. With per-org IdPs configured, the page lists those providers so users can pick how to sign in. Without per-org IdPs, the page only shows a button to log in with Praxis credentials, which redirects back to the main login page.
 
 <Note>
-On self-hosted Pangolin Enterprise Edition, enable organization-scoped IdPs by setting `app.identity_provider_mode: "org"` in your [private config file](/self-host/advanced/private-config-file#param-identity-provider-mode) `privateConfig.yml`.
+On self-hosted Praxis Enterprise Edition, enable organization-scoped IdPs by setting `app.identity_provider_mode: "org"` in your [private config file](/self-host/advanced/private-config-file#param-identity-provider-mode) `privateConfig.yml`.
 </Note>
 
 ## Benefits
@@ -25,8 +25,8 @@ On self-hosted Pangolin Enterprise Edition, enable organization-scoped IdPs by s
 **For Identity Provider Integration:**
 - Centralized login page for your organization
 - Choose between multiple login methods (Google, Azure, etc.)
-- Platform SSO: login once, access all Pangolin resources
-- Direct access to the Pangolin management dashboard
+- Platform SSO: login once, access all Praxis resources
+- Direct access to the Praxis management dashboard
 
 <Frame>
   <img src="/images/org-auth-page.png" alt="Organization login page with multiple login methods" />
@@ -39,9 +39,9 @@ On self-hosted Pangolin Enterprise Edition, enable organization-scoped IdPs by s
 3. Save your changes
 
 <Note>
-You need to add a custom domain to your organization first. On Pangolin Cloud, free domains (`*.tunneled.to`, `*.hostlocal.app`, etc.) cannot be used for auth pages. [Learn how to add domains](/manage/domains)
+You need to add a custom domain to your organization first. On Praxis Cloud, free domains (`*.tunneled.to`, `*.hostlocal.app`, etc.) cannot be used for auth pages. [Learn how to add domains](/manage/domains)
 </Note>
 
 <Frame>
-  <img src="/images/set-org-auth-page-domain.png" alt="Domain picker for the auth page in Pangolin settings" />
+  <img src="/images/set-org-auth-page-domain.png" alt="Domain picker for the auth page in Praxis settings" />
 </Frame>

@@ -1,9 +1,9 @@
 ---
 title: "Deployment"
-description: "Basic guide for running a Pangolin client in Kubernetes as a sidecar."
+description: "Basic guide for running a Praxis client in Kubernetes as a sidecar."
 ---
 
-This page covers a basic way to run a Pangolin client inside Kubernetes: as a sidecar container that gives a Pod access to your Pangolin resources over the tunnel.
+This page covers a basic way to run a Praxis client inside Kubernetes: as a sidecar container that gives a Pod access to your Praxis resources over the tunnel.
 
 <Note>
 This is a minimal example, not a production chart. There is no official Helm chart for the client at this time — adapt the manifests below to your own deployment, Kustomize overlays, or GitOps workflow.
@@ -11,19 +11,19 @@ This is a minimal example, not a production chart. There is no official Helm cha
 
 ## Why a sidecar
 
-Containers in the same Pod share a network namespace. Running Pangolin CLI (or Olm) as a sidecar container brings up the WireGuard tunnel inside that shared namespace, so every other container in the Pod can reach your Pangolin resources as if they were on the tunnel directly — no `hostNetwork` required.
+Containers in the same Pod share a network namespace. Running Praxis CLI (or Olm) as a sidecar container brings up the WireGuard tunnel inside that shared namespace, so every other container in the Pod can reach your Praxis resources as if they were on the tunnel directly — no `hostNetwork` required.
 
-This is useful when a workload running in your cluster (a batch job, an internal service, a CI runner) needs to reach private resources behind Pangolin.
+This is useful when a workload running in your cluster (a batch job, an internal service, a CI runner) needs to reach private resources behind Praxis.
 
 ## Prerequisites
 
-- A machine client created in Pangolin, with its `Client ID` and `Client Secret`. See [Pangolin CLI](/manage/clients/platforms/cli#machine-clients).
+- A machine client created in Praxis, with its `Client ID` and `Client Secret`. See [Praxis CLI](/manage/clients/platforms/cli#machine-clients).
 - A Kubernetes cluster where you can grant the `NET_ADMIN` capability and access to `/dev/net/tun`.
 
 ## Step 1: Create a Secret for machine client credentials
 
 ```bash
-kubectl create secret generic pangolin-client \
+kubectl create secret generic praxis-client \
   --namespace default \
   --from-literal=CLIENT_ID=<client-id> \
   --from-literal=CLIENT_SECRET=<client-secret>
@@ -35,7 +35,7 @@ Do not commit plaintext credentials to Git. For GitOps workflows, use an encrypt
 
 ## Step 2: Add the sidecar container
 
-Add a `pangolin-cli` container alongside your application container in the Pod spec. It needs the `NET_ADMIN` capability and access to the host's `/dev/net/tun` device to create the WireGuard interface.
+Add a `praxis-cli` container alongside your application container in the Pod spec. It needs the `NET_ADMIN` capability and access to the host's `/dev/net/tun` device to create the WireGuard interface.
 
 ```yaml
 apiVersion: v1
@@ -48,18 +48,18 @@ spec:
   containers:
     - name: my-app
       image: my-app-image:latest
-      # This container can reach Pangolin resources through
-      # the tunnel brought up by the pangolin-cli sidecar below.
+      # This container can reach Praxis resources through
+      # the tunnel brought up by the praxis-cli sidecar below.
 
-    - name: pangolin-cli
-      image: fosrl/pangolin-cli:latest
+    - name: praxis-cli
+      image: causq-networks/praxis-cli:latest
       restartPolicy: Always
       envFrom:
         - secretRef:
-            name: pangolin-client
+            name: praxis-client
       env:
-        - name: PANGOLIN_ENDPOINT
-          value: "https://pangolin.example.com"
+        - name: PRAXIS_ENDPOINT
+          value: "https://praxis.example.com"
       securityContext:
         capabilities:
           add: ["NET_ADMIN"]
@@ -77,7 +77,7 @@ spec:
 Setting `restartPolicy: Always` on the container makes it a [native sidecar](https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/) on Kubernetes 1.29+. It starts before the main container and Kubernetes keeps it running for the life of the Pod. On older clusters, omit `restartPolicy` and the container runs as a regular container instead — the tunnel still comes up, but startup ordering isn't guaranteed.
 </Note>
 
-The `pangolin-cli` image runs `pangolin up --attach` by default, which launches the client as a machine client using the `CLIENT_ID`/`CLIENT_SECRET` from the Secret and keeps it in the foreground so the container stays alive. See [Pangolin CLI](/manage/clients/platforms/cli#docker-pangolin-cli) for the environment variables and flags.
+The `praxis-cli` image runs `praxis up --attach` by default, which launches the client as a machine client using the `CLIENT_ID`/`CLIENT_SECRET` from the Secret and keeps it in the foreground so the container stays alive. See [Praxis CLI](/manage/clients/platforms/cli#docker-praxis-cli) for the environment variables and flags.
 
 ## Step 3: Apply and verify
 
@@ -94,10 +94,10 @@ kubectl get pod my-app
 Check the tunnel came up in the sidecar's logs:
 
 ```bash
-kubectl logs my-app -c pangolin-cli
+kubectl logs my-app -c praxis-cli
 ```
 
-In the Pangolin dashboard, verify the client shows as connected. Then, from inside the `my-app` container, confirm you can reach a private resource:
+In the Praxis dashboard, verify the client shows as connected. Then, from inside the `my-app` container, confirm you can reach a private resource:
 
 ```bash
 kubectl exec my-app -c my-app -- curl -s http://internal-resource.example
@@ -105,16 +105,16 @@ kubectl exec my-app -c my-app -- curl -s http://internal-resource.example
 
 ## Deployments and other workload types
 
-The same sidecar pattern applies to a `Deployment`, `StatefulSet`, `Job`, or `CronJob` — add the `pangolin-cli` container to `spec.template.spec.containers` (or `initContainers` with `restartPolicy: Always` for native sidecar behavior) the same way as shown above.
+The same sidecar pattern applies to a `Deployment`, `StatefulSet`, `Job`, or `CronJob` — add the `praxis-cli` container to `spec.template.spec.containers` (or `initContainers` with `restartPolicy: Always` for native sidecar behavior) the same way as shown above.
 
 <Warning>
-Each Pod running the sidecar connects as the same machine client. If you scale a Deployment to multiple replicas, every replica's sidecar authenticates with the same `CLIENT_ID`/`CLIENT_SECRET` and appears as one client in Pangolin. If you need to distinguish traffic per replica, create a separate machine client and Secret for each one.
+Each Pod running the sidecar connects as the same machine client. If you scale a Deployment to multiple replicas, every replica's sidecar authenticates with the same `CLIENT_ID`/`CLIENT_SECRET` and appears as one client in Praxis. If you need to distinguish traffic per replica, create a separate machine client and Secret for each one.
 </Warning>
 
 ## Next steps
 
 <CardGroup cols={2}>
-	<Card title="Pangolin CLI" href="/manage/clients/platforms/cli" icon="terminal">
+	<Card title="Praxis CLI" href="/manage/clients/platforms/cli" icon="terminal">
 		Install, configure, and run the CLI, including Docker.
 	</Card>
 	<Card title="Platforms" href="/manage/clients/platforms" icon="sliders">

@@ -15,7 +15,7 @@ These records are independent of session log retention. For prompt and response 
 
 USD uses [catalog](/manage/ai/model-catalog) rates (`in`, `out`, `cache`, `reasoning`) when the model id is known. Unknown models have no USD amount. Tokens still sum.
 
-Token buckets are prompt, cache-read, cache-write, completion, and reasoning. If the upstream omits usage, Pangolin estimates tokens from the request and response. Overview shows **Estimated**: the share of requests that used that path.
+Token buckets are prompt, cache-read, cache-write, completion, and reasoning. If the upstream omits usage, Praxis estimates tokens from the request and response. Overview shows **Estimated**: the share of requests that used that path.
 
 A non-2xx response from the provider still counts as a request with zero tokens, so volume charts include failed attempts.
 

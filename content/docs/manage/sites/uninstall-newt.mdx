@@ -5,9 +5,9 @@ description: "Remove a Newt site connector installed as a binary, service, or Do
 
 This guide covers removing Newt from a host. Steps depend on how you [installed Newt](/manage/sites/install-newt).
 
-Uninstalling Newt stops the tunnel from this machine. The site still exists in Pangolin until you delete it in the dashboard. Credentials and local config stay on disk until you remove them.
+Uninstalling Newt stops the tunnel from this machine. The site still exists in Praxis until you delete it in the dashboard. Credentials and local config stay on disk until you remove them.
 
-If you installed the site with the Pangolin CLI instead of standalone Newt, see [Uninstall Pangolin CLI](/manage/clients/platforms/uninstall-cli).
+If you installed the site with the Praxis CLI instead of standalone Newt, see [Uninstall Praxis CLI](/manage/clients/platforms/uninstall-cli).
 
 ## Binary (systemd)
 
@@ -58,7 +58,7 @@ docker compose down
 Remove the Compose files and any secret files you created (for example `newt-config.secret`). Optionally remove the image:
 
 ```bash
-docker image rm fosrl/newt
+docker image rm causq-networks/praxis-newt
 ```
 
 If you started Newt with `docker run`, stop and remove that container, then remove the image the same way.
@@ -96,7 +96,7 @@ kubectl delete -k <overlay-path>
 
 ## Unraid
 
-In the Unraid Docker tab, stop the Newt (or Pangolin Site) container, then remove the container and its template. Delete any appdata or config paths you mapped for Newt if you want to clear credentials from disk.
+In the Unraid Docker tab, stop the Newt (or Praxis Site) container, then remove the container and its template. Delete any appdata or config paths you mapped for Newt if you want to clear credentials from disk.
 
 ## Advantech Router App
 

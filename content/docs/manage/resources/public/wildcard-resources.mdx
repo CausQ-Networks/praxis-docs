@@ -1,34 +1,34 @@
 ---
 title: "Wildcard Resources"
-description: "Pangolin Cloud and Enterprise: route every hostname at a subdomain level through one public resource"
+description: "Praxis Cloud and Enterprise: route every hostname at a subdomain level through one public resource"
 ---
 
 <Note>
-Only available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) and [Enterprise Edition](/self-host/enterprise-edition).
+Only available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) and [Enterprise Edition](/self-host/enterprise-edition).
 </Note>
 
-With a wildcard public resource, one resource owns an entire subdomain level: every hostname under that level is proxied through the same Pangolin resource and tunnel so downstream systems can route further (for example another reverse proxy or Kubernetes ingress).
+With a wildcard public resource, one resource owns an entire subdomain level: every hostname under that level is proxied through the same Praxis resource and tunnel so downstream systems can route further (for example another reverse proxy or Kubernetes ingress).
 
 Access rules and authentication you set on that resource apply to all hostnames matched by the wildcard. If you enable a PIN code, every hostname under the wildcard requires that PIN. You can also attach a [resource policy](/manage/resources/public/resource-policies) so the same shared settings apply to the wildcard and any other linked public resources.
 
 ## Benefits
 
-- New hostnames work as soon as your downstream proxy serves them, with no new resource in Pangolin.
+- New hostnames work as soon as your downstream proxy serves them, with no new resource in Praxis.
 - One set of authentication and access rules protects every hostname at that level.
 - Downstream routing keeps working, since the original `Host` header is passed through.
 - A single wildcard certificate covers every hostname, so there is no certificate to issue per app.
 
 ## Use Cases
 
-- Put a Kubernetes ingress controller or an existing reverse proxy such as Traefik, Caddy, or nginx behind Pangolin.
+- Put a Kubernetes ingress controller or an existing reverse proxy such as Traefik, Caddy, or nginx behind Praxis.
 - Give each pull request or branch its own preview URL, such as `pr-123.preview.example.com`.
 - Host per-customer or per-tenant subdomains for a multi-tenant app.
 
 ## How Wildcard Resources Work
 
 1. You set the resource's subdomain to `*`, optionally under a parent such as `*.apps`.
-2. DNS sends every hostname at that level to Pangolin, which serves a wildcard certificate for it.
-3. Pangolin applies the resource's authentication and access rules to the request.
+2. DNS sends every hostname at that level to Praxis, which serves a wildcard certificate for it.
+3. Praxis applies the resource's authentication and access rules to the request.
 4. The request goes through the tunnel to the target with its original `Host` header, and your downstream proxy routes it to the right app.
 
 ## Creating a Wildcard Resource
@@ -43,28 +43,28 @@ A wildcard only matches hostnames under it, so `*.apps.example.com` does not mat
 
 In a [blueprint](/manage/blueprints), set `match-base-domain: true` on the resource.
 
-Pangolin rejects the setting if the base hostname is already taken, so that one hostname never belongs to two resources. The hostname is taken if it is:
+Praxis rejects the setting if the base hostname is already taken, so that one hostname never belongs to two resources. The hostname is taken if it is:
 
 - used by another resource
 - covered by a broader wildcard resource, such as `*.example.com` for `apps.example.com`
-- used by an organization login page or the Pangolin dashboard
+- used by an organization login page or the Praxis dashboard
 
 If you don't turn this on, you can still create a separate resource at the base hostname.
 
-On self-hosted Pangolin, DNS must also send the base hostname to your server, because a record for `*.apps` doesn't cover `apps`. Pangolin asks Traefik to include the base hostname on the wildcard certificate. On a [domain delegation](/manage/domains#domain-delegation-ns-records) domain, Pangolin answers DNS for the base hostname and the certificate already covers it.
+On self-hosted Praxis, DNS must also send the base hostname to your server, because a record for `*.apps` doesn't cover `apps`. Praxis asks Traefik to include the base hostname on the wildcard certificate. On a [domain delegation](/manage/domains#domain-delegation-ns-records) domain, Praxis answers DNS for the base hostname and the certificate already covers it.
 
 ## Requirements for Wildcard Resources
 
-Wildcard hostnames need TLS certificates that cover `*.your-level`, not just a single FQDN, and DNS must send all of those names to Pangolin. How you satisfy that depends on how you host Pangolin.
+Wildcard hostnames need TLS certificates that cover `*.your-level`, not just a single FQDN, and DNS must send all of those names to Praxis. How you satisfy that depends on how you host Praxis.
 
-### Self-hosted Pangolin
+### Self-hosted Praxis
 
-You must issue a wildcard certificate using DNS validation (DNS-01). HTTP-01 challenges prove one exact hostname at a time; they cannot obtain a certificate for `*.example.com`. DNS-01 proves control of the DNS zone, which is what certificate authorities require for wildcard coverage, otherwise Pangolin could not terminate HTTPS for arbitrary subdomains at that label.
+You must issue a wildcard certificate using DNS validation (DNS-01). HTTP-01 challenges prove one exact hostname at a time; they cannot obtain a certificate for `*.example.com`. DNS-01 proves control of the DNS zone, which is what certificate authorities require for wildcard coverage, otherwise Praxis could not terminate HTTPS for arbitrary subdomains at that label.
 
 Configure Traefik / Let’s Encrypt for DNS-01 and wildcard certs as described in [Wildcard domains](/self-host/advanced/wild-card-domains).
 
-You also need DNS records so every name at that level resolves to your Pangolin server, for example an A record for `*.subdomain`. See [Domains](/manage/domains#for-wildcard-domains) for typical wildcard DNS patterns.
+You also need DNS records so every name at that level resolves to your Praxis server, for example an A record for `*.subdomain`. See [Domains](/manage/domains#for-wildcard-domains) for typical wildcard DNS patterns.
 
-### Pangolin Cloud
+### Praxis Cloud
 
-Use a [domain delegation](/manage/domains#domain-delegation-ns-records) (NS record) domain so Pangolin controls DNS at the delegated zone. That delegation lets Pangolin issue and renew wildcard certificates for that level and ensures queries for `*.your-delegated-zone` route to Pangolin. Pangolin Cloud manages the certificates for you once delegation is in place.
+Use a [domain delegation](/manage/domains#domain-delegation-ns-records) (NS record) domain so Praxis controls DNS at the delegated zone. That delegation lets Praxis issue and renew wildcard certificates for that level and ensures queries for `*.your-delegated-zone` route to Praxis. Praxis Cloud manages the certificates for you once delegation is in place.

@@ -1,14 +1,14 @@
 ---
 title: "Configuration File"
-description: "Configure Pangolin using the config.yml file with detailed settings for all components"
+description: "Configure Praxis using the config.yml file with detailed settings for all components"
 ---
-The `config.yml` file controls all aspects of your Pangolin deployment, including server settings, domain configuration, email setup, and security options. This file is mounted at `config/config.yml` in your Docker container.
+The `config.yml` file controls all aspects of your Praxis deployment, including server settings, domain configuration, email setup, and security options. This file is mounted at `config/config.yml` in your Docker container.
 
 ## Setting up your `config.yml`
 
 To get started, create a basic configuration file with the essential settings:
 
-Minimal Pangolin configuration:
+Minimal Praxis configuration:
 
 ```yaml title="config.yml"
 gerbil:
@@ -20,7 +20,7 @@ gerbil:
     # site_block_size: 30
 
 app:
-    dashboard_url: "https://pangolin.example.com" # REPLACE WITH YOUR DOMAIN
+    dashboard_url: "https://praxis.example.com" # REPLACE WITH YOUR DOMAIN
     log_level: "info"
     telemetry:
         anonymous_usage: true
@@ -33,7 +33,7 @@ domains:
 server:
     secret: "your-strong-secret" # REPLACE
     cors:
-        origins: ["https://pangolin.example.com"] # REPLACE WITH YOUR DOMAIN
+        origins: ["https://praxis.example.com"] # REPLACE WITH YOUR DOMAIN
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
         allowed_headers: ["X-CSRF-Token", "Content-Type"]
         credentials: false
@@ -63,11 +63,11 @@ This section contains the complete reference for all configuration options in `c
 
   <Expandable title="App">
     <ResponseField name="dashboard_url" type="string" required>
-      The URL where your Pangolin dashboard is hosted.
+      The URL where your Praxis dashboard is hosted.
 
-      **Examples**: `https://example.com`, `https://pangolin.example.com`
+      **Examples**: `https://example.com`, `https://praxis.example.com`
 
-      This URL is used for generating links, redirects, and authentication flows. You can run Pangolin on a subdomain or root domain.
+      This URL is used for generating links, redirects, and authentication flows. You can run Praxis on a subdomain or root domain.
     </ResponseField>
 
     <ResponseField name="log_level" type="string">
@@ -166,7 +166,7 @@ This section contains the complete reference for all configuration options in `c
     </ResponseField>
 
     <ResponseField name="internal_hostname" type="string">
-      The hostname of the Pangolin container for internal communication.
+      The hostname of the Praxis container for internal communication.
 
       **Example**: `pangolin`
 
@@ -264,7 +264,7 @@ This section contains the complete reference for all configuration options in `c
         <ResponseField name="origins" type="array of strings">
           Allowed origins for cross-origin requests.
 
-          **Example**: `["https://pangolin.example.com"]`
+          **Example**: `["https://praxis.example.com"]`
         </ResponseField>
 
         <ResponseField name="methods" type="array of strings">
@@ -307,11 +307,11 @@ This section contains the complete reference for all configuration options in `c
       **Default**: `[]`
 
       <Note>
-        By default Badger trusts Cloudflare's IP ranges and reads the client IP from the `CF-Connecting-IP` header. Setting one or more ranges here replaces the Cloudflare ranges, so only the ranges you list are trusted. Use this when a proxy other than Cloudflare sits in front of Pangolin.
+        By default Badger trusts Cloudflare's IP ranges and reads the client IP from the `CF-Connecting-IP` header. Setting one or more ranges here replaces the Cloudflare ranges, so only the ranges you list are trusted. Use this when a proxy other than Cloudflare sits in front of Praxis.
       </Note>
 
       <Warning>
-        Only list addresses of proxies you control. Any request arriving from a trusted range can set the client IP that Pangolin uses for rules and logging.
+        Only list addresses of proxies you control. Any request arriving from a trusted range can set the client IP that Praxis uses for rules and logging.
       </Warning>
     </ResponseField>
 
@@ -334,7 +334,7 @@ This section contains the complete reference for all configuration options in `c
     </ResponseField>
 
     <ResponseField name="enable_ai_gateway_client_ip_header" type="boolean">
-      Whether to have Badger stamp the resolved client IP into a dedicated `X-Pangolin-Client-Ip` header on the site-resource AI Gateway route.
+      Whether to have Badger stamp the resolved client IP into a dedicated `X-Praxis-Client-Ip` header on the site-resource AI Gateway route.
 
       **Default**: `false`
 
@@ -480,7 +480,7 @@ This section contains the complete reference for all configuration options in `c
       **Example**: `letsencrypt`
 
       <Note>
-        This only applies to domains created through the Pangolin dashboard.
+        This only applies to domains created through the Praxis dashboard.
       </Note>
     </ResponseField>
 
@@ -490,7 +490,7 @@ This section contains the complete reference for all configuration options in `c
       **Example**: `true`
 
       <Note>
-        This only applies to domains created through the Pangolin dashboard.
+        This only applies to domains created through the Praxis dashboard.
       </Note>
     </ResponseField>
 
@@ -505,7 +505,7 @@ This section contains the complete reference for all configuration options in `c
     </ResponseField>
 
     <ResponseField name="certificates_path" type="string">
-      Path where SSL certificates are stored. This is used only with managed Pangolin deployments.
+      Path where SSL certificates are stored. This is used only with managed Praxis deployments.
 
       **Example**: `/var/certificates`
 
@@ -521,7 +521,7 @@ This section contains the complete reference for all configuration options in `c
     </ResponseField>
 
     <ResponseField name="dynamic_cert_config_path" type="string">
-      Path to the dynamic certificate configuration file. This is used only with managed Pangolin deployments.
+      Path to the dynamic certificate configuration file. This is used only with managed Praxis deployments.
 
       **Example**: `/var/dynamic/cert_config.yml`
 
@@ -544,7 +544,7 @@ This section contains the complete reference for all configuration options in `c
       **Default**: `[]`
 
       <Note>
-        Useful for domains that need to be routable through the SNI proxy but aren't tied to a resource that Pangolin would otherwise discover automatically.
+        Useful for domains that need to be routable through the SNI proxy but aren't tied to a resource that Praxis would otherwise discover automatically.
       </Note>
     </ResponseField>
 
@@ -648,7 +648,7 @@ This section contains the complete reference for all configuration options in `c
       </Note>
 
       <Tip>
-        If you change this on an existing install you will need to delete the exit node to refresh it in the database which is best practice. Use the [pangctl command to clear the exit nodes](https://docs.pangolin.net/self-host/advanced/container-cli-tool#clear-exit-nodes).
+        If you change this on an existing install you will need to delete the exit node to refresh it in the database which is best practice. Use the [pangctl command to clear the exit nodes](https://docs.praxis.causq.com/self-host/advanced/container-cli-tool#clear-exit-nodes).
       </Tip>
     </ResponseField>
 
@@ -661,7 +661,7 @@ This section contains the complete reference for all configuration options in `c
         A /24 block provides 256 IP addresses for the Gerbil network.
       </Note>
       <Tip>
-        If you change this on an existing install you will need to delete the exit node to refresh it in the database which is best practice. Use the [pangctl command to clear the exit nodes](https://docs.pangolin.net/self-host/advanced/container-cli-tool#clear-exit-nodes).
+        If you change this on an existing install you will need to delete the exit node to refresh it in the database which is best practice. Use the [pangctl command to clear the exit nodes](https://docs.praxis.causq.com/self-host/advanced/container-cli-tool#clear-exit-nodes).
       </Tip>
     </ResponseField>
 
@@ -674,7 +674,7 @@ This section contains the complete reference for all configuration options in `c
         A /30 block provides 4 IP addresses per site. Consider using /29 (8 IPs) or /28 (16 IPs) for sites with heavy WireGuard usage.
       </Note>
       <Tip>
-        If you change this on an existing install you will need to delete the exit node to refresh it in the database which is best practice. Use the [pangctl command to clear the exit nodes](https://docs.pangolin.net/self-host/advanced/container-cli-tool#clear-exit-nodes).
+        If you change this on an existing install you will need to delete the exit node to refresh it in the database which is best practice. Use the [pangctl command to clear the exit nodes](https://docs.praxis.causq.com/self-host/advanced/container-cli-tool#clear-exit-nodes).
       </Tip>
     </ResponseField>
   </Expandable>
@@ -940,7 +940,7 @@ This section contains the complete reference for all configuration options in `c
     </ResponseField> 
 
     <ResponseField name="disable_private_http_placeholder" type="boolean">
-       When set to true Pangolin will not generate publicly facing placeholder pages for private HTTP resources. This can impact the ability for Pangolin to generate nessicary certificates.
+       When set to true Praxis will not generate publicly facing placeholder pages for private HTTP resources. This can impact the ability for Praxis to generate nessicary certificates.
 
       **Default**: `false`
     </ResponseField> 
@@ -1110,11 +1110,11 @@ This section contains the complete reference for all configuration options in `c
 </Note>
 
 <ResponseField name="acme" type="object">
-  Configuration for ACME certificate synchronization. Used in conjunction with `flags.enable_acme_cert_sync` to synchronize TLS certificates issued by Traefik (or another ACME client) into Pangolin for use on private resources.
+  Configuration for ACME certificate synchronization. Used in conjunction with `flags.enable_acme_cert_sync` to synchronize TLS certificates issued by Traefik (or another ACME client) into Praxis for use on private resources.
 
   <Expandable title="properties">
     <ResponseField name="acme_json_path" type="string" default="config/letsencrypt/acme.json">
-      Path to the `acme.json` file or a directory containing more than one acme json file produced by Traefik (or another ACME client). Pangolin reads this file to extract certificates for synchronization and will look for all files in the specified directory if a directory is provided. The file must be in the format produced by Traefik's ACME integration. This file is typically mounted as a volume from your ACME client container.
+      Path to the `acme.json` file or a directory containing more than one acme json file produced by Traefik (or another ACME client). Praxis reads this file to extract certificates for synchronization and will look for all files in the specified directory if a directory is provided. The file must be in the format produced by Traefik's ACME integration. This file is typically mounted as a volume from your ACME client container.
       
       ```yaml
       acme:
@@ -1123,7 +1123,7 @@ This section contains the complete reference for all configuration options in `c
     </ResponseField>
 
     <ResponseField name="sync_interval_ms" type="number" default="5000">
-      Interval in milliseconds at which Pangolin polls the `acme.json` file for certificate changes.
+      Interval in milliseconds at which Praxis polls the `acme.json` file for certificate changes.
       
       ```yaml
       acme:
@@ -1132,7 +1132,7 @@ This section contains the complete reference for all configuration options in `c
     </ResponseField>
 
     <ResponseField name="acme_http_endpoint" type="string" default="">
-        HTTP endpoint where Pangolin can pull SSL certificates from to load into the database. Provided in the following format: 
+        HTTP endpoint where Praxis can pull SSL certificates from to load into the database. Provided in the following format: 
 
         ```json
         [
@@ -1164,16 +1164,16 @@ The catalog feeds Known Models pickers, wildcard discovery, provider selection, 
 
   <Expandable title="AI">
     <ResponseField name="model_catalog" type="object">
-      Where Pangolin loads the model catalog from, and how often it refreshes.
+      Where Praxis loads the model catalog from, and how often it refreshes.
 
       <Expandable title="Model catalog">
-        <ResponseField name="upstream_url" type="string" default="https://api.fossorial.io/api/v1/models">
+        <ResponseField name="upstream_url" type="string" default="https://api.github.com/repos/CausQ-Networks/praxis-cli/api/v1/models">
           HTTP endpoint that returns catalog JSON. Point this at your own API to serve a custom catalog.
 
           ```yaml
           ai:
             model_catalog:
-              upstream_url: "https://api.fossorial.io/api/v1/models"
+              upstream_url: "https://api.github.com/repos/CausQ-Networks/praxis-cli/api/v1/models"
           ```
         </ResponseField>
 
@@ -1202,7 +1202,7 @@ The catalog feeds Known Models pickers, wildcard discovery, provider selection, 
         </ResponseField>
 
         <ResponseField name="refresh_interval_max_hours" type="number" default="12">
-          Upper bound, in hours, for the jittered background refresh interval. Pangolin waits a random duration between min and max so many instances do not hit the upstream at the same moment.
+          Upper bound, in hours, for the jittered background refresh interval. Praxis waits a random duration between min and max so many instances do not hit the upstream at the same moment.
         </ResponseField>
       </Expandable>
     </ResponseField>
@@ -1278,7 +1278,7 @@ Some configuration values can be set using environment variables for enhanced se
 
 ### Reading secrets from a file (`_FILE` suffix)
 
-For any variable marked "Supports `_FILE`" above, you can set `<VARIABLE>_FILE` instead of `<VARIABLE>` to a path on disk, and Pangolin will read that file and use its (trimmed) contents as the value. This is the standard way to consume [Docker/Swarm secrets](https://docs.docker.com/engine/swarm/secrets/) — for example a secret mounted at `/run/secrets/server_secret` — without ever putting the raw value in `config.yml`, a `.env` file, or the container's visible environment.
+For any variable marked "Supports `_FILE`" above, you can set `<VARIABLE>_FILE` instead of `<VARIABLE>` to a path on disk, and Praxis will read that file and use its (trimmed) contents as the value. This is the standard way to consume [Docker/Swarm secrets](https://docs.docker.com/engine/swarm/secrets/) — for example a secret mounted at `/run/secrets/server_secret` — without ever putting the raw value in `config.yml`, a `.env` file, or the container's visible environment.
 
 Setting both `<VARIABLE>` and `<VARIABLE>_FILE` at the same time is an error.
 

@@ -22,7 +22,7 @@ Bedrock Model Invoke (`InvokeModel` / `invoke-with-response-stream`) is availabl
 1. Sidebar → **AI Gateway** → **Providers** → **Create**.
 2. Set **Provider Type** to **Amazon Bedrock**. Capabilities and auth type fill in from the defaults above.
 3. Set **Upstream URL** to your regional Bedrock Runtime host, for example `https://bedrock-runtime.us-east-1.amazonaws.com`.
-4. Paste a Bearer credential the upstream accepts. Pangolin sends `Authorization: Bearer <key>` on every request.
+4. Paste a Bearer credential the upstream accepts. Praxis sends `Authorization: Bearer <key>` on every request.
 5. Set **Allow** and **Block** lists. Use Bedrock model ids (for example `anthropic.claude-sonnet-4-20250514-v1:0` or an inference profile id).
 6. Save, then attach the provider to an [AI Gateway resource](/manage/ai/overview).
 

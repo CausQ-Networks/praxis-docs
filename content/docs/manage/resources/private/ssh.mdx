@@ -1,17 +1,17 @@
 ---
 title: "SSH"
-description: "Connect to remote hosts over the Pangolin tunnel using the Pangolin CLI"
+description: "Connect to remote hosts over the Praxis tunnel using the Praxis CLI"
 ---
 
-Private SSH resources let users connect to remote hosts from their terminal over the Pangolin tunnel. Unlike [public SSH resources](/manage/resources/public/ssh), private SSH is **not** browser-rendered.
+Private SSH resources let users connect to remote hosts from their terminal over the Praxis tunnel. Unlike [public SSH resources](/manage/resources/public/ssh), private SSH is **not** browser-rendered.
 
 ## Benefits
 
 - SSH servers are never exposed to the public internet. Only connected clients with access can reach them.
-- With automated provisioning, users sign in with their Pangolin identity and get short-lived certificates, so there are no long-lived keys to distribute or rotate.
+- With automated provisioning, users sign in with their Praxis identity and get short-lived certificates, so there are no long-lived keys to distribute or rotate.
 - Accounts are created on the host just in time, with sudo and group permissions set by role.
 - Users keep a native terminal workflow, including their own shell, tools, and SSH options.
-- Removing a user's access in Pangolin cuts off their path to the host, whatever credentials they still hold.
+- Removing a user's access in Praxis cuts off their path to the host, whatever credentials they still hold.
 
 ## Use Cases
 
@@ -22,23 +22,23 @@ Private SSH resources let users connect to remote hosts from their terminal over
 
 ## How It Works
 
-1. The user connects with the Pangolin client (GUI or CLI).
-2. They run `pangolin ssh <alias>` where the alias matches the private resource.
-3. Pangolin checks the user's identity from the active client connection and enforces [private resource access rules](/manage/resources/private/authentication) (users, roles, machines).
-4. Depending on the SSH [configuration](/manage/ssh#configuration-options), Pangolin generates a short-lived certificate and provisions the user on the host, or the user authenticates with existing host credentials.
+1. The user connects with the Praxis client (GUI or CLI).
+2. They run `praxis ssh <alias>` where the alias matches the private resource.
+3. Praxis checks the user's identity from the active client connection and enforces [private resource access rules](/manage/resources/private/authentication) (users, roles, machines).
+4. Depending on the SSH [configuration](/manage/ssh#configuration-options), Praxis generates a short-lived certificate and provisions the user on the host, or the user authenticates with existing host credentials.
 5. An SSH session opens through the tunnel.
 
-The Pangolin client provides the tunnel; the CLI handles certificate generation, user provisioning, and the SSH session itself. No manual SSH key distribution is required when using automated provisioning.
+The Praxis client provides the tunnel; the CLI handles certificate generation, user provisioning, and the SSH session itself. No manual SSH key distribution is required when using automated provisioning.
 
 ```bash
 pangolin ssh <resource-alias>
 ```
 
-The tunnel can be provided by the CLI or by another Pangolin client (for example the macOS app). You can run the GUI for the tunnel and use the CLI only for SSH. On Windows, [companion mode](/manage/clients/platforms/windows#companion-mode) uses the desktop app's login and connection, so `pangolin ssh` runs as the account you already signed in with.
+The tunnel can be provided by the CLI or by another Praxis client (for example the macOS app). You can run the GUI for the tunnel and use the CLI only for SSH. On Windows, [companion mode](/manage/clients/platforms/windows#companion-mode) uses the desktop app's login and connection, so `praxis ssh` runs as the account you already signed in with.
 
 ## Destination and Access
 
-Create a private resource with a [destination](/manage/resources/private/destinations) (IP or FQDN) for the host you want to SSH into. Assign an [alias](/manage/resources/private/alias) so users have a friendly name to pass to `pangolin ssh`.
+Create a private resource with a [destination](/manage/resources/private/destinations) (IP or FQDN) for the host you want to SSH into. Assign an [alias](/manage/resources/private/alias) so users have a friendly name to pass to `praxis ssh`.
 
 Grant access to users or roles and ensure **TCP 22** is allowed in [port restrictions](/manage/resources/private/port-restrictions).
 
@@ -51,13 +51,13 @@ If TCP 22 is not allowed in the resource's port restrictions, users will not be 
 SSH private resources do **not** use discrete targets. Instead, you:
 
 1. Select which sites can route to the resource.
-2. Enter the backend host and port—unless you selected **Pangolin SSH** mode, which executes sessions on the site connector host and does not require a host or port.
+2. Enter the backend host and port—unless you selected **Praxis SSH** mode, which executes sessions on the site connector host and does not require a host or port.
 
 <Warning>
-**Pangolin SSH mode requires root.** The Pangolin Site must run as root on the site connector host. Use `sudo pangolin up site ...` or run the site service as root. See [Install Sites](/manage/sites/install-site).
+**Praxis SSH mode requires root.** The Praxis Site must run as root on the site connector host. Use `sudo praxis up site ...` or run the site service as root. See [Install Sites](/manage/sites/install-site).
 </Warning>
 
-Pangolin routes through the site that is online and healthiest. See [Multi-site Routing](/manage/resources/private/multi-site-routing).
+Praxis routes through the site that is online and healthiest. See [Multi-site Routing](/manage/resources/private/multi-site-routing).
 
 ## SSH Configuration
 
@@ -69,9 +69,9 @@ See [SSH Access](/manage/ssh) for a full explanation of each option, setup instr
 
 | | Private SSH | [Public SSH](/manage/resources/public/ssh) |
 |---|-------------|--------------------------------------------|
-| **Access** | Pangolin CLI: `pangolin ssh <alias>` | Web browser at a public FQDN |
-| **Client required** | Yes — user must be connected with the Pangolin client | No |
+| **Access** | Praxis CLI: `praxis ssh <alias>` | Web browser at a public FQDN |
+| **Client required** | Yes — user must be connected with the Praxis client | No |
 | **Auth layer** | Identity from the active client connection; [private resource access rules](/manage/resources/private/authentication) | [Public resource authentication](/manage/resources/public/authentication) — login page, SSO, access rules |
 | **Manual auth step** | Credentials handled by the SSH client or certificate flow | Username/password or private key entered in a browser form after the public auth layer |
-| **Hostname** | [Alias](/manage/resources/private/alias) on the private resource | Public FQDN on your Pangolin domain |
+| **Hostname** | [Alias](/manage/resources/private/alias) on the private resource | Public FQDN on your Praxis domain |
 | **Port restrictions** | TCP 22 must be allowed in [port restrictions](/manage/resources/private/port-restrictions) | Not applicable |

@@ -18,7 +18,7 @@ If you install with the [quick installer](/self-host/quick-install), it asks whe
   ```yaml
   services:
     pangolin:
-      image: fosrl/pangolin:ee-latest  # Enterprise Edition (SQLite)
+      image: causq-networks/praxis:ee-latest  # Enterprise Edition (SQLite)
       # ... rest of configuration
   ```
 
@@ -27,12 +27,12 @@ If you install with the [quick installer](/self-host/quick-install), it asks whe
   ```yaml
   services:
     pangolin:
-      image: fosrl/pangolin:ee-postgresql-latest  # Enterprise Edition (PostgreSQL)
+      image: causq-networks/praxis:ee-postgresql-latest  # Enterprise Edition (PostgreSQL)
       # ... rest of configuration
   ```
 
   <Warning>
-  The Enterprise tags are `ee-latest` for SQLite and `ee-postgresql-latest` for PostgreSQL. They are different images from Community Edition (`fosrl/pangolin:latest` and `fosrl/pangolin:postgresql-latest`).
+  The Enterprise tags are `ee-latest` for SQLite and `ee-postgresql-latest` for PostgreSQL. They are different images from Community Edition (`causq-networks/praxis:latest` and `causq-networks/praxis:postgresql-latest`).
   </Warning>
 </Step>
 
@@ -55,13 +55,13 @@ If you install with the [quick installer](/self-host/quick-install), it asks whe
 
 Activating a key binds it to this server. The License page shows the host ID that binding uses, and a key can only be active on one host at a time.
 
-If you rebuild the server, it often comes back with a new host ID. The key is still bound to the old one, so it will not register again until you clear that binding. In your [Pangolin account](https://app.pangolin.net), open **Licenses**, click the three dots on that license, and choose **Reset Server Association**. Then activate the key on the new host.
+If you rebuild the server, it often comes back with a new host ID. The key is still bound to the old one, so it will not register again until you clear that binding. In your [Praxis account](https://app.praxis.causq.com), open **Licenses**, click the three dots on that license, and choose **Reset Server Association**. Then activate the key on the new host.
 
 ## Troubleshooting
 
 <AccordionGroup>
 <Accordion title="Admin panel still shows Community Edition">
-  You're likely running the Community Edition Docker image. Confirm your `docker-compose.yml` uses an Enterprise tag: `fosrl/pangolin:ee-latest` for SQLite, or `fosrl/pangolin:ee-postgresql-latest` if you run PostgreSQL. You can pin a version the same way, for example `fosrl/pangolin:ee-1.14.1` or `fosrl/pangolin:ee-postgresql-1.14.1`. Restart the stack after changing the image:
+  You're likely running the Community Edition Docker image. Confirm your `docker-compose.yml` uses an Enterprise tag: `causq-networks/praxis:ee-latest` for SQLite, or `causq-networks/praxis:ee-postgresql-latest` if you run PostgreSQL. You can pin a version the same way, for example `causq-networks/praxis:ee-1.14.1` or `causq-networks/praxis:ee-postgresql-1.14.1`. Restart the stack after changing the image:
 
   ```bash
   sudo docker compose down && sudo docker compose up -d

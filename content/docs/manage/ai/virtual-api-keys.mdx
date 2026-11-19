@@ -3,9 +3,9 @@ title: "Virtual API Keys"
 description: "Authenticate AI clients to public AI Gateway resources without sharing upstream provider keys"
 ---
 
-A virtual API key is a Pangolin credential that AI clients send to a public AI Gateway resource. Users retrieve their **identity key** by logging in with their existing Pangolin account or [identity provider](/manage/identity-providers/add-an-idp). That key is bound to their Pangolin identity, so calls are attributed to them for auditing, tracking, and access enforcement. When the user is known, Pangolin also forwards that identity upstream as [`Remote-*` headers](/manage/ai/providers/configuration#identity-headers).
+A virtual API key is a Praxis credential that AI clients send to a public AI Gateway resource. Users retrieve their **identity key** by logging in with their existing Praxis account or [identity provider](/manage/identity-providers/add-an-idp). That key is bound to their Praxis identity, so calls are attributed to them for auditing, tracking, and access enforcement. When the user is known, Praxis also forwards that identity upstream as [`Remote-*` headers](/manage/ai/providers/configuration#identity-headers).
 
-The real OpenAI, Anthropic, Gemini, or other provider key stays on the [provider](/manage/ai/providers/overview). Pangolin checks the virtual key, then forwards the request with the upstream secret.
+The real OpenAI, Anthropic, Gemini, or other provider key stays on the [provider](/manage/ai/providers/overview). Praxis checks the virtual key, then forwards the request with the upstream secret.
 
 These keys are what coding agents put in their API key field. They are not [Integration API](/manage/integration-api) organization or root keys.
 
@@ -15,15 +15,15 @@ Agents and SDKs expect an API key. Virtual keys let many people and services cal
 
 - Revoke or rotate one person or agent's access without rotating the provider key
 - Attribute usage to a user or a named key
-- Use the same Pangolin credential in clients that send `Authorization: Bearer`, `x-api-key`, or `x-goog-api-key`
+- Use the same Praxis credential in clients that send `Authorization: Bearer`, `x-api-key`, or `x-goog-api-key`
 
-Pangolin accepts the virtual key in those headers and strips it before the upstream call. Keys look like `pangolin-key-<id>.<secret>`.
+Praxis accepts the virtual key in those headers and strips it before the upstream call. Keys look like `pangolin-key-<id>.<secret>`.
 
-Logging into Pangolin in a browser is how you **retrieve** a key. Model calls still need the virtual key in the request. A dashboard session cookie cannot proxy through the gateway.
+Logging into Praxis in a browser is how you **retrieve** a key. Model calls still need the virtual key in the request. A dashboard session cookie cannot proxy through the gateway.
 
 ## Public Resources Only
 
-Virtual keys apply to **public** AI Gateway resources. [Private resources](/manage/resources/understanding-resources) are reached through the [Pangolin client](/manage/clients/platforms), so the gateway does not check a key. Clients still need a placeholder in the key field; use the literal string `none`. Deleting the field usually breaks the client.
+Virtual keys apply to **public** AI Gateway resources. [Private resources](/manage/resources/understanding-resources) are reached through the [Praxis client](/manage/clients/platforms), so the gateway does not check a key. Clients still need a placeholder in the key field; use the literal string `none`. Deleting the field usually breaks the client.
 
 ## Authentication Is Always On
 
@@ -63,9 +63,9 @@ When you create or edit a key, you can attach a [budget](/manage/ai/budgets) so 
 
 Your identity key and any manual keys attributed to you are available in three places:
 
-1. Visit the public resource URL in a browser and log in with your Pangolin identity. After login, Pangolin shows the key.
+1. Visit the public resource URL in a browser and log in with your Praxis identity. After login, Praxis shows the key.
 2. Open the Resource Launcher, select the resource, and use the more-info side panel.
-3. Go to `https://app.pangolin.net/<org-id>/keys` (the org **Your API Keys** page). On self-hosted Pangolin, use the same path on your dashboard URL, for example `https://pangolin.example.com/<org-id>/keys`.
+3. Go to `https://app.praxis.causq.com/<org-id>/keys` (the org **Your API Keys** page). On self-hosted Praxis, use the same path on your dashboard URL, for example `https://praxis.example.com/<org-id>/keys`.
 
 See [Organization ID](/manage/organizations/org-id) if you need to look up `<org-id>`.
 
@@ -83,4 +83,4 @@ Admins can email keys so users do not have to find the dashboard page themselves
 
 When you create or edit a manual key, enable **Email key upon generation** (or **Email this key**). Send it to the associated user and to extra addresses you add.
 
-Self-hosted Pangolin needs [SMTP](/self-host/advanced/config-file#email-configuration) configured before either flow can send mail.
+Self-hosted Praxis needs [SMTP](/self-host/advanced/config-file#email-configuration) configured before either flow can send mail.

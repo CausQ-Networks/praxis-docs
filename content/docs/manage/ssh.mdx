@@ -7,25 +7,25 @@ This page explains the configuration options shared by both resource types, give
 
 ## Benefits
 
-- SSH servers are never exposed to the public internet. Users reach them through a [public resource](/manage/resources/public/ssh) in the browser or a [private resource](/manage/resources/private/ssh) over the Pangolin client.
+- SSH servers are never exposed to the public internet. Users reach them through a [public resource](/manage/resources/public/ssh) in the browser or a [private resource](/manage/resources/private/ssh) over the Praxis client.
 - Automated provisioning signs short-lived certificates from your organization's CA, so there are no long-lived keys on servers.
-- User accounts are created just in time from Pangolin identities, with sudo access and groups set per role.
-- Pangolin SSH mode works without an SSH server or OpenSSH configuration on the host.
-- Access follows your users and roles. Removing someone in Pangolin removes their path to every server.
+- User accounts are created just in time from Praxis identities, with sudo access and groups set per role.
+- Praxis SSH mode works without an SSH server or OpenSSH configuration on the host.
+- Access follows your users and roles. Removing someone in Praxis removes their path to every server.
 
 ## Use Cases
 
 - Replace shared accounts and copied `authorized_keys` files with per-user access tied to SSO.
-- Give a team access to a fleet of servers behind a single bastion running a Pangolin Site.
+- Give a team access to a fleet of servers behind a single bastion running a Praxis Site.
 - Limit some roles to no sudo or a fixed set of sudo commands on production hosts.
-- Sign keys with `pangolin ssh sign` for tools that open their own SSH connections.
+- Sign keys with `praxis ssh sign` for tools that open their own SSH connections.
 
 ## How SSH Access Works
 
-1. A user starts a session in the browser on a public resource, or with `pangolin ssh <alias>` on a private resource.
-2. Pangolin checks that the user has access to the resource.
-3. With manual authentication, the user signs in with credentials that already exist on the host. With automated provisioning, Pangolin makes sure an account exists for the user and authenticates them, using a short-lived signed certificate in Standard SSH Server mode.
-4. The session runs on the site host in Pangolin SSH mode, or is routed to an SSH server on the network in Standard SSH Server mode.
+1. A user starts a session in the browser on a public resource, or with `praxis ssh <alias>` on a private resource.
+2. Praxis checks that the user has access to the resource.
+3. With manual authentication, the user signs in with credentials that already exist on the host. With automated provisioning, Praxis makes sure an account exists for the user and authenticates them, using a short-lived signed certificate in Standard SSH Server mode.
+4. The session runs on the site host in Praxis SSH mode, or is routed to an SSH server on the network in Standard SSH Server mode.
 
 See [How Certificates Work](#how-certificates-work) and [How Users and Access Are Managed](#how-users-and-access-are-managed) for details.
 
@@ -34,7 +34,7 @@ See [How Certificates Work](#how-certificates-work) and [How Users and Access Ar
 <iframe
   className="w-full aspect-video rounded-xl"
   src="https://www.youtube-nocookie.com/embed/8bvVdcPPWGQ"
-  title="How To Setup SSH In The Browser With Pangolin"
+  title="How To Setup SSH In The Browser With Praxis"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
   referrerPolicy="strict-origin-when-cross-origin"
   allowFullScreen
@@ -42,17 +42,17 @@ See [How Certificates Work](#how-certificates-work) and [How Users and Access Ar
 
 ## Default Configuration (Easiest)
 
-When you create an SSH resource, the dashboard defaults to **Pangolin SSH** mode with **Manual Authentication**. This is the easiest path. It works out of the box. You do not need an auth daemon, OpenSSH reconfiguration, or extra host setup beyond running the Pangolin Site as root.
+When you create an SSH resource, the dashboard defaults to **Praxis SSH** mode with **Manual Authentication**. This is the easiest path. It works out of the box. You do not need an auth daemon, OpenSSH reconfiguration, or extra host setup beyond running the Praxis Site as root.
 
 With these defaults:
 
-1. Create the SSH resource and select a site where the Pangolin Site runs as root on the machine you want to access.
-2. Leave mode as **Pangolin SSH** and authentication as **Manual Authentication**.
+1. Create the SSH resource and select a site where the Praxis Site runs as root on the machine you want to access.
+2. Leave mode as **Praxis SSH** and authentication as **Manual Authentication**.
 3. Users connect and authenticate with credentials that already exist on that host.
 
-On a [public resource](/manage/resources/public/ssh), users visit the resource FQDN, complete Pangolin authentication, then enter their host username and password (or private key) in the browser form. On a [private resource](/manage/resources/private/ssh), users connect with the Pangolin client and run `pangolin ssh username@<alias>`-Pangolin prompts for the host password. To use a private key instead, pass it with `-i`: `pangolin ssh username@<alias> -i <key-file>`.
+On a [public resource](/manage/resources/public/ssh), users visit the resource FQDN, complete Praxis authentication, then enter their host username and password (or private key) in the browser form. On a [private resource](/manage/resources/private/ssh), users connect with the Praxis client and run `praxis ssh username@<alias>`-Praxis prompts for the host password. To use a private key instead, pass it with `-i`: `praxis ssh username@<alias> -i <key-file>`.
 
-That is the entire setup for the default preset. If you need Pangolin identities provisioned automatically on the host, without password prompts, switch to **Automated Provisioning**. With **Pangolin SSH** mode, that also works without OpenSSH or auth daemon configuration. The Pangolin Site still must run as root. With **Standard SSH Server** mode, follow the host setup sections below.
+That is the entire setup for the default preset. If you need Praxis identities provisioned automatically on the host, without password prompts, switch to **Automated Provisioning**. With **Praxis SSH** mode, that also works without OpenSSH or auth daemon configuration. The Praxis Site still must run as root. With **Standard SSH Server** mode, follow the host setup sections below.
 
 ## Configuration Options
 
@@ -62,14 +62,14 @@ SSH resources are configured through three decisions in the dashboard.
 
 | Option                         | Description                                                                                                                                                                                                                                                                                                                                                                                         |
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Pangolin SSH (Recommended)** | Executes commands directly on the host via the site connector. A network SSH server is not required, and you do not enter a host or port. The Pangolin Site must run as the [binary](/manage/sites/install-site#binary-installation) on the host as root (`sudo pangolin up site ...`). Containerized installs are not supported; sessions may open the container shell instead of the host. |
-| **Standard SSH Server**        | Routes commands over the network to an SSH server such as OpenSSH. Enter the backend host and port. To use automated provisioning (PAM) with this mode, you must configure OpenSSH to accept Pangolin certificates and connections. This mode also supports a remote auth daemon for pushing users to machines on the same network as the site connector that are not running the connector itself. |
+| **Praxis SSH (Recommended)** | Executes commands directly on the host via the site connector. A network SSH server is not required, and you do not enter a host or port. The Praxis Site must run as the [binary](/manage/sites/install-site#binary-installation) on the host as root (`sudo praxis up site ...`). Containerized installs are not supported; sessions may open the container shell instead of the host. |
+| **Standard SSH Server**        | Routes commands over the network to an SSH server such as OpenSSH. Enter the backend host and port. To use automated provisioning (PAM) with this mode, you must configure OpenSSH to accept Praxis certificates and connections. This mode also supports a remote auth daemon for pushing users to machines on the same network as the site connector that are not running the connector itself. |
 
 <Warning>
-    **Pangolin SSH mode requires the Pangolin Site binary on the host.** Install
+    **Praxis SSH mode requires the Praxis Site binary on the host.** Install
     the site as a [binary on the site connector
     host](/manage/sites/install-site#binary-installation) and run it as root
-    (`sudo pangolin up site ...` or a root site service). If the site runs in a
+    (`sudo praxis up site ...` or a root site service). If the site runs in a
     container, SSH sessions may drop you into the container shell rather than
     the host.
 </Warning>
@@ -79,7 +79,7 @@ SSH resources are configured through three decisions in the dashboard.
 | Option                     | Description                                                                                                                                                                                                                                                                                                                                                         |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Manual Authentication**  | Requires existing host credentials and bypasses automatic user provisioning. On [public resources](/manage/resources/public/ssh), users enter a username and password or upload a private key in a browser form after completing the public authentication layer. On [private resources](/manage/resources/private/ssh), credentials are handled by the SSH client. |
-| **Automated Provisioning** | Automatically creates users, groups, and sudo permissions on the host based on Pangolin identity (PAM). Requires auth daemon and OpenSSH configuration on the target host.                                                                                                                                                                                          |
+| **Automated Provisioning** | Automatically creates users, groups, and sudo permissions on the host based on Praxis identity (PAM). Requires auth daemon and OpenSSH configuration on the target host.                                                                                                                                                                                          |
 
 ### Auth Daemon Location
 
@@ -92,7 +92,7 @@ Only shown when **Automated Provisioning** is selected.
 
 ### Daemon Port
 
-When the auth daemon runs on a remote host, set the port it listens on (default `22123`). This must match the `--port` flag used when starting the auth daemon. The Pangolin Site and the auth daemon communicate over HTTPS on this port within your internal network.
+When the auth daemon runs on a remote host, set the port it listens on (default `22123`). This must match the `--port` flag used when starting the auth daemon. The Praxis Site and the auth daemon communicate over HTTPS on this port within your internal network.
 
 <Warning>
     Ensure your target host is properly configured to run the auth daemon before
@@ -103,27 +103,27 @@ When the auth daemon runs on a remote host, set the port it listens on (default 
 
 There are five valid configuration combinations. Auth daemon location is not applicable when using manual authentication.
 
-### 1. Pangolin SSH + Manual Authentication
+### 1. Praxis SSH + Manual Authentication
 
-**Settings:** Mode = Pangolin SSH · Authentication = Manual
+**Settings:** Mode = Praxis SSH · Authentication = Manual
 
 **When to use:** You want the simplest setup. The site connector runs on the machine you need to access, and users already have local accounts with passwords or keys on that host.
 
-**Example:** A small team exposes a staging server that runs a Pangolin Site. You create a public SSH resource with Pangolin SSH and manual authentication. Developers visit `https://staging-ssh.example.com`, pass Pangolin login, then enter their existing Linux username and password in the browser form. OpenSSH reconfiguration and an auth daemon are not needed on the host. Run the Pangolin Site as root.
+**Example:** A small team exposes a staging server that runs a Praxis Site. You create a public SSH resource with Praxis SSH and manual authentication. Developers visit `https://staging-ssh.example.com`, pass Praxis login, then enter their existing Linux username and password in the browser form. OpenSSH reconfiguration and an auth daemon are not needed on the host. Run the Praxis Site as root.
 
-**Host setup required:** Run the Pangolin Site as root on the site connector host (`sudo pangolin up site ...`).
+**Host setup required:** Run the Praxis Site as root on the site connector host (`sudo praxis up site ...`).
 
 ---
 
-### 2. Pangolin SSH + Automated Provisioning + On Site
+### 2. Praxis SSH + Automated Provisioning + On Site
 
-**Settings:** Mode = Pangolin SSH · Authentication = Automated Provisioning · Auth Daemon = On Site
+**Settings:** Mode = Praxis SSH · Authentication = Automated Provisioning · Auth Daemon = On Site
 
-**When to use:** The site connector runs on the machine you want to access, and you want Pangolin identities mapped to local users automatically-no password prompts and no separate SSH server routing.
+**When to use:** The site connector runs on the machine you want to access, and you want Praxis identities mapped to local users automatically-no password prompts and no separate SSH server routing.
 
-**Example:** Your production app server runs a Pangolin Site. You create a private SSH resource with an alias `prod-app.internal` and configure Pangolin SSH with automated provisioning on site. Developers connect with the Pangolin client and run `pangolin ssh prod-app.internal`. Pangolin provisions their account on the fly from their organization identity.
+**Example:** Your production app server runs a Praxis Site. You create a private SSH resource with an alias `prod-app.internal` and configure Praxis SSH with automated provisioning on site. Developers connect with the Praxis client and run `praxis ssh prod-app.internal`. Praxis provisions their account on the fly from their organization identity.
 
-**Host setup required:** Run the Pangolin Site as root on the site connector host. Pangolin SSH handles provisioning through the site connector directly.
+**Host setup required:** Run the Praxis Site as root on the site connector host. Praxis SSH handles provisioning through the site connector directly.
 
 ---
 
@@ -133,7 +133,7 @@ There are five valid configuration combinations. Auth daemon location is not app
 
 **When to use:** You need to reach an existing OpenSSH server on the network and users will authenticate with credentials already configured on that server.
 
-**Example:** A legacy database server at `10.0.5.20` runs standard OpenSSH with per-user keys. You create a public SSH resource pointing at `10.0.5.20:22` with manual authentication. DBAs visit the resource FQDN, complete Pangolin authentication, then upload their private key in the browser form to open a terminal session. If the same host is reachable from multiple site connectors, select all applicable sites-Pangolin routes through the healthiest one automatically.
+**Example:** A legacy database server at `10.0.5.20` runs standard OpenSSH with per-user keys. You create a public SSH resource pointing at `10.0.5.20:22` with manual authentication. DBAs visit the resource FQDN, complete Praxis authentication, then upload their private key in the browser form to open a terminal session. If the same host is reachable from multiple site connectors, select all applicable sites-Praxis routes through the healthiest one automatically.
 
 **Host setup required:** None-use your existing OpenSSH configuration.
 
@@ -143,11 +143,11 @@ There are five valid configuration combinations. Auth daemon location is not app
 
 **Settings:** Mode = Standard SSH Server · Authentication = Automated Provisioning · Auth Daemon = On Site
 
-**When to use:** OpenSSH runs on the same machine as the site connector, but you want network SSH routing (Standard SSH Server mode) with Pangolin identity provisioning instead of Pangolin SSH mode.
+**When to use:** OpenSSH runs on the same machine as the site connector, but you want network SSH routing (Standard SSH Server mode) with Praxis identity provisioning instead of Praxis SSH mode.
 
-**Example:** A Pangolin Site runs on your production app server. OpenSSH also listens on that host. You create a private SSH resource with destination `localhost`, allow TCP 22 in [port restrictions](/manage/resources/private/port-restrictions), and assign an alias such as `prod-app.internal`. Configure Standard SSH Server mode pointing at `127.0.0.1:22`, automated provisioning, and auth daemon on site. Engineers run `pangolin ssh prod-app.internal` and land on the same machine running the Pangolin Site with a provisioned account.
+**Example:** A Praxis Site runs on your production app server. OpenSSH also listens on that host. You create a private SSH resource with destination `localhost`, allow TCP 22 in [port restrictions](/manage/resources/private/port-restrictions), and assign an alias such as `prod-app.internal`. Configure Standard SSH Server mode pointing at `127.0.0.1:22`, automated provisioning, and auth daemon on site. Engineers run `praxis ssh prod-app.internal` and land on the same machine running the Praxis Site with a provisioned account.
 
-**Host setup required:** Run the Pangolin Site and configure OpenSSH on the same host. The site runs as an auth daemon by default. An extra flag is not needed. See [Option 1](#option-1-pangolin-site-as-the-auth-daemon-same-host).
+**Host setup required:** Run the Praxis Site and configure OpenSSH on the same host. The site runs as an auth daemon by default. An extra flag is not needed. See [Option 1](#option-1-praxis-site-as-the-auth-daemon-same-host).
 
 ---
 
@@ -155,27 +155,27 @@ There are five valid configuration combinations. Auth daemon location is not app
 
 **Settings:** Mode = Standard SSH Server · Authentication = Automated Provisioning · Auth Daemon = On Remote Host
 
-**When to use:** The site connector runs on a bastion, and you need to SSH into multiple other servers on the same network that do not run a Pangolin Site. This is the most common automated provisioning setup for multi-server environments.
+**When to use:** The site connector runs on a bastion, and you need to SSH into multiple other servers on the same network that do not run a Praxis Site. This is the most common automated provisioning setup for multi-server environments.
 
-**Example:** A Pangolin Site runs on `bastion.corp.internal`. You have application servers `app-01` and `app-02` on the same VLAN. For `app-01`, you create a private SSH resource with destination `10.0.5.21` (the IP of the OpenSSH server on the remote host), allow TCP 22 in [port restrictions](/manage/resources/private/port-restrictions), and assign alias `app-01.corp.internal` as the domain name users connect with. Configure Standard SSH Server mode with host `10.0.5.21:22`, automated provisioning, and auth daemon on remote host (daemon port `22123`). Each app server runs `pangolin auth-daemon`. Developers run `pangolin ssh app-01.corp.internal`. The client tunnels through the Pangolin Site, which proxies SSH to the OpenSSH server and coordinates with the auth daemon on that host to provision the user.
+**Example:** A Praxis Site runs on `bastion.corp.internal`. You have application servers `app-01` and `app-02` on the same VLAN. For `app-01`, you create a private SSH resource with destination `10.0.5.21` (the IP of the OpenSSH server on the remote host), allow TCP 22 in [port restrictions](/manage/resources/private/port-restrictions), and assign alias `app-01.corp.internal` as the domain name users connect with. Configure Standard SSH Server mode with host `10.0.5.21:22`, automated provisioning, and auth daemon on remote host (daemon port `22123`). Each app server runs `praxis auth-daemon`. Developers run `praxis ssh app-01.corp.internal`. The client tunnels through the Praxis Site, which proxies SSH to the OpenSSH server and coordinates with the auth daemon on that host to provision the user.
 
-**Host setup required:** Pangolin Site on the bastion with a pre-shared key, auth daemon on each target host, OpenSSH configured on each target. See [Option 2: External Auth Daemon](#option-2-external-auth-daemon-ssh-on-another-server-that-does-not-run-a-pangolin-site).
+**Host setup required:** Praxis Site on the bastion with a pre-shared key, auth daemon on each target host, OpenSSH configured on each target. See [Option 2: External Auth Daemon](#option-2-external-auth-daemon-ssh-on-another-server-that-does-not-run-a-praxis-site).
 
 ---
 
 <Note>
-    **Pangolin SSH + Automated Provisioning + On Remote Host** is not a valid
-    combination. Pangolin SSH executes sessions on the site connector host
+    **Praxis SSH + Automated Provisioning + On Remote Host** is not a valid
+    combination. Praxis SSH executes sessions on the site connector host
     itself, so the auth daemon must run on site. Use **Standard SSH Server**
     mode when the auth daemon runs on a remote host.
 </Note>
 
 ## How Certificates Work
 
-When using automated provisioning, each organization has a **certificate authority (CA)** used to sign temporary SSH keys. This is only used for automated provisioning on Standard SSH Server mode. Pangolin SSH doesn't use standard SSH certificates and instead uses its own authentication layer.
+When using automated provisioning, each organization has a **certificate authority (CA)** used to sign temporary SSH keys. This is only used for automated provisioning on Standard SSH Server mode. Praxis SSH doesn't use standard SSH certificates and instead uses its own authentication layer.
 
-1. The user initiates a connection (browser for public resources, `pangolin ssh <alias>` for private).
-2. Pangolin generates a temporary key pair and sends the public key to the Pangolin server with the user's identity and target resource.
+1. The user initiates a connection (browser for public resources, `praxis ssh <alias>` for private).
+2. Praxis generates a temporary key pair and sends the public key to the Praxis server with the user's identity and target resource.
 3. The server checks access, signs the public key with the organization CA, and returns it. The CA public key is sent to the remote server and trusted there.
 4. The client connects using the temporary private key. The host verifies the certificate with the CA and uses principals in the certificate for access control.
 
@@ -183,38 +183,38 @@ This gives short-lived, auditable access without long-lived keys on the server.
 
 ## How Users and Access Are Managed
 
-When using **Standard SSH Server** with automated provisioning, users are provisioned **just in time** on the remote system. When you connect, Pangolin ensures an account exists for you with the right permissions before the SSH session starts. Your Pangolin identity is mapped to a local username (derived from the part before `@` in your identity; if needed, a suffix is added for uniqueness). Sudo access, Unix groups, and whether a home directory is created come from the [role permissions](#configuring-role-permissions) of the user's roles that are assigned to the resource.
+When using **Standard SSH Server** with automated provisioning, users are provisioned **just in time** on the remote system. When you connect, Praxis ensures an account exists for you with the right permissions before the SSH session starts. Your Praxis identity is mapped to a local username (derived from the part before `@` in your identity; if needed, a suffix is added for uniqueness). Sudo access, Unix groups, and whether a home directory is created come from the [role permissions](#configuring-role-permissions) of the user's roles that are assigned to the resource.
 
-With **Pangolin SSH** and automated provisioning, Pangolin handles user provisioning through the site connector directly. OpenSSH and auth daemon setup are not required on the host. The Pangolin Site must still run as root.
+With **Praxis SSH** and automated provisioning, Praxis handles user provisioning through the site connector directly. OpenSSH and auth daemon setup are not required on the host. The Praxis Site must still run as root.
 
 ## Host Setup
 
-Host setup is only required for **Standard SSH Server** mode with **Automated Provisioning**. **Pangolin SSH** mode (manual or automated) requires the Pangolin Site to run as root on the site connector host but does not require OpenSSH or auth daemon configuration.
+Host setup is only required for **Standard SSH Server** mode with **Automated Provisioning**. **Praxis SSH** mode (manual or automated) requires the Praxis Site to run as root on the site connector host but does not require OpenSSH or auth daemon configuration.
 
 | Configuration                                    | Setup path                                                                            |
 | ------------------------------------------------ | ------------------------------------------------------------------------------------- |
-| Standard SSH Server + Automated + On Site        | [Option 1](#option-1-pangolin-site-as-the-auth-daemon-same-host)                               |
-| Standard SSH Server + Automated + On Remote Host | [Option 2](#option-2-external-auth-daemon-ssh-on-another-server-that-does-not-run-a-pangolin-site) |
+| Standard SSH Server + Automated + On Site        | [Option 1](#option-1-praxis-site-as-the-auth-daemon-same-host)                               |
+| Standard SSH Server + Automated + On Remote Host | [Option 2](#option-2-external-auth-daemon-ssh-on-another-server-that-does-not-run-a-praxis-site) |
 
 Before setting up the host, create the SSH resource (public or private) in the dashboard, grant access, and for private resources allow TCP 22 in [port restrictions](/manage/resources/private/port-restrictions).
 
-## Option 1: Pangolin Site as the Auth Daemon (Same Host)
+## Option 1: Praxis Site as the Auth Daemon (Same Host)
 
 Use this for combination **4**, when the auth daemon runs on the site connector host and you are routing to OpenSSH in Standard SSH Server mode.
 
 ```mermaid
 flowchart LR
   subgraph client["User machine"]
-    CLI[Pangolin CLI / Browser]
+    CLI[Praxis CLI / Browser]
   end
 
-  subgraph cloud["Pangolin Cloud"]
+  subgraph cloud["Praxis Cloud"]
     CA[Sign certificate]
   end
 
   subgraph server["Single server (site)"]
     direction TB
-    Site[Pangolin Site + auth-daemon]
+    Site[Praxis Site + auth-daemon]
     SSHD[SSH server]
     Site --> SSHD
   end
@@ -223,36 +223,36 @@ flowchart LR
   CLI -->|SSH port 22| SSHD
 ```
 
-### Run the Pangolin Site
+### Run the Praxis Site
 
-With the Pangolin Site [installed](/manage/sites/install-site), run it normally. The site runs as an auth daemon by default:
+With the Praxis Site [installed](/manage/sites/install-site), run it normally. The site runs as an auth daemon by default:
 
 ```bash
-sudo pangolin up site --id <id> --secret <secret> --endpoint <endpoint>
+sudo praxis up site --id <id> --secret <secret> --endpoint <endpoint>
 ```
 
 <Note>
-Replace `<id>`, `<secret>`, and `<endpoint>` with the values from your site configuration in the Pangolin dashboard.
+Replace `<id>`, `<secret>`, and `<endpoint>` with the values from your site configuration in the Praxis dashboard.
 </Note>
 
 Then configure the SSH server on this host as described in [Configure the SSH server on the host](#configure-the-ssh-server-on-the-host).
 
-## Option 2: External Auth Daemon (SSH on Another Server That Does Not Run a Pangolin Site)
+## Option 2: External Auth Daemon (SSH on Another Server That Does Not Run a Praxis Site)
 
 Use this for combination **5**, when the site connector is a bastion and each target host runs its own auth daemon.
 
 ```mermaid
 flowchart LR
   subgraph client["User machine"]
-    CLI[Pangolin CLI / Browser]
+    CLI[Praxis CLI / Browser]
   end
 
-  subgraph cloud["Pangolin Cloud"]
+  subgraph cloud["Praxis Cloud"]
     CA[Sign certificate]
   end
 
   subgraph bastion["Bastion / site host"]
-    Site[Pangolin Site]
+    Site[Praxis Site]
   end
 
   subgraph target["Target server"]
@@ -270,15 +270,15 @@ flowchart LR
 
 ### Prerequisites
 
-- **Pangolin Site** running on one host (the site / bastion) with a pre-shared key for external auth daemons.
-- **Pangolin CLI** installed on each server where you will run the auth daemon. See [Pangolin CLI](/manage/clients/platforms/cli#install).
+- **Praxis Site** running on one host (the site / bastion) with a pre-shared key for external auth daemons.
+- **Praxis CLI** installed on each server where you will run the auth daemon. See [Praxis CLI](/manage/clients/platforms/cli#install).
 
-### Step 1: On the Server Running the Pangolin Site
+### Step 1: On the Server Running the Praxis Site
 
-Start the Pangolin Site with a **pre-shared key** so external auth daemons can authenticate to it:
+Start the Praxis Site with a **pre-shared key** so external auth daemons can authenticate to it:
 
 ```bash
-sudo pangolin up site --id <id> --secret <secret> --endpoint <endpoint> --ad-pre-shared-key <pre-shared-key>
+sudo praxis up site --id <id> --secret <secret> --endpoint <endpoint> --ad-pre-shared-key <pre-shared-key>
 ```
 
 <Note>
@@ -287,10 +287,10 @@ Choose a strong, random value for `<pre-shared-key>` and use the same value when
 
 ### Step 2: On each server you want to SSH into
 
-On every host that should accept Pangolin SSH (and is not running a Pangolin Site), run the auth daemon with the same pre-shared key:
+On every host that should accept Praxis SSH (and is not running a Praxis Site), run the auth daemon with the same pre-shared key:
 
 ```bash
-sudo pangolin auth-daemon --pre-shared-key <pre-shared-key>
+sudo praxis auth-daemon --pre-shared-key <pre-shared-key>
 ```
 
 To use a non-default port, add `--port <port>` and set the same port in the resource's SSH settings in the dashboard.
@@ -299,13 +299,13 @@ To use a non-default port, add `--port <port>` and set the same port in the reso
 
 Create a systemd unit so the auth daemon runs on boot:
 
-```ini title="/etc/systemd/system/pangolin-auth-daemon.service"
+```ini title="/etc/systemd/system/praxis-auth-daemon.service"
 [Unit]
-Description=Pangolin SSH auth daemon
+Description=Praxis SSH auth daemon
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/pangolin auth-daemon --pre-shared-key <pre-shared-key>
+ExecStart=/usr/local/bin/praxis auth-daemon --pre-shared-key <pre-shared-key>
 Restart=always
 User=root
 
@@ -313,7 +313,7 @@ User=root
 WantedBy=multi-user.target
 ```
 
-Replace `<pre-shared-key>` with the same value used on the Pangolin Site. If you use a custom port (set in the resource's SSH settings), add `--port <port>` to `ExecStart`. Then:
+Replace `<pre-shared-key>` with the same value used on the Praxis Site. If you use a custom port (set in the resource's SSH settings), add `--port <port>` to `ExecStart`. Then:
 
 ```bash
 sudo systemctl daemon-reload
@@ -323,35 +323,35 @@ sudo systemctl status pangolin-auth-daemon
 ```
 
 <Warning>
-    Ensure the Pangolin CLI binary is at `/usr/local/bin/pangolin` (or update
+    Ensure the Praxis CLI binary is at `/usr/local/bin/praxis` (or update
     `ExecStart` to its path) before creating the service.
 </Warning>
 
 ### Step 3: Configure the SSH server on each target host
 
-On each of these hosts, configure the SSH server as in [Configure the SSH server on the host](#configure-the-ssh-server-on-the-host). Use the `pangolin auth-daemon principals` command in `AuthorizedPrincipalsCommand`.
+On each of these hosts, configure the SSH server as in [Configure the SSH server on the host](#configure-the-ssh-server-on-the-host). Use the `praxis auth-daemon principals` command in `AuthorizedPrincipalsCommand`.
 
 ### Step 4: Ensure network connectivity
 
-- **Pangolin Site → auth daemon:** The Pangolin Site must be able to reach the auth daemon port on each target server (default **TCP 22123**).
+- **Praxis Site → auth daemon:** The Praxis Site must be able to reach the auth daemon port on each target server (default **TCP 22123**).
 - **Clients → SSH:** Port **22** must be open for SSH to each target server.
 
 <Warning>
     These ports do not need to be exposed to the public internet. They only need
-    to be reachable within the network where the Pangolin Site and the target servers live.
+    to be reachable within the network where the Praxis Site and the target servers live.
 </Warning>
 
 ## Configure the SSH server on the host
 
-For automated provisioning, the host's SSH server must trust the Pangolin CA and use the auth daemon to resolve principals. Do the following on **every** host that will accept Pangolin SSH.
+For automated provisioning, the host's SSH server must trust the Praxis CA and use the auth daemon to resolve principals. Do the following on **every** host that will accept Praxis SSH.
 
 ### 1. Update `sshd_config`
 
-Add or adjust these lines in `/etc/ssh/sshd_config`. Use `pangolin auth-daemon principals` whether the auth daemon is the site process on this host or a standalone auth daemon:
+Add or adjust these lines in `/etc/ssh/sshd_config`. Use `praxis auth-daemon principals` whether the auth daemon is the site process on this host or a standalone auth daemon:
 
 ```ini title="/etc/ssh/sshd_config"
 TrustedUserCAKeys /etc/ssh/ca.pem
-AuthorizedPrincipalsCommand /usr/local/bin/pangolin auth-daemon principals --username %u
+AuthorizedPrincipalsCommand /usr/local/bin/praxis auth-daemon principals --username %u
 AuthorizedPrincipalsCommandUser root
 ```
 
@@ -361,11 +361,11 @@ AuthorizedPrincipalsCommandUser root
 sudo systemctl restart ssh
 ```
 
-After this, users with access to the resource can connect via the browser (public) or `pangolin ssh <alias>` (private).
+After this, users with access to the resource can connect via the browser (public) or `praxis ssh <alias>` (private).
 
 ## Signing Keys for Other Applications
 
-You can ask Pangolin to sign a key for a resource without starting an interactive SSH session:
+You can ask Praxis to sign a key for a resource without starting an interactive SSH session:
 
 ```bash
 pangolin ssh sign vm-01.prod.example.com --key-file /path/to/public/key.pub
@@ -373,13 +373,13 @@ pangolin ssh sign vm-01.prod.example.com --key-file /path/to/public/key.pub
 
 ## Generating Passwords for Users
 
-If you need a password generated for your user on the remote system (for example for sudo access), use `--ad-generate-random-password` to have Pangolin generate a random password when users are created on the device.
+If you need a password generated for your user on the remote system (for example for sudo access), use `--ad-generate-random-password` to have Praxis generate a random password when users are created on the device.
 
 ## Configuring Role Permissions
 
 <Note>
-    Configuring role based access is only available in [Pangolin
-    Cloud](https://app.pangolin.net/auth/signup) and [Enterprise
+    Configuring role based access is only available in [Praxis
+    Cloud](https://app.praxis.causq.com/auth/signup) and [Enterprise
     Edition](/self-host/enterprise-edition).
 </Note>
 
@@ -390,7 +390,7 @@ If you need a password generated for your user on the remote system (for example
     />
 </Frame>
 
-When using SSH automated provisioning, you can configure role permissions to control which users have the ability to SSH and what privileges they have. This is done in the Pangolin dashboard under the role's settings.
+When using SSH automated provisioning, you can configure role permissions to control which users have the ability to SSH and what privileges they have. This is done in the Praxis dashboard under the role's settings.
 
 Choosing to disable SSH will prevent users in that role from being able to connect with either private or public resources.
 
@@ -406,7 +406,7 @@ You can also choose whether a home directory is created when the user is provisi
     not enough on its own.
 </Warning>
 
-Pangolin uses two different checks when a user connects:
+Praxis uses two different checks when a user connects:
 
 - **Allow SSH** is checked against all of the user's roles in the organization. If any of them allows SSH, the user can connect.
 - **Sudo mode, Unix groups, and home directory** are read only from the user's roles that are selected under **Roles** in the resource's access settings. For public resources, roles granted through the attached [resource policy](/manage/resources/public/resource-policies) also count.
@@ -417,30 +417,30 @@ When more than one of the user's roles is assigned to the resource, the settings
 
 ## Session Logs
 
-Resources in **Pangolin SSH** mode record each session and the commands run in it. Set **SSH Session Log Retention** in your organization's security settings, then view sessions in [SSH Session Logs](/manage/analytics/ssh). Sessions in **Standard SSH Server** mode aren't recorded.
+Resources in **Praxis SSH** mode record each session and the commands run in it. Set **SSH Session Log Retention** in your organization's security settings, then view sessions in [SSH Session Logs](/manage/analytics/ssh). Sessions in **Standard SSH Server** mode aren't recorded.
 
 ## FAQ
 
 ### Why does my provisioned user have no home directory or sudo access?
 
-The role that holds those settings is most likely assigned to the user but not to the resource. See [Assign the Role to the Resource](#assign-the-role-to-the-resource). The auth daemon log shows what Pangolin sent. A line like `metadata.sudoMode="none" metadata.homedir=false metadata.groups=[]` means none of the user's roles on the resource set those options. Add the role under **Roles** on the resource and reconnect. The existing account is updated on the next connection.
+The role that holds those settings is most likely assigned to the user but not to the resource. See [Assign the Role to the Resource](#assign-the-role-to-the-resource). The auth daemon log shows what Praxis sent. A line like `metadata.sudoMode="none" metadata.homedir=false metadata.groups=[]` means none of the user's roles on the resource set those options. Add the role under **Roles** on the resource and reconnect. The existing account is updated on the next connection.
 
 ### How long are the temporary keys valid?
 
-When the client requests a signed key from the Pangolin server, the certificate is valid for **5 minutes**. You must start the SSH connection within that window. Once the session is established, it can stay open.
+When the client requests a signed key from the Praxis server, the certificate is valid for **5 minutes**. You must start the SSH connection within that window. Once the session is established, it can stay open.
 
-### Is the SSH Connection Proxied Through the Pangolin Site?
+### Is the SSH Connection Proxied Through the Praxis Site?
 
-**Pangolin SSH mode or auth daemon on site:** Your client connects directly to the server that runs the Pangolin Site. SSH traffic does not go through another hop.
+**Praxis SSH mode or auth daemon on site:** Your client connects directly to the server that runs the Praxis Site. SSH traffic does not go through another hop.
 
-**Standard SSH Server + remote auth daemon:** Your client connects to the Pangolin Site, and the site proxies the SSH session to the target server. The auth daemon on each target is an extension of the Pangolin Site.
+**Standard SSH Server + remote auth daemon:** Your client connects to the Praxis Site, and the site proxies the SSH session to the target server. The auth daemon on each target is an extension of the Praxis Site.
 
 ### How are usernames created on the remote server?
 
-Pangolin derives the remote username from your Pangolin identity (the part before `@`). If that name is already taken in the organization, a numeric suffix is added until it is unique.
+Praxis derives the remote username from your Praxis identity (the part before `@`). If that name is already taken in the organization, a numeric suffix is added until it is unique.
 
-### How Does the Pangolin Site Communicate With the External Auth Daemon?
+### How Does the Praxis Site Communicate With the External Auth Daemon?
 
-The Pangolin Site talks to the auth daemon over **HTTPS** on **TCP 22123** by default. Port 22123 only needs to be open between the Pangolin Site and the auth daemon hosts on your internal network.
+The Praxis Site talks to the auth daemon over **HTTPS** on **TCP 22123** by default. Port 22123 only needs to be open between the Praxis Site and the auth daemon hosts on your internal network.
 
 To use a different port, set the port in the resource's SSH settings and pass the same port to the auth daemon with `--port`.

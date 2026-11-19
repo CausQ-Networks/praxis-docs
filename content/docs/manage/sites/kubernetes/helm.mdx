@@ -1,21 +1,21 @@
 ---
 title: "Helm"
-description: "Install and manage sites on Kubernetes with the Pangolin CLI Helm chart."
+description: "Install and manage sites on Kubernetes with the Praxis CLI Helm chart."
 ---
 
-This guide installs and manages sites in Kubernetes with the `fosrl/pangolin-cli` Helm chart. The chart runs the Pangolin CLI as a site connector (`pangolin-cli up site`).
+This guide installs and manages sites in Kubernetes with the `causq-networks/praxis-cli` Helm chart. The chart runs the Praxis CLI as a site connector (`praxis-cli up site`).
 
 <Note>
-The Pangolin CLI chart is the recommended way to run sites on Kubernetes. Existing Newt deployments keep working; see [Helm (Newt)](/manage/sites/kubernetes/newt-helm) for the Newt chart and [Migrating from the Newt chart](#migrating-from-the-newt-chart) to switch.
+The Praxis CLI chart is the recommended way to run sites on Kubernetes. Existing Newt deployments keep working; see [Helm (Newt)](/manage/sites/kubernetes/newt-helm) for the Newt chart and [Migrating from the Newt chart](#migrating-from-the-newt-chart) to switch.
 </Note>
 
 See [Version Matrix](https://github.com/fosrl/helm-charts/blob/main/VERSION_MATRIX.md) for chart and default app version references.
 
 ## What the chart supports
 
-The Pangolin CLI chart deploys one or more sites through `siteInstances[]`. Each enabled entry becomes its own Deployment.
+The Praxis CLI chart deploys one or more sites through `siteInstances[]`. Each enabled entry becomes its own Deployment.
 
-Chart `0.1.0` (Pangolin CLI `0.20.0`) supports:
+Chart `0.1.0` (Praxis CLI `0.20.0`) supports:
 
 - site credentials (`SITE_ID` and `SITE_SECRET`) from an existing Kubernetes Secret
 - provisioning with a provisioning key (`SITE_PROVISIONING_KEY` and `SITE_NAME`)
@@ -26,7 +26,7 @@ Chart `0.1.0` (Pangolin CLI `0.20.0`) supports:
 - optional NetworkPolicy, RBAC, mTLS client certificates, and up/down scripts
 - multi-instance deployments with per-instance overrides
 
-The image is `docker.io/fosrl/pangolin-cli`, also published as `ghcr.io/fosrl/cli`.
+The image is `docker.io/causq-networks/praxis-cli`, also published as `ghcr.io/causq-networks/praxis-cli`.
 
 ## Prerequisites
 
@@ -35,9 +35,9 @@ Before installing, you need:
 - Kubernetes `1.30.14` or newer
 - Helm 3.x
 - `kubectl` access to the target cluster
-- a reachable Pangolin instance
+- a reachable Praxis instance
 - either:
-  - site credentials from Pangolin: the site ID and secret
+  - site credentials from Praxis: the site ID and secret
   - or a provisioning key for provisioning installs
 
 See [Prerequisites](/self-host/manual/kubernetes/prerequisites) for cluster, namespace, storage, networking, and security planning.
@@ -65,7 +65,7 @@ kubectl create namespace pangolin
 If your cluster uses Pod Security Admission labels, namespace labels, or policy annotations, apply them before installing the chart:
 
 ```bash
-kubectl label namespace pangolin \
+kubectl label namespace praxis \
   pod-security.kubernetes.io/enforce=baseline \
   pod-security.kubernetes.io/audit=restricted \
   pod-security.kubernetes.io/warn=restricted
@@ -77,18 +77,18 @@ The chart can create namespaces through `namespace.create`, but creating the nam
 
 ### Step 2: Create the site Secret
 
-Create a Secret with the site credentials from Pangolin:
+Create a Secret with the site credentials from Praxis:
 
 ```bash
-kubectl create secret generic pangolin-site-auth \
-  --namespace pangolin \
-  --from-literal=PANGOLIN_ENDPOINT=https://pangolin.example.com \
+kubectl create secret generic praxis-site-auth \
+  --namespace praxis \
+  --from-literal=PRAXIS_ENDPOINT=https://praxis.example.com \
   --from-literal=SITE_ID=<your-site-id> \
   --from-literal=SITE_SECRET=<your-site-secret>
 ```
 
 <Tip>
-Pangolin shows the site ID and secret when you create the site in the dashboard.
+Praxis shows the site ID and secret when you create the site in the dashboard.
 </Tip>
 
 ### Step 3: Create a values file
@@ -100,20 +100,20 @@ siteInstances:
   - name: main-tunnel
     enabled: true
     auth:
-      existingSecretName: pangolin-site-auth
+      existingSecretName: praxis-site-auth
     replicas: 1
 ```
 
-The default Secret keys are `PANGOLIN_ENDPOINT`, `SITE_ID`, and `SITE_SECRET`. Set `auth.keys.*` only if your Secret uses different key names:
+The default Secret keys are `PRAXIS_ENDPOINT`, `SITE_ID`, and `SITE_SECRET`. Set `auth.keys.*` only if your Secret uses different key names:
 
 ```yaml
 siteInstances:
   - name: main-tunnel
     enabled: true
     auth:
-      existingSecretName: pangolin-site-auth
+      existingSecretName: praxis-site-auth
       keys:
-        endpointKey: PANGOLIN_ENDPOINT
+        endpointKey: PRAXIS_ENDPOINT
         idKey: SITE_ID
         secretKey: SITE_SECRET
     replicas: 1
@@ -133,8 +133,8 @@ helm repo update fossorial
 Install the chart:
 
 ```bash
-helm upgrade --install pangolin-site fossorial/pangolin-cli \
-  --namespace pangolin \
+helm upgrade --install praxis-site fossorial/praxis-cli \
+  --namespace praxis \
   --values values-site.yaml
 ```
 
@@ -145,20 +145,20 @@ Do not use `--create-namespace` here if you created and labeled the namespace ma
 Check the Helm release:
 
 ```bash
-helm status pangolin-site --namespace pangolin
+helm status praxis-site --namespace pangolin
 ```
 
-Check the pods. Site pods carry the `app.kubernetes.io/component=site` label, and each instance also carries `pangolin-cli.instance=<name>`:
+Check the pods. Site pods carry the `app.kubernetes.io/component=site` label, and each instance also carries `praxis-cli.instance=<name>`:
 
 ```bash
-kubectl get pods --namespace pangolin \
+kubectl get pods --namespace praxis \
   -l app.kubernetes.io/component=site
 ```
 
 Check the logs:
 
 ```bash
-kubectl logs --namespace pangolin \
+kubectl logs --namespace praxis \
   -l app.kubernetes.io/component=site \
   --tail=50
 ```
@@ -168,7 +168,7 @@ Wait for the pod to become ready:
 ```bash
 kubectl wait --for=condition=ready pod \
   -l app.kubernetes.io/component=site \
-  --namespace pangolin \
+  --namespace praxis \
   --timeout=60s
 ```
 
@@ -182,23 +182,23 @@ Create `values-site.yaml`:
 siteInstances:
   - name: main-tunnel
     enabled: true
-    pangolinEndpoint: https://pangolin.example.com
+    pangolinEndpoint: https://praxis.example.com
     provisioningKey: "<your-provisioning-key>"
     siteName: "my-site"
     configPersistence:
       enabled: true
       type: emptyDir
-      mountPath: /var/lib/pangolin
+      mountPath: /var/lib/praxis
       fileName: config.json
 ```
 
-`siteName` sets the name of the site created in Pangolin (`SITE_NAME`). It is separate from `name`, which only identifies the instance inside the chart.
+`siteName` sets the name of the site created in Praxis (`SITE_NAME`). It is separate from `name`, which only identifies the instance inside the chart.
 
 Install the chart:
 
 ```bash
-helm upgrade --install pangolin-site fossorial/pangolin-cli \
-  --namespace pangolin \
+helm upgrade --install praxis-site fossorial/praxis-cli \
+  --namespace praxis \
   --values values-site.yaml
 ```
 
@@ -212,55 +212,55 @@ Example with an existing PVC:
 siteInstances:
   - name: main-tunnel
     enabled: true
-    pangolinEndpoint: https://pangolin.example.com
+    pangolinEndpoint: https://praxis.example.com
     provisioningKey: "<your-provisioning-key>"
     siteName: "my-site"
     configPersistence:
       enabled: true
       type: persistentVolumeClaim
       existingClaim: my-site-config
-      mountPath: /var/lib/pangolin
+      mountPath: /var/lib/praxis
       fileName: config.json
 ```
 
-To apply a blueprint once, right after provisioning, set `provisioningBlueprintFile` and `provisioningBlueprintData` on the instance. See the [chart README](https://github.com/fosrl/helm-charts/blob/main/charts/pangolin-cli/README.md#provisioning-blueprint-single-use) for an example.
+To apply a blueprint once, right after provisioning, set `provisioningBlueprintFile` and `provisioningBlueprintData` on the instance. See the [chart README](https://github.com/fosrl/helm-charts/blob/main/charts/praxis-cli/README.md#provisioning-blueprint-single-use) for an example.
 
 ## Verifying connectivity
 
 Follow the site logs:
 
 ```bash
-kubectl logs --namespace pangolin \
+kubectl logs --namespace praxis \
   -l app.kubernetes.io/component=site \
   --follow
 ```
 
-In the Pangolin dashboard, verify that the site is online.
+In the Praxis dashboard, verify that the site is online.
 
 If the pod is running but the site does not connect, check:
 
-* `PANGOLIN_ENDPOINT`
+* `PRAXIS_ENDPOINT`
 * the site ID and secret, or the provisioning key
 * DNS resolution from inside the cluster
 * outbound network access from the site pod
-* TLS validity for the Pangolin endpoint
+* TLS validity for the Praxis endpoint
 
 ## Upgrade
 
 ```bash
 helm repo update fossorial
 
-helm upgrade pangolin-site fossorial/pangolin-cli \
-  --namespace pangolin \
+helm upgrade praxis-site fossorial/praxis-cli \
+  --namespace praxis \
   --values values-site.yaml
 ```
 
 Check upgrade status, and roll back if needed:
 
 ```bash
-helm status pangolin-site --namespace pangolin
-helm history pangolin-site --namespace pangolin
-helm rollback pangolin-site <revision> --namespace pangolin
+helm status praxis-site --namespace pangolin
+helm history praxis-site --namespace pangolin
+helm rollback praxis-site <revision> --namespace pangolin
 ```
 
 ## Multiple sites
@@ -272,44 +272,44 @@ siteInstances:
   - name: site-a
     enabled: true
     auth:
-      existingSecretName: pangolin-site-auth-a
+      existingSecretName: praxis-site-auth-a
     replicas: 1
 
   - name: site-b
     enabled: true
     auth:
-      existingSecretName: pangolin-site-auth-b
+      existingSecretName: praxis-site-auth-b
     replicas: 1
 ```
 
 ```bash
-kubectl create secret generic pangolin-site-auth-a \
-  --namespace pangolin \
-  --from-literal=PANGOLIN_ENDPOINT=https://pangolin.example.com \
+kubectl create secret generic praxis-site-auth-a \
+  --namespace praxis \
+  --from-literal=PRAXIS_ENDPOINT=https://praxis.example.com \
   --from-literal=SITE_ID=<site-a-id> \
   --from-literal=SITE_SECRET=<site-a-secret>
 
-kubectl create secret generic pangolin-site-auth-b \
-  --namespace pangolin \
-  --from-literal=PANGOLIN_ENDPOINT=https://pangolin.example.com \
+kubectl create secret generic praxis-site-auth-b \
+  --namespace praxis \
+  --from-literal=PRAXIS_ENDPOINT=https://praxis.example.com \
   --from-literal=SITE_ID=<site-b-id> \
   --from-literal=SITE_SECRET=<site-b-secret>
 ```
 
 ## Migrating from the Newt chart
 
-The Pangolin CLI chart has the same layout as the Newt chart. These names differ:
+The Praxis CLI chart has the same layout as the Newt chart. These names differ:
 
-| Newt chart | Pangolin CLI chart |
+| Newt chart | Praxis CLI chart |
 | --- | --- |
 | `newtInstances[]` | `siteInstances[]` |
 | Secret keys `NEWT_ID` / `NEWT_SECRET` | `SITE_ID` / `SITE_SECRET` |
 | `newtName` | `siteName` |
-| `configPersistence.mountPath` default `/var/lib/newt` | `/var/lib/pangolin` |
+| `configPersistence.mountPath` default `/var/lib/newt` | `/var/lib/praxis` |
 | Pod label `app.kubernetes.io/component=newt` | `app.kubernetes.io/component=site` |
-| Instance label `newt.instance` | `pangolin-cli.instance` |
+| Instance label `newt.instance` | `praxis-cli.instance` |
 
-The site ID and secret Pangolin issued for a Newt site work with the Pangolin CLI. To reuse an existing Newt Secret without recreating it, map its keys:
+The site ID and secret Praxis issued for a Newt site work with the Praxis CLI. To reuse an existing Newt Secret without recreating it, map its keys:
 
 ```yaml
 siteInstances:
@@ -318,17 +318,17 @@ siteInstances:
     auth:
       existingSecretName: newt-auth
       keys:
-        endpointKey: PANGOLIN_ENDPOINT
+        endpointKey: PRAXIS_ENDPOINT
         idKey: NEWT_ID
         secretKey: NEWT_SECRET
 ```
 
-Run only one connector per site. Uninstall the Newt release (or disable its instance) before installing the Pangolin CLI chart for the same site:
+Run only one connector per site. Uninstall the Newt release (or disable its instance) before installing the Praxis CLI chart for the same site:
 
 ```bash
 helm uninstall newt --namespace pangolin
-helm upgrade --install pangolin-site fossorial/pangolin-cli \
-  --namespace pangolin \
+helm upgrade --install praxis-site fossorial/praxis-cli \
+  --namespace praxis \
   --values values-site.yaml
 ```
 
@@ -337,8 +337,8 @@ helm upgrade --install pangolin-site fossorial/pangolin-cli \
 ### Instance-based deployment
 
 * `siteInstances[]` defines the sites rendered by the chart.
-* Each enabled instance creates its own Deployment, named `<release>-pangolin-cli-<instance>`.
-* The container always runs `pangolin-cli up site`; settings are passed as environment variables, or as flags with `useCommandArgs: true`.
+* Each enabled instance creates its own Deployment, named `<release>-praxis-cli-<instance>`.
+* The container always runs `praxis-cli up site`; settings are passed as environment variables, or as flags with `useCommandArgs: true`.
 * Each instance can use its own Secret, provisioning settings, resources, service settings, and network policy settings.
 * Per-instance namespace and service account overrides require `allowGlobalOverride: true`.
 
@@ -366,9 +366,9 @@ global:
 The chart is also published as an OCI chart in GHCR:
 
 ```bash
-helm upgrade --install pangolin-site oci://ghcr.io/fosrl/helm-charts/pangolin-cli \
+helm upgrade --install praxis-site oci://ghcr.io/fosrl/helm-charts/praxis-cli \
   --version 0.1.0 \
-  --namespace pangolin \
+  --namespace praxis \
   --values values-site.yaml
 ```
 
@@ -377,11 +377,11 @@ OCI changes where Helm pulls the chart from. It does not change the values file 
 ## References
 
 <CardGroup cols={2}>
-  <Card title="Chart README" href="https://github.com/fosrl/helm-charts/blob/main/charts/pangolin-cli/README.md" icon="book" />
-  <Card title="values.yaml" href="https://github.com/fosrl/helm-charts/blob/main/charts/pangolin-cli/values.yaml" icon="file-code" />
-  <Card title="values.schema.json" href="https://github.com/fosrl/helm-charts/blob/main/charts/pangolin-cli/values.schema.json" icon="file-code" />
-  <Card title="Artifact Hub" href="https://artifacthub.io/packages/helm/fosrl/pangolin-cli" icon="box" />
-  <Card title="Pangolin CLI" href="https://github.com/fosrl/cli" icon="terminal" />
+  <Card title="Chart README" href="https://github.com/fosrl/helm-charts/blob/main/charts/praxis-cli/README.md" icon="book" />
+  <Card title="values.yaml" href="https://github.com/fosrl/helm-charts/blob/main/charts/praxis-cli/values.yaml" icon="file-code" />
+  <Card title="values.schema.json" href="https://github.com/fosrl/helm-charts/blob/main/charts/praxis-cli/values.schema.json" icon="file-code" />
+  <Card title="Artifact Hub" href="https://artifacthub.io/packages/helm/causq-networks/praxis-cli" icon="box" />
+  <Card title="Praxis CLI" href="https://github.com/CausQ-Networks/praxis-cli" icon="terminal" />
   <Card title="Issues" href="https://github.com/fosrl/helm-charts/issues" icon="circle-question" />
 </CardGroup>
 
@@ -397,7 +397,7 @@ OCI changes where Helm pulls the chart from. It does not change the values file 
 	<Card title="Kustomize Install" href="/manage/sites/kubernetes/kustomize" icon="layer-group">
 		Install with rendered manifests and Kustomize overlays.
 	</Card>
-	<Card title="Pangolin Helm" href="/self-host/manual/kubernetes/pangolin/helm" icon="server">
-		Install the Pangolin control plane.
+	<Card title="Praxis Helm" href="/self-host/manual/kubernetes/praxis/helm" icon="server">
+		Install the Praxis control plane.
 	</Card>
 </CardGroup>

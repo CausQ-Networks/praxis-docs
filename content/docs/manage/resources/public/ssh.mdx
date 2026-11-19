@@ -1,20 +1,20 @@
 ---
 title: "SSH"
-description: "Access a remote shell in the browser with password, key, or Pangolin identity authentication"
+description: "Access a remote shell in the browser with password, key, or Praxis identity authentication"
 ---
 
-SSH public resources render a full interactive terminal in the browser. Users visit a FQDN—no SSH client or Pangolin desktop client is required.
+SSH public resources render a full interactive terminal in the browser. Users visit a FQDN—no SSH client or Praxis desktop client is required.
 
 <Frame caption="SSH session in the browser">
-  <img src="/images/ssh-public.gif" alt="Interactive SSH terminal rendered in the Pangolin web dashboard" />
+  <img src="/images/ssh-public.gif" alt="Interactive SSH terminal rendered in the Praxis web dashboard" />
 </Frame>
 
 ## Benefits
 
-- Users get a terminal from any browser, with no SSH client, keys, or Pangolin client on their device.
-- The host's SSH port is never exposed to the internet. Pangolin authentication happens before a session can start.
+- Users get a terminal from any browser, with no SSH client, keys, or Praxis client on their device.
+- The host's SSH port is never exposed to the internet. Praxis authentication happens before a session can start.
 - SSO, identity providers, and access rules like geo-blocking apply to shell access.
-- With automated provisioning, users are created on the host from their Pangolin identity, so there are no shared accounts or keys to manage.
+- With automated provisioning, users are created on the host from their Praxis identity, so there are no shared accounts or keys to manage.
 
 ## Use Cases
 
@@ -28,7 +28,7 @@ SSH public resources render a full interactive terminal in the browser. Users vi
 <iframe
   className="w-full aspect-video rounded-xl"
   src="https://www.youtube-nocookie.com/embed/8bvVdcPPWGQ"
-  title="How To Setup SSH In The Browser With Pangolin"
+  title="How To Setup SSH In The Browser With Praxis"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
   referrerPolicy="strict-origin-when-cross-origin"
   allowFullScreen
@@ -36,23 +36,23 @@ SSH public resources render a full interactive terminal in the browser. Users vi
 
 ## How It Works
 
-1. You assign a FQDN on a domain managed in Pangolin.
+1. You assign a FQDN on a domain managed in Praxis.
 2. The user completes [public resource authentication](/manage/resources/public/authentication) in the browser (platform SSO, identity providers, access rules, and so on).
 3. Depending on the SSH [configuration](/manage/ssh#configuration-options) you chose, the user may be prompted for a second credential step or proceed directly into the terminal.
-4. Pangolin renders the session and proxies traffic to the backend through a site connector.
+4. Praxis renders the session and proxies traffic to the backend through a site connector.
 
 ## Site and Host Configuration
 
 SSH public resources do **not** use [targets](/manage/resources/public/targets). Instead, you:
 
 1. Select which sites can route to the resource.
-2. Enter the backend host and port—unless you selected **Pangolin SSH** mode, which executes sessions on the site connector host and does not require a host or port.
+2. Enter the backend host and port—unless you selected **Praxis SSH** mode, which executes sessions on the site connector host and does not require a host or port.
 
 <Warning>
-**Pangolin SSH mode requires root.** The Pangolin Site must run as root on the site connector host. Use `sudo pangolin up site ...` or run the site service as root. See [Install Sites](/manage/sites/install-site).
+**Praxis SSH mode requires root.** The Praxis Site must run as root on the site connector host. Use `sudo praxis up site ...` or run the site service as root. See [Install Sites](/manage/sites/install-site).
 </Warning>
 
-Pangolin routes through the site that is online and healthiest, using the same intelligent multi-site routing model as [private resources](/manage/resources/private/multi-site-routing).
+Praxis routes through the site that is online and healthiest, using the same intelligent multi-site routing model as [private resources](/manage/resources/private/multi-site-routing).
 
 ## SSH Configuration
 
@@ -64,13 +64,13 @@ See [SSH Access](/manage/ssh) for a full explanation of each option, setup instr
 
 | | Public SSH | [Private SSH](/manage/resources/private/ssh) |
 |---|------------|----------------------------------------------|
-| **Access** | Web browser at a public FQDN | Pangolin CLI: `pangolin ssh <alias>` |
-| **Client required** | No | Yes — user must be connected with the Pangolin client |
+| **Access** | Web browser at a public FQDN | Praxis CLI: `praxis ssh <alias>` |
+| **Client required** | No | Yes — user must be connected with the Praxis client |
 | **First auth layer** | [Public resource authentication](/manage/resources/public/authentication) — login page, SSO, access rules | Identity from the active client connection; [private resource access rules](/manage/resources/private/authentication) |
-| **Hostname** | Public FQDN on your Pangolin domain | [Alias](/manage/resources/private/alias) on the private resource |
+| **Hostname** | Public FQDN on your Praxis domain | [Alias](/manage/resources/private/alias) on the private resource |
 
 ## Authentication and Access Rules
 
-SSH public resources are protocol-aware and support the full set of Pangolin [authentication and access rules](/manage/resources/public/authentication). These rules gate who can reach the resource URL in the first place—before any SSH session or host credential prompt begins.
+SSH public resources are protocol-aware and support the full set of Praxis [authentication and access rules](/manage/resources/public/authentication). These rules gate who can reach the resource URL in the first place—before any SSH session or host credential prompt begins.
 
 You can configure these settings inline on the resource or attach a shared [resource policy](/manage/resources/public/resource-policies) and add resource-specific overrides on top.

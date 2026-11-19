@@ -39,7 +39,7 @@ managed:
 ### Remote Node Configuration
 
 <ResponseField name="managed" type="object">
-  Settings for connecting the remote node to the Pangolin head server.
+  Settings for connecting the remote node to the Praxis head server.
 
   <Expandable title="Managed">
     {/* <ResponseField name="name" type="string">
@@ -49,13 +49,13 @@ managed:
     </ResponseField> */}
 
     <ResponseField name="id" type="string">
-      Unique identifier for the managed deployment. Generated from the installer or the [Pangolin dashboard](https://app.pangolin.net).
+      Unique identifier for the managed deployment. Generated from the installer or the [Praxis dashboard](https://app.praxis.causq.com).
 
       **Example**: `he4g78wevj25msf`
     </ResponseField>
 
     <ResponseField name="secret" type="string">
-      Secret key for authenticating with the managed service. Generated from the installer or the [Pangolin dashboard](https://app.pangolin.net).
+      Secret key for authenticating with the managed service. Generated from the installer or the [Praxis dashboard](https://app.praxis.causq.com).
 
       **Example**: `n7sd18twfko0q0vrb7wyclqzbvvnx1fqt7ezv8xewhdb9s7d`
 
@@ -67,9 +67,9 @@ managed:
     <ResponseField name="endpoint" type="string">
       The managed service endpoint to connect to. This can only change with enterprise deployments.
 
-      **Example**: `https://app.pangolin.net`
+      **Example**: `https://app.praxis.causq.com`
 
-      **Default**: `https://app.pangolin.net`
+      **Default**: `https://app.praxis.causq.com`
     </ResponseField>
 
     <ResponseField name="redirect_endpoint" type="string">

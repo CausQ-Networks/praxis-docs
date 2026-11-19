@@ -12,7 +12,7 @@ Use a machine client when a long-running process or job needs network access, fo
 - A [subnet router](/manage/clients/subnet-router) that shares access with devices behind it
 - A [Kubernetes sidecar](/manage/clients/kubernetes/deployment) that brings a pod onto the network
 
-Run machine clients with [Pangolin CLI](/manage/clients/platforms/cli#machine-clients).
+Run machine clients with [Praxis CLI](/manage/clients/platforms/cli#machine-clients).
 
 ## Create a Machine Client
 
@@ -44,14 +44,14 @@ To assign roles on a machine client:
 After you change roles or resource grants, the client updates its tunnels automatically. Removing access tears down tunnels to sites that no longer have any reachable resources.
 
 <Note>
-Assigning roles to machine clients is only available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition). Direct assignment of a machine client on a private resource does not require that feature.
+Assigning roles to machine clients is only available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition). Direct assignment of a machine client on a private resource does not require that feature.
 </Note>
 
 ## Credentials
 
 Machine client credentials are only for machine clients. Each machine client is provisioned with a unique identifier (ID), secret, and endpoint. The client uses those three values to establish a secure, encrypted connection to the server. **Machine client credentials can not be shared across different clients**.
 
-User devices do not use machine client credentials. A person logs in with their Pangolin user credentials, or with an external identity provider, through the web login flow in the client. That login creates a session tied to their account. The session is not shown in the dashboard and cannot be regenerated. To disconnect a user device, have the user log out in the client.
+User devices do not use machine client credentials. A person logs in with their Praxis user credentials, or with an external identity provider, through the web login flow in the client. That login creates a session tied to their account. The session is not shown in the dashboard and cannot be regenerated. To disconnect a user device, have the user log out in the client.
 
 ### ID
 
@@ -75,15 +75,15 @@ When the client connects, it uses this secret as a first handshake with the serv
 
 ### Endpoint
 
-Example: `https://app.pangolin.net` or `https://pangolin.my-server.com`
+Example: `https://app.praxis.causq.com` or `https://praxis.my-server.com`
 
-The endpoint is how the client knows which server to connect to. This is the fully qualified hostname of the Pangolin server (the URL you use to access the dashboard). For Pangolin cloud, the endpoint is `https://app.pangolin.net`. The client uses this endpoint ot establish a websocket connection and receive control messages from the server.
+The endpoint is how the client knows which server to connect to. This is the fully qualified hostname of the Praxis server (the URL you use to access the dashboard). For Praxis cloud, the endpoint is `https://app.praxis.causq.com`. The client uses this endpoint ot establish a websocket connection and receive control messages from the server.
 
 ## Rotating and Regenerating Credentials
 
 Machine client credentials can be regenerated. Regenerating credentials will completely invalidate the previous ID and secret. Use this feature if you have lost the secret and need to reset the credentials, or if you wish to rotate credentials on a regular basis for extra security.
 
-To regenerate credentials, visit Clients > Machines > Your Client > Credentials in the Pangolin admin dashboard.
+To regenerate credentials, visit Clients > Machines > Your Client > Credentials in the Praxis admin dashboard.
 
 ### Regenerate vs. Regenerate and Disconnect
 

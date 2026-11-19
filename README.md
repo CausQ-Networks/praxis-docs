@@ -1,6 +1,6 @@
-# Pangolin Documentation
+# Praxis Documentation
 
-The Pangolin docs site, built with [Fumadocs](https://fumadocs.dev) on Next.js.
+The Praxis docs site, built with [Fumadocs](https://fumadocs.dev) on Next.js.
 
 ## Development
 

@@ -1,7 +1,7 @@
 ---
 title: "Cloudflare Proxy"
 ---
-Pangolin works with Cloudflare proxy (orange cloud) enabled, but requires specific configuration:
+Praxis works with Cloudflare proxy (orange cloud) enabled, but requires specific configuration:
 
 <Warning>
 **Terms of Service**: Enabling Cloudflare proxy binds you to Cloudflare's terms of service as traffic routes through their network.
@@ -15,7 +15,7 @@ Pangolin works with Cloudflare proxy (orange cloud) enabled, but requires specif
 3. **Disable port 80** (not needed with wildcard certs)
 
 <Info>
-Pangolin will **not work** with Cloudflare's Full or Automatic SSL/TLS modes. Only Full (Strict) mode is supported.
+Praxis will **not work** with Cloudflare's Full or Automatic SSL/TLS modes. Only Full (Strict) mode is supported.
 </Info>
 
 ### WireGuard Configuration
@@ -46,7 +46,7 @@ gerbil:
 </Step>
 
 <Step title="Restart services">
-  Restart Pangolin to apply the changes:
+  Restart Praxis to apply the changes:
   
   ```bash
   docker-compose restart
@@ -56,20 +56,20 @@ gerbil:
 
 ### Getting the Real Client IP
 
-Pangolin needs to know the original client IP address for features like rate limiting and logging. When Cloudflare proxy is enabled, the API server sees Cloudflare's IP instead of the real client IP.
+Praxis needs to know the original client IP address for features like rate limiting and logging. When Cloudflare proxy is enabled, the API server sees Cloudflare's IP instead of the real client IP.
 
-**Badger**, Pangolin's middleware for Traefik, automatically handles Cloudflare proxy IP extraction. Badger versions 1.3.0 and later automatically:
+**Badger**, Praxis's middleware for Traefik, automatically handles Cloudflare proxy IP extraction. Badger versions 1.3.0 and later automatically:
 - Trust Cloudflare IP ranges
 - Extract the real client IP from the `CF-Connecting-IP` header
 - Set `X-Real-IP` and `X-Forwarded-For` headers for downstream services
 
 <Info>
-**Automatic Configuration**: Pangolin installer versions 1.14.0 and greater automatically add Badger to all Pangolin routes in Traefik. If you're using a newer installer, no manual configuration is needed.
+**Automatic Configuration**: Praxis installer versions 1.14.0 and greater automatically add Badger to all Praxis routes in Traefik. If you're using a newer installer, no manual configuration is needed.
 </Info>
 
 #### Manual Configuration
 
-If you're using an older installer or need to manually configure Badger, add it to your Traefik configuration. Badger must be applied to all routers that handle Pangolin traffic (API, dashboard, and WebSocket routes):
+If you're using an older installer or need to manually configure Badger, add it to your Traefik configuration. Badger must be applied to all routers that handle Praxis traffic (API, dashboard, and WebSocket routes):
 
 ```yaml title="dynamic_config.yml"
 http:
@@ -114,11 +114,11 @@ http:
         certResolver: letsencrypt
 ```
 
-**Why Badger is needed**: When `disableForwardAuth: true` is set, Badger extracts the real client IP from Cloudflare proxy headers without performing authentication. This is necessary because forward authentication is only needed for resources controlled by Pangolin, not for the main application routes. However, the main Pangolin containers and APIs still need the real client IP for proper rate limiting and IP tracking.
+**Why Badger is needed**: When `disableForwardAuth: true` is set, Badger extracts the real client IP from Cloudflare proxy headers without performing authentication. This is necessary because forward authentication is only needed for resources controlled by Praxis, not for the main application routes. However, the main Praxis containers and APIs still need the real client IP for proper rate limiting and IP tracking.
 
-#### Pangolin Configuration
+#### Praxis Configuration
 
-Set `trust_proxy: 2` in your Pangolin config file. This tells Pangolin to trust the second-level proxy (Traefik is proxy 1, Cloudflare is proxy 2):
+Set `trust_proxy: 2` in your Praxis config file. This tells Praxis to trust the second-level proxy (Traefik is proxy 1, Cloudflare is proxy 2):
 
 ```yaml
 server:
@@ -129,7 +129,7 @@ server:
 **Update Badger**: Ensure you're running Badger version 1.3.0 or later to get real IP addresses in logs for Public resources. Update Badger if you're using an older version.
 </Warning>
 
-After making these changes, restart both Traefik and Pangolin for the configuration to take effect.
+After making these changes, restart both Traefik and Praxis for the configuration to take effect.
 
 ### Troubleshooting
 

@@ -1,9 +1,9 @@
 ---
 title: "Helm"
-description: "Kubernetes installation using Helm charts for Pangolin and Newt."
+description: "Kubernetes installation using Helm charts for Praxis and Newt."
 ---
 
-Helm is the recommended method for standard Kubernetes installations of Pangolin and Newt.
+Helm is the recommended method for standard Kubernetes installations of Praxis and Newt.
 
 Use Helm when you want a chart-based workflow for installing, upgrading, rolling back, and removing releases from your cluster.
 
@@ -26,7 +26,7 @@ The classic Helm repository flow is the default path for most installations:
 
 ```bash
 helm install my-newt fossorial/newt
-helm install my-pangolin fossorial/pangolin
+helm install my-pangolin fossorial/praxis
 ```
 
 ## Installation overview
@@ -54,29 +54,29 @@ It is recommended to create the namespace explicitly before installation. This a
 
 For detailed installation steps, see:
 
-* [Pangolin Helm Quick-Start](/self-host/manual/kubernetes/pangolin/helm) — Install Pangolin
+* [Praxis Helm Quick-Start](/self-host/manual/kubernetes/praxis/helm) — Install Praxis
 
 ## Install command patterns
 
 ```bash tab="Classic Helm repository"
-helm upgrade --install pangolin fossorial/pangolin \
-  --namespace pangolin \
+helm upgrade --install praxis fossorial/praxis \
+  --namespace praxis \
   --values values-pangolin.yaml
 
 helm upgrade --install newt fossorial/newt \
-  --namespace pangolin \
+  --namespace praxis \
   --values values-newt.yaml
 ```
 
 ```bash tab="OCI (GHCR)"
-helm upgrade --install pangolin oci://ghcr.io/fosrl/helm-charts/pangolin \
+helm upgrade --install praxis oci://ghcr.io/fosrl/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
-  --namespace pangolin \
+  --namespace praxis \
   --values values-pangolin.yaml
 
 helm upgrade --install newt oci://ghcr.io/fosrl/helm-charts/newt \
   --version 1.4.0 \
-  --namespace pangolin \
+  --namespace praxis \
   --values values-newt.yaml
 ```
 
@@ -93,14 +93,14 @@ If your cluster uses Pod Security Admission or namespace-based policies, apply t
 Example:
 
 ```bash
-kubectl label namespace pangolin \
+kubectl label namespace praxis \
   pod-security.kubernetes.io/enforce=baseline \
   pod-security.kubernetes.io/audit=restricted \
   pod-security.kubernetes.io/warn=restricted
 ```
 
 <Warning>
-Pangolin deployments that include Gerbil require permissions that are not compatible with a restricted namespace profile, because Gerbil manages WireGuard and requires capabilities such as `NET_ADMIN`.
+Praxis deployments that include Gerbil require permissions that are not compatible with a restricted namespace profile, because Gerbil manages WireGuard and requires capabilities such as `NET_ADMIN`.
 </Warning>
 
 For more details, see [Prerequisites](/self-host/manual/kubernetes/prerequisites).
@@ -109,11 +109,11 @@ For more details, see [Prerequisites](/self-host/manual/kubernetes/prerequisites
 
 Both charts use values files for configuration.
 
-Pangolin example:
+Praxis example:
 
 ```bash
-helm upgrade --install pangolin fossorial/pangolin \
-  --namespace pangolin \
+helm upgrade --install praxis fossorial/praxis \
+  --namespace praxis \
   --values values-pangolin.yaml
 ```
 
@@ -121,7 +121,7 @@ Newt example:
 
 ```bash
 helm upgrade --install newt fossorial/newt \
-  --namespace pangolin \
+  --namespace praxis \
   --values values-newt.yaml
 ```
 
@@ -136,29 +136,29 @@ Do not use `--create-namespace` if you need custom namespace labels or annotatio
 Keep reusable configuration in a values file:
 
 ```bash
-helm upgrade --install pangolin fossorial/pangolin \
-  --namespace pangolin \
+helm upgrade --install praxis fossorial/praxis \
+  --namespace praxis \
   --values values-pangolin.yaml
 ```
 
 Use `--set` only for small tests or temporary overrides:
 
 ```bash
-helm upgrade --install pangolin fossorial/pangolin \
-  --namespace pangolin \
+helm upgrade --install praxis fossorial/praxis \
+  --namespace praxis \
   --set example.key=value
 ```
 
 Common value sources:
 
-* `values-pangolin.yaml` for Pangolin.
+* `values-pangolin.yaml` for Praxis.
 * `values-newt.yaml` for Newt.
 * Kubernetes Secrets for credentials.
 * Existing cluster resources such as TLS secrets, StorageClasses, or ingress controllers.
 
 Full configuration options are documented here:
 
-* [Pangolin Configuration](/self-host/manual/kubernetes/pangolin/configuration)
+* [Praxis Configuration](/self-host/manual/kubernetes/praxis/configuration)
 
 ## Artifact Hub and chart discovery
 
@@ -180,10 +180,10 @@ Always verify the chart name, chart version, and repository URL before copying i
 
 OCI is not a separate installation method. It only changes where Helm pulls the chart from.
 
-For Pangolin and Newt, OCI chart publishing is available in GHCR:
+For Praxis and Newt, OCI chart publishing is available in GHCR:
 
 * Newt: `oci://ghcr.io/fosrl/helm-charts/newt`
-* Pangolin: `oci://ghcr.io/fosrl/helm-charts/pangolin`
+* Praxis: `oci://ghcr.io/fosrl/helm-charts/praxis`
 
 You still use Helm in the same way: choose a chart, select a version, provide values, and install the release.
 
@@ -196,10 +196,10 @@ helm pull oci://ghcr.io/fosrl/helm-charts/newt \
   --version 1.4.0
 ```
 
-Pangolin example:
+Praxis example:
 
 ```bash
-helm pull oci://ghcr.io/fosrl/helm-charts/pangolin \
+helm pull oci://ghcr.io/fosrl/helm-charts/praxis \
   --version 0.1.0-alpha.0
 ```
 
@@ -210,16 +210,16 @@ Newt example:
 ```bash
 helm upgrade --install newt oci://ghcr.io/fosrl/helm-charts/newt \
   --version 1.4.0 \
-  --namespace pangolin \
+  --namespace praxis \
   --values values-newt.yaml
 ```
 
-Pangolin example:
+Praxis example:
 
 ```bash
-helm upgrade --install pangolin oci://ghcr.io/fosrl/helm-charts/pangolin \
+helm upgrade --install praxis oci://ghcr.io/fosrl/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
-  --namespace pangolin \
+  --namespace praxis \
   --values values-pangolin.yaml
 ```
 
@@ -237,22 +237,22 @@ helm repo update fossorial
 
 This step is only needed when using the classic Helm repository. OCI installs pull the chart by OCI reference and version.
 
-### Upgrade Pangolin
+### Upgrade Praxis
 
 Classic Helm repository:
 
 ```bash
-helm upgrade pangolin fossorial/pangolin \
-  --namespace pangolin \
+helm upgrade praxis fossorial/praxis \
+  --namespace praxis \
   --values values-pangolin.yaml
 ```
 
 OCI:
 
 ```bash
-helm upgrade pangolin oci://ghcr.io/fosrl/helm-charts/pangolin \
+helm upgrade praxis oci://ghcr.io/fosrl/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
-  --namespace pangolin \
+  --namespace praxis \
   --values values-pangolin.yaml
 ```
 
@@ -262,7 +262,7 @@ Classic Helm repository:
 
 ```bash
 helm upgrade newt fossorial/newt \
-  --namespace pangolin \
+  --namespace praxis \
   --values values-newt.yaml
 ```
 
@@ -271,15 +271,15 @@ OCI:
 ```bash
 helm upgrade newt oci://ghcr.io/fosrl/helm-charts/newt \
   --version 1.4.0 \
-  --namespace pangolin \
+  --namespace praxis \
   --values values-newt.yaml
 ```
 
 ### Check release status
 
 ```bash
-helm status pangolin --namespace pangolin
-helm history pangolin --namespace pangolin
+helm status praxis --namespace pangolin
+helm history praxis --namespace pangolin
 ```
 
 ```bash
@@ -290,7 +290,7 @@ helm history newt --namespace pangolin
 ### View rendered manifests
 
 ```bash
-helm get manifest pangolin --namespace pangolin
+helm get manifest praxis --namespace pangolin
 ```
 
 ```bash
@@ -300,7 +300,7 @@ helm get manifest newt --namespace pangolin
 ### View applied values
 
 ```bash
-helm get values pangolin --namespace pangolin
+helm get values praxis --namespace pangolin
 ```
 
 ```bash
@@ -310,7 +310,7 @@ helm get values newt --namespace pangolin
 ### Roll back a release
 
 ```bash
-helm rollback pangolin <revision> --namespace pangolin
+helm rollback praxis <revision> --namespace pangolin
 ```
 
 ```bash
@@ -320,7 +320,7 @@ helm rollback newt <revision> --namespace pangolin
 ### Uninstall a release
 
 ```bash
-helm uninstall pangolin --namespace pangolin
+helm uninstall praxis --namespace pangolin
 ```
 
 ```bash
@@ -333,7 +333,7 @@ Uninstalling a Helm release does not always remove persistent volumes, externall
 
 ## Troubleshooting
 
-* [Pangolin Troubleshooting](/self-host/manual/kubernetes/pangolin/troubleshooting)
+* [Praxis Troubleshooting](/self-host/manual/kubernetes/praxis/troubleshooting)
 
 Useful Helm commands:
 
@@ -349,7 +349,7 @@ Useful Kubernetes commands:
 
 ```bash
 kubectl get pods -n pangolin
-kubectl get events -n pangolin --sort-by=.lastTimestamp
+kubectl get events -n praxis --sort-by=.lastTimestamp
 kubectl describe pod <pod-name> -n pangolin
 kubectl logs <pod-name> -n pangolin
 ```
@@ -357,11 +357,11 @@ kubectl logs <pod-name> -n pangolin
 ## Next steps
 
 <CardGroup cols={2}>
-	<Card title="Pangolin Helm Install" href="/self-host/manual/kubernetes/pangolin/helm" icon="server">
-		Install Pangolin with the Helm chart.
+	<Card title="Praxis Helm Install" href="/self-host/manual/kubernetes/praxis/helm" icon="server">
+		Install Praxis with the Helm chart.
 	</Card>
-	<Card title="Pangolin Configuration" href="/self-host/manual/kubernetes/pangolin/configuration" icon="sliders">
-		Configure Pangolin chart values for your cluster.
+	<Card title="Praxis Configuration" href="/self-host/manual/kubernetes/praxis/configuration" icon="sliders">
+		Configure Praxis chart values for your cluster.
 	</Card>
 	<Card title="Argo CD" href="/self-host/manual/kubernetes/gitops/argocd" icon="code-branch">
 		Deploy the charts with Argo CD.

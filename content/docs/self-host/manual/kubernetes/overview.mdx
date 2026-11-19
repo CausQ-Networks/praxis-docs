@@ -1,18 +1,18 @@
 ---
 title: "Overview"
-description: "Deploy Pangolin, Sites (Newt), and related components on Kubernetes."
+description: "Deploy Praxis, Sites (Newt), and related components on Kubernetes."
 ---
 
 ## Components
 
 | Component | Role |
 | --- | --- |
-| Pangolin | Main application for the dashboard, API, authentication, configuration, and database-backed state. |
-| Gerbil | Tunnel stack component used by Pangolin for site connectivity. |
-| Site (Newt) | Site connector used to connect private resources to Pangolin. |
+| Praxis | Main application for the dashboard, API, authentication, configuration, and database-backed state. |
+| Gerbil | Tunnel stack component used by Praxis for site connectivity. |
+| Site (Newt) | Site connector used to connect private resources to Praxis. |
 | Traefik | Reverse proxy and router for ingress traffic. |
-| PostgreSQL / SQLite | Database options for Pangolin deployments, depending on the selected chart configuration. |
-| Pangolin Kube Controller | Kubernetes controller for integrating Pangolin with Kubernetes and Traefik resources. |
+| PostgreSQL / SQLite | Database options for Praxis deployments, depending on the selected chart configuration. |
+| Praxis Kube Controller | Kubernetes controller for integrating Praxis with Kubernetes and Traefik resources. |
 
 <Info>
 Depending on your deployment mode, not every component is required. Local reverse proxy deployments and tunneled site deployments can have different component requirements.
@@ -21,7 +21,7 @@ Depending on your deployment mode, not every component is required. Local revers
 ```mermaid
 flowchart LR
 	U[Users] --> T[Traefik]
-	T --> P[Pangolin]
+	T --> P[Praxis]
 	P --> G[Gerbil]
 	S[Site connector<br/>Newt] --> G
 	P --> D[(Database)]
@@ -37,16 +37,16 @@ flowchart LR
 		Review the required cluster, ingress, DNS, storage, and secret setup.
 	</Card>
 	<Card title="Helm Quick-Start" href="/self-host/manual/kubernetes/helm" icon="box">
-		Install Pangolin or Sites (Newt) with the standard chart-based workflow.
+		Install Praxis or Sites (Newt) with the standard chart-based workflow.
 	</Card>
 	<Card title="Kustomize Quick-Start" href="/self-host/manual/kubernetes/kustomize" icon="layer-group">
 		Use overlays and patches for manifest-based deployments.
 	</Card>
 	<Card title="Argo CD Guide" href="/self-host/manual/kubernetes/gitops/argocd" icon="code-branch">
-		Deploy Pangolin or Sites (Newt) with Argo CD.
+		Deploy Praxis or Sites (Newt) with Argo CD.
 	</Card>
 	<Card title="Flux Guide" href="/self-host/manual/kubernetes/gitops/flux" icon="code-branch">
-		Deploy Pangolin or Sites (Newt) with Flux.
+		Deploy Praxis or Sites (Newt) with Flux.
 	</Card>
 	<Card title="Helmfile Guide" href="/self-host/manual/kubernetes/helmfile" icon="boxes-stacked">
 		Manage multiple Helm releases together.
@@ -56,17 +56,17 @@ flowchart LR
 ## Component guides
 
 <CardGroup cols={2}>
-	<Card title="Pangolin with Helm" href="/self-host/manual/kubernetes/pangolin/helm" icon="server">
-		Install Pangolin with the Helm chart.
+	<Card title="Praxis with Helm" href="/self-host/manual/kubernetes/praxis/helm" icon="server">
+		Install Praxis with the Helm chart.
 	</Card>
-	<Card title="Pangolin Configuration" href="/self-host/manual/kubernetes/pangolin/configuration" icon="sliders">
-		Configure Pangolin for your Kubernetes environment.
+	<Card title="Praxis Configuration" href="/self-host/manual/kubernetes/praxis/configuration" icon="sliders">
+		Configure Praxis for your Kubernetes environment.
 	</Card>
-	<Card title="Pangolin Troubleshooting" href="/self-host/manual/kubernetes/pangolin/troubleshooting" icon="circle-question">
-		Diagnose and resolve Pangolin deployment issues.
+	<Card title="Praxis Troubleshooting" href="/self-host/manual/kubernetes/praxis/troubleshooting" icon="circle-question">
+		Diagnose and resolve Praxis deployment issues.
 	</Card>
 	<Card title="Site Helm" href="/manage/sites/kubernetes/helm" icon="server">
-		Install a site connector with the Pangolin CLI Helm chart.
+		Install a site connector with the Praxis CLI Helm chart.
 	</Card>
 	<Card title="Site Configuration" href="/manage/sites/kubernetes/configuration" icon="sliders">
 		Configure Site connector credentials and runtime settings.

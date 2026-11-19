@@ -1,11 +1,11 @@
 ---
 title: "Integration API"
 icon: "cube"
-description: "Learn how to use Pangolin's REST API to automate and script operations with fine-grained permissions"
+description: "Learn how to use Praxis's REST API to automate and script operations with fine-grained permissions"
 ---
 
 <Warning>
-Pangolin is in heavy development. The REST API routes and behavior may include breaking changes between updates. We will do our best to document large changes.
+Praxis is in heavy development. The REST API routes and behavior may include breaking changes between updates. We will do our best to document large changes.
 </Warning>
 
 The API is REST-based and supports many operations available through the web interface. Authentication uses Bearer tokens, and you can create multiple API keys with specific permissions for different use cases.
@@ -38,7 +38,7 @@ response = requests.get('https://api.example.com/v1/endpoint', headers=headers)
 
 ## API Key Types
 
-Pangolin supports two types of API keys with different permission levels:
+Praxis supports two types of API keys with different permission levels:
 
 ### Organization API Keys
 
@@ -46,7 +46,7 @@ Organization API keys are created by organization admins and have limited scope 
 
 ### Root API Keys
 
-Root API keys have some extra permissions and can execute operations across orgs. They are only available in the fully self-hosted editions of Pangolin:
+Root API keys have some extra permissions and can execute operations across orgs. They are only available in the fully self-hosted editions of Praxis:
 
 <Warning>
 Root API keys have elevated permissions and should be used carefully. Only create them when you need server-wide access.
@@ -94,4 +94,4 @@ View the full Swagger docs here: [https://api.pangolin.net/v1/docs](https://api.
 <img src="/images/swagger.png" alt="Swagger Docs"/>
 </Frame>
 
-For self-hosted Pangolin, access the documentation at `https://api.your-domain.com/v1/docs`.
+For self-hosted Praxis, access the documentation at `https://api.your-domain.com/v1/docs`.

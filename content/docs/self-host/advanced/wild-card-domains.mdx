@@ -5,7 +5,7 @@ description: "Configure wildcard TLS certificates with Traefik DNS-01 challenges
 
 Wildcard certificates let one certificate cover every first-level subdomain of a domain, such as `*.example.com`. They are useful when you create many resources under the same base domain because Traefik does not need to request a new certificate for every resource hostname.
 
-Traefik is the reverse proxy in the self-hosted Pangolin stack. It receives HTTPS traffic, requests certificates from Let's Encrypt, and routes requests to Pangolin resources. A Traefik certificate resolver is the named block of Traefik configuration that tells Traefik how to request certificates.
+Traefik is the reverse proxy in the self-hosted Praxis stack. It receives HTTPS traffic, requests certificates from Let's Encrypt, and routes requests to Praxis resources. A Traefik certificate resolver is the named block of Traefik configuration that tells Traefik how to request certificates.
 
 <Warning>
 Wildcard certificates require a DNS-01 challenge. You must control the domain's DNS records and have API credentials for a DNS provider supported by Traefik.
@@ -21,7 +21,7 @@ Let's Encrypt only issues wildcard certificates through DNS-01 challenges. See t
 - `*.example.com` does not cover `app.internal.example.com`; that needs `*.internal.example.com`.
 - A wildcard certificate can reduce Let's Encrypt rate limit pressure because many resource hostnames can reuse the same certificate.
 
-Pangolin can prefer wildcard certificates when it generates Traefik router configuration. For example, if you have resources at `blog.example.com` and `api.example.com`, Pangolin can ask Traefik to request `*.example.com` instead of separate certificates for each hostname.
+Praxis can prefer wildcard certificates when it generates Traefik router configuration. For example, if you have resources at `blog.example.com` and `api.example.com`, Praxis can ask Traefik to request `*.example.com` instead of separate certificates for each hostname.
 
 ## Benefits
 
@@ -63,17 +63,17 @@ For wildcard certificates, you have two good options. Most users should replace 
 | Replace `letsencrypt` with DNS-01 | Simplest option. Use this if all certificates can be issued through your DNS provider. |
 | Add a second resolver | Use this if you want to keep HTTP-01 for some routers and use DNS-01 only for wildcard domains. |
 
-Traefik does not automatically apply a resolver just because it exists. Each router must reference the resolver with `tls.certResolver`, and Pangolin's `cert_resolver` setting must match the Traefik resolver name.
+Traefik does not automatically apply a resolver just because it exists. Each router must reference the resolver with `tls.certResolver`, and Praxis's `cert_resolver` setting must match the Traefik resolver name.
 
 <Note>
-In the Pangolin dashboard, `default` uses Pangolin's configured `traefik.cert_resolver` value. In a standard install, that default value is `letsencrypt`.
+In the Praxis dashboard, `default` uses Praxis's configured `traefik.cert_resolver` value. In a standard install, that default value is `letsencrypt`.
 </Note>
 
 ## Configure DNS-01 Wildcards
 
 <Steps>
 <Step title="Stop the stack">
-  Stop Pangolin before editing Traefik and Pangolin configuration.
+  Stop Praxis before editing Traefik and Praxis configuration.
 
   ```bash
   sudo docker compose down
@@ -96,7 +96,7 @@ In the Pangolin dashboard, `default` uses Pangolin's configured `traefik.cert_re
   ```
 
   <Note>
-  The resolver name is the key under `certificatesResolvers`. In this example it is `letsencrypt`, so Pangolin's `cert_resolver` and any Traefik `tls.certResolver` values must also use `letsencrypt`.
+  The resolver name is the key under `certificatesResolvers`. In this example it is `letsencrypt`, so Praxis's `cert_resolver` and any Traefik `tls.certResolver` values must also use `letsencrypt`.
   </Note>
 </Step>
 
@@ -122,7 +122,7 @@ In the Pangolin dashboard, `default` uses Pangolin's configured `traefik.cert_re
   ```
 </Step>
 
-<Step title="Tell Pangolin to prefer wildcard certificates">
+<Step title="Tell Praxis to prefer wildcard certificates">
   Set `prefer_wildcard_cert: true` for the domain in `config/config.yml`.
 
   ```yaml title="config/config.yml" {4}
@@ -133,7 +133,7 @@ In the Pangolin dashboard, `default` uses Pangolin's configured `traefik.cert_re
       cert_resolver: "letsencrypt"
   ```
 
-  If you manage domains through the Pangolin dashboard instead, restart Pangolin and enable wildcard preference on the domain there. The dashboard also lets you set the domain's certificate resolver; it must match the resolver name in Traefik.
+  If you manage domains through the Praxis dashboard instead, restart Praxis and enable wildcard preference on the domain there. The dashboard also lets you set the domain's certificate resolver; it must match the resolver name in Traefik.
 </Step>
 
 <Step title="Restart the stack">
@@ -187,15 +187,15 @@ traefik:
   prefer_wildcard_cert: true
 ```
 
-For dashboard-managed domains, open the domain settings in Pangolin and set the certificate resolver to the custom Traefik resolver name, such as `letsencrypt-dns`. Enable wildcard preference on the same domain if you want Pangolin to request wildcard certificates for resources under that domain.
+For dashboard-managed domains, open the domain settings in Praxis and set the certificate resolver to the custom Traefik resolver name, such as `letsencrypt-dns`. Enable wildcard preference on the same domain if you want Praxis to request wildcard certificates for resources under that domain.
 
 <Note>
-If you split ACME storage across multiple files, configure Pangolin's private `acme.acme_json_path` setting as the directory that contains them, for example `config/letsencrypt`. Pangolin will scan the directory for ACME JSON files, including nested files. See [ACME configuration](/self-host/advanced/private-config-file#acme-configuration).
+If you split ACME storage across multiple files, configure Praxis's private `acme.acme_json_path` setting as the directory that contains them, for example `config/letsencrypt`. Praxis will scan the directory for ACME JSON files, including nested files. See [ACME configuration](/self-host/advanced/private-config-file#acme-configuration).
 </Note>
 
 ## Dashboard Certificate
 
-The `prefer_wildcard_cert` setting affects resource routers generated by Pangolin. If you also want Traefik to request a wildcard certificate for the Pangolin dashboard router, add the wildcard domain to the dashboard router's `tls.domains` list in `config/traefik/dynamic_config.yml`.
+The `prefer_wildcard_cert` setting affects resource routers generated by Praxis. If you also want Traefik to request a wildcard certificate for the Praxis dashboard router, add the wildcard domain to the dashboard router's `tls.domains` list in `config/traefik/dynamic_config.yml`.
 
 ```yaml title="config/traefik/dynamic_config.yml" {8-12}
 next-router:
@@ -216,7 +216,7 @@ If you use a second resolver, set `certResolver` to that resolver name, such as 
 ## Verify It Works
 
 <Tip>
-If Traefik already issued certificates with the old resolver, clear the old certificates before testing so Traefik requests them again. Remove the relevant ACME storage file, or use `pangctl clear-certs` if Pangolin has already synced stale certificates.
+If Traefik already issued certificates with the old resolver, clear the old certificates before testing so Traefik requests them again. Remove the relevant ACME storage file, or use `pangctl clear-certs` if Praxis has already synced stale certificates.
 </Tip>
 
 <Steps>
@@ -261,11 +261,11 @@ If Traefik already issued certificates with the old resolver, clear the old cert
 </Accordion>
 
 <Accordion title="Traefik still uses HTTP-01">
-  Check the resolver name. The router's `tls.certResolver` and Pangolin's `cert_resolver` must match the DNS-01 resolver name exactly.
+  Check the resolver name. The router's `tls.certResolver` and Praxis's `cert_resolver` must match the DNS-01 resolver name exactly.
 </Accordion>
 
 <Accordion title="Old certificates are still served">
-  Clear old certificates so Traefik can request them again. You can remove the relevant ACME storage file, or use `pangctl clear-certs` if Pangolin has already synced stale certificates.
+  Clear old certificates so Traefik can request them again. You can remove the relevant ACME storage file, or use `pangctl clear-certs` if Praxis has already synced stale certificates.
 </Accordion>
 
 <Accordion title="DNS challenge times out">

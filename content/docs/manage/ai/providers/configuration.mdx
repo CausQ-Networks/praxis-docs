@@ -31,14 +31,14 @@ If two attached providers share a capability for the same model, the gateway pic
 
 How the gateway authenticates to the upstream. Typed providers prefill the header that upstream expects.
 
-| Auth type | What Pangolin sends |
+| Auth type | What Praxis sends |
 |---|---|
 | Bearer | `Authorization: Bearer <key>`. Used by OpenAI and most compatible APIs. |
 | `x-api-key` | `x-api-key` header. Used by Anthropic and Anthropic-compatible APIs. |
 | `x-goog-api-key` | `x-goog-api-key` header. Used by Google Gemini. |
 | Cloudflare AI Gateway | `cf-aig-authorization: Bearer <key>`. |
 | Splunk HEC | `Authorization: Splunk <key>`. |
-| Passthrough | Forward the caller's remaining API key headers to the upstream (after Pangolin strips its own virtual key). |
+| Passthrough | Forward the caller's remaining API key headers to the upstream (after Praxis strips its own virtual key). |
 | No Auth | Send the request without authentication headers. |
 
 Bearer, `x-api-key`, `x-goog-api-key`, Cloudflare AI Gateway, and Splunk HEC all require an API key on the provider.
@@ -50,7 +50,7 @@ Where the gateway sends the request after it has selected this provider.
 | Mode | When to use |
 |---|---|
 | **Upstream URL** | Call a public or private API base URL. Typed providers with a public API prefill this. Vertex AI, Amazon Bedrock, and Microsoft Foundry ask you to enter a regional or resource base URL. |
-| **Site Targets** | Route through HTTP targets on your Pangolin sites, the same way a public resource reaches an internal service. Available on [Custom](/manage/ai/providers/custom) providers only. |
+| **Site Targets** | Route through HTTP targets on your Praxis sites, the same way a public resource reaches an internal service. Available on [Custom](/manage/ai/providers/custom) providers only. |
 
 If you choose **Site Targets**, configure the targets on the provider's **Network** tab after you save.
 
@@ -73,7 +73,7 @@ On **Network** you can also set:
 
 ### Identity Headers
 
-When Pangolin knows which user made the request, it forwards that identity to the upstream on every call:
+When Praxis knows which user made the request, it forwards that identity to the upstream on every call:
 
 | Header | Value |
 |---|---|
@@ -86,7 +86,7 @@ The user is known when:
 
 - A public resource is called with an [identity key](/manage/ai/virtual-api-keys#identity-keys)
 - A public resource is called with a [manual key](/manage/ai/virtual-api-keys#manual-keys) attributed to a user
-- A private AI Gateway resource is called from a connected [Pangolin client](/manage/clients/platforms), and that client maps to a user
+- A private AI Gateway resource is called from a connected [Praxis client](/manage/clients/platforms), and that client maps to a user
 
 An unattributed manual key still authenticates, but these headers are omitted. Empty values are omitted rather than sent blank.
 

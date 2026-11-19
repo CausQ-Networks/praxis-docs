@@ -3,10 +3,10 @@ title: "Install Sites"
 description: "Install the site connector as a binary or Docker container"
 ---
 
-The site connector can be installed as either a static binary executable or a Docker container via the CLI. You must first create a site and copy the ID and secret config from Pangolin before running it.
+The site connector can be installed as either a static binary executable or a Docker container via the CLI. You must first create a site and copy the ID and secret config from Praxis before running it.
 
 <Note>
-The Pangolin CLI is the recommended way to install a new site. Existing Newt deployments keep working. For Newt-specific install commands, see [Install Newt](/manage/sites/install-newt).
+The Praxis CLI is the recommended way to install a new site. Existing Newt deployments keep working. For Newt-specific install commands, see [Install Newt](/manage/sites/install-newt).
 </Note>
 
 ## Binary Installation (Linux, macOS, Windows)
@@ -16,22 +16,22 @@ The Pangolin CLI is the recommended way to install a new site. Existing Newt dep
 Use this command to automatically install the CLI. It detects your system architecture automatically and always pulls the latest version, adding the CLI to your PATH:
 
 ```bash
-curl -fsSL https://static.pangolin.net/get-cli.sh | bash
+curl -fsSL https://praxis.causq.com/get-cli.sh | bash
 ```
 
-To run a site on Windows, [download the latest installer](https://github.com/fosrl/cli/releases/latest/download/pangolin-cli_windows_installer.msi).
+To run a site on Windows, [download the latest installer](https://github.com/CausQ-Networks/praxis-cli/releases/latest/download/praxis-cli_windows_installer.msi).
 
-Binaries for Linux, macOS, and Windows are available in the [GitHub releases](https://github.com/fosrl/cli/releases/latest) for ARM and AMD64 (x86_64) architectures.
+Binaries for Linux, macOS, and Windows are available in the [GitHub releases](https://github.com/CausQ-Networks/praxis-cli/releases/latest) for ARM and AMD64 (x86_64) architectures.
 
 ### Running the Site
 
-Run the site connector with the configuration from Pangolin:
+Run the site connector with the configuration from Praxis:
 
 ```bash
 pangolin up site \
 --id 31frd0uzbjvp721 \
 --secret h51mmlknrvrwv8s4r1i210azhumt6isgbpyavxodibx1k2d6 \
---endpoint https://app.pangolin.net
+--endpoint https://app.praxis.causq.com
 ```
 
 ### Run as a Service
@@ -39,47 +39,47 @@ pangolin up site \
 The CLI can install and manage a service on your host machine for you. This supports Windows services, MacOS's launchd, and Linux's systemd to create a persistent site connection from that host. 
 
 ```bash
-sudo pangolin service install site \
+sudo praxis service install site \
 --id 31frd0uzbjvp721 \
 --secret h51mmlknrvrwv8s4r1i210azhumt6isgbpyavxodibx1k2d6 \
---endpoint https://app.pangolin.net
+--endpoint https://app.praxis.causq.com
 ```
 
 Check the service status:
 
 ```bash
-sudo pangolin service status site
+sudo praxis service status site
 ```
 
 And to get the logs: 
 
 ```bash
-sudo pangolin service logs site
+sudo praxis service logs site
 ```
 
 ### Manual Systemd Service
 
-Create `/etc/pangolin/pangolin-site.env` with the initial values from your Pangolin site configuration:
+Create `/etc/praxis/praxis-site.env` with the initial values from your Praxis site configuration:
 
-```bash title="/etc/pangolin/pangolin-site.env"
+```bash title="/etc/praxis/praxis-site.env"
 SITE_ID=31frd0uzbjvp721
 SITE_SECRET=h51mmlknrvrwv8s4r1i210azhumt6isgbpyavxodibx1k2d6
-PANGOLIN_ENDPOINT=https://app.pangolin.net
+PRAXIS_ENDPOINT=https://app.praxis.causq.com
 ```
 
 Create the directory, write the file, and restrict its permissions:
 
 ```bash
-sudo install -d -m 0755 /etc/pangolin
-sudo editor /etc/pangolin/pangolin-site.env
-sudo chmod 600 /etc/pangolin/pangolin-site.env
+sudo install -d -m 0755 /etc/praxis
+sudo editor /etc/praxis/praxis-site.env
+sudo chmod 600 /etc/praxis/praxis-site.env
 ```
 
 Then create a systemd service. The site connector reads those environment variables automatically, so `ExecStart` does not need to repeat them as flags:
 
-```ini title="/etc/systemd/system/pangolin-site.service"
+```ini title="/etc/systemd/system/praxis-site.service"
 [Unit]
-Description=Pangolin Site
+Description=Praxis Site
 Wants=network-online.target
 After=network-online.target
 
@@ -87,8 +87,8 @@ After=network-online.target
 Type=simple
 User=root
 Group=root
-EnvironmentFile=/etc/pangolin/pangolin-site.env
-ExecStart=/usr/local/bin/pangolin up site
+EnvironmentFile=/etc/praxis/praxis-site.env
+ExecStart=/usr/local/bin/praxis up site
 Restart=always
 RestartSec=2
 UMask=0077
@@ -100,18 +100,18 @@ WantedBy=multi-user.target
 ```
 
 <Warning>
-Make sure the binary exists at `/usr/local/bin/pangolin` before daemon reload and starting the service: `~$ which pangolin`
+Make sure the binary exists at `/usr/local/bin/praxis` before daemon reload and starting the service: `~$ which pangolin`
 </Warning>
 
 Reload systemd and enable the service:
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable --now pangolin-site
-sudo systemctl status pangolin-site
+sudo systemctl enable --now praxis-site
+sudo systemctl status praxis-site
 ```
 
-If you later change `/etc/pangolin/pangolin-site.env`, restart the service so the site connector picks up the new values.
+If you later change `/etc/praxis/praxis-site.env`, restart the service so the site connector picks up the new values.
 
 See [Configure Sites](/manage/sites/configure-site) for more environment variables.
 
@@ -122,17 +122,17 @@ See [Configure Sites](/manage/sites/configure-site) for more environment variabl
 Pull the latest image from Docker Hub:
 
 ```bash
-docker pull fosrl/pangolin-cli:latest
+docker pull causq-networks/praxis-cli:latest
 ```
 
 ### Run with Docker
 
-Run the site connector with CLI arguments from Pangolin:
+Run the site connector with CLI arguments from Praxis:
 
 ```bash
-docker run -dit --network host fosrl/pangolin-cli up site --id 31frd0uzbjvp721 \
+docker run -dit --network host causq-networks/praxis-cli up site --id 31frd0uzbjvp721 \
 --secret h51mmlknrvrwv8s4r1i210azhumt6isgbpyavxodibx1k2d6 \
---endpoint https://app.pangolin.net
+--endpoint https://app.praxis.causq.com
 ```
 
 <Note>
@@ -145,12 +145,12 @@ Host networking lets the site see the host's real network addresses, which clien
 
 ```yaml title="docker-compose.yml"
 services:
-  pangolin-site:
-    image: fosrl/pangolin-cli
-    container_name: pangolin-site
+  praxis-site:
+    image: causq-networks/praxis-cli
+    container_name: praxis-site
     restart: unless-stopped
     environment:
-      - PANGOLIN_ENDPOINT=https://app.pangolin.net
+      - PRAXIS_ENDPOINT=https://app.praxis.causq.com
       - SITE_ID=2ix2t8xk22ubpfy
       - SITE_SECRET=nnisrfsdfc7prqsp9ewo1dvtvci50j5uiqotez00dgap0ii2
 ```
@@ -159,11 +159,11 @@ services:
 
 A safer but slightly more complex way is to use [Compose Secrets](https://docs.docker.com/compose/how-tos/use-secrets/). First, create a `JSON` file containing your configuration:
 
-```json title="pangolin-site-config.secret"
+```json title="praxis-site-config.secret"
 {
   "id": "2ix2t8xk22ubpfy",
   "secret": "nnisrfsdfc7prqsp9ewo1dvtvci50j5uiqotez00dgap0ii2",
-  "endpoint": "https://app.pangolin.net"
+  "endpoint": "https://app.praxis.causq.com"
 }
 ```
 
@@ -171,21 +171,21 @@ Then register and reference the secret in your `docker-compose.yml`:
 
 ```yaml title="docker-compose.yml"
 services:
-  pangolin-site:
-    image: fosrl/pangolin-cli
-    container_name: pangolin-site
+  praxis-site:
+    image: causq-networks/praxis-cli
+    container_name: praxis-site
     restart: unless-stopped
     command:
       - up
       - site
     environment:
-      - CONFIG_FILE=/run/secrets/pangolin-site-config
+      - CONFIG_FILE=/run/secrets/praxis-site-config
     secrets:
-      - pangolin-site-config
+      - praxis-site-config
 
 secrets:
-  pangolin-site-config:
-    file: ./pangolin-site-config.secret
+  praxis-site-config:
+    file: ./praxis-site-config.secret
 ```
 
 This allows you to separate sensitive secrets from plain configuration, improving security when storing or sharing your `docker-compose.yml` anywhere else.
@@ -194,16 +194,16 @@ This allows you to separate sensitive secrets from plain configuration, improvin
 
 ```yaml title="docker-compose.yml"
 services:
-  pangolin-site:
-    image: fosrl/pangolin-cli
-    container_name: pangolin-site
+  praxis-site:
+    image: causq-networks/praxis-cli
+    container_name: praxis-site
     restart: unless-stopped
     command:
       - up
       - site
       - --id 31frd0uzbjvp721
       - --secret h51mmlknrvrwv8s4r1i210azhumt6isgbpyavxodibx1k2d6
-      - --endpoint https://app.pangolin.net
+      - --endpoint https://app.praxis.causq.com
 ```
 
 #### Docker Healthcheck
@@ -233,27 +233,27 @@ docker compose up -d
 
 ### Unraid
 
-Pangolin Site is available in the Unraid Community Applications store. This template runs the Pangolin CLI (`fosrl/pangolin-cli`) and is the recommended way to install a site on Unraid. Use it instead of the Newt Community Applications listing for new sites.
+Praxis Site is available in the Unraid Community Applications store. This template runs the Praxis CLI (`causq-networks/praxis-cli`) and is the recommended way to install a site on Unraid. Use it instead of the Newt Community Applications listing for new sites.
 
-Search for **Pangolin Site** and install the listing from **Fossorial's Repository**. That is the officially supported template.
+Search for **Praxis Site** and install the listing from **Fossorial's Repository**. That is the officially supported template.
 
-<Frame caption="Pangolin Site in the Unraid Community Applications store">
-  <img src="/images/pangolin-site-community-apps.png" alt="Pangolin Site in the Unraid Community Applications store from Fossorial's Repository" />
+<Frame caption="Praxis Site in the Unraid Community Applications store">
+  <img src="/images/praxis-site-community-apps.png" alt="Praxis Site in the Unraid Community Applications store from Fossorial's Repository" />
 </Frame>
 
-Follow the installation prompts, then enter the site ID, secret, and endpoint from Pangolin in the template fields.
+Follow the installation prompts, then enter the site ID, secret, and endpoint from Praxis in the template fields.
 
-<Frame caption="Pangolin Site Unraid template with site credentials">
-  <img src="/images/pangolin-site-template.png" alt="Unraid Pangolin Site template showing PANGOLIN_ENDPOINT, SITE_ID, and SITE_SECRET" />
+<Frame caption="Praxis Site Unraid template with site credentials">
+  <img src="/images/praxis-site-template.png" alt="Unraid Praxis Site template showing PRAXIS_ENDPOINT, SITE_ID, and SITE_SECRET" />
 </Frame>
 
 ### Kubernetes
 
-Running a site in a Kubernetes cluster is covered separately from the Docker instructions above, since it uses a dedicated Helm chart rather than a plain `docker run` or Compose file. The `fosrl/pangolin-cli` chart runs the site with the Pangolin CLI; existing Newt deployments can keep using the [Newt chart](/manage/sites/kubernetes/newt-helm). See:
+Running a site in a Kubernetes cluster is covered separately from the Docker instructions above, since it uses a dedicated Helm chart rather than a plain `docker run` or Compose file. The `causq-networks/praxis-cli` chart runs the site with the Praxis CLI; existing Newt deployments can keep using the [Newt chart](/manage/sites/kubernetes/newt-helm). See:
 
 <CardGroup cols={2}>
 	<Card title="Helm" href="/manage/sites/kubernetes/helm" icon="box">
-		Install a site with the Pangolin CLI Helm chart.
+		Install a site with the Praxis CLI Helm chart.
 	</Card>
 	<Card title="Kustomize" href="/manage/sites/kubernetes/kustomize" icon="layer-group">
 		Install a site with rendered manifests and Kustomize overlays.
@@ -268,8 +268,8 @@ Running a site in a Kubernetes cluster is covered separately from the Docker ins
 
 ### Newt
 
-Advantech routers, Windows services, and other Newt-only install methods are documented on [Install Newt](/manage/sites/install-newt). Use Newt when you want the smaller standalone connector instead of the Pangolin CLI.
+Advantech routers, Windows services, and other Newt-only install methods are documented on [Install Newt](/manage/sites/install-newt). Use Newt when you want the smaller standalone connector instead of the Praxis CLI.
 
 ## Uninstall
 
-To remove a site installed with the Pangolin CLI (services, binary, and config), see [Uninstall Pangolin CLI](/manage/clients/platforms/uninstall-cli). For standalone Newt, see [Uninstall Newt](/manage/sites/uninstall-newt).
+To remove a site installed with the Praxis CLI (services, binary, and config), see [Uninstall Praxis CLI](/manage/clients/platforms/uninstall-cli). For standalone Newt, see [Uninstall Newt](/manage/sites/uninstall-newt).

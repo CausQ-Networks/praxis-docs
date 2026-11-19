@@ -3,25 +3,25 @@ title: "Budgets"
 description: "Cap estimated USD spend or token usage on providers, models, resources, roles, and keys"
 ---
 
-A budget is a cap on estimated USD spend or token count for a rolling window. Pangolin checks every matching enabled budget before it forwards a request. If **any** one is already at or above its maximum, the call is blocked.
+A budget is a cap on estimated USD spend or token count for a rolling window. Praxis checks every matching enabled budget before it forwards a request. If **any** one is already at or above its maximum, the call is blocked.
 
 Budgets are estimates used for enforcement, not a copy of the vendor invoice. See [Model Catalog](/manage/ai/model-catalog) for where USD rates come from. The same recorded usage appears in [Usage Analytics](/manage/ai/usage-analytics).
 
 ## Estimates, Not Invoices
 
-USD cost uses catalog rates (`in`, `out`, `cache`, `reasoning`) times the token buckets Pangolin recorded for the call. Cache-write tokens use the input rate. Missing reasoning rates use the output rate.
+USD cost uses catalog rates (`in`, `out`, `cache`, `reasoning`) times the token buckets Praxis recorded for the call. Cache-write tokens use the input rate. Missing reasoning rates use the output rate.
 
 If the model ID is not in the catalog, the request has no USD amount and does not count toward USD budgets. Token budgets still sum tokens for that call.
 
 [OpenRouter](/manage/ai/providers/open-router), [Vercel AI Gateway](/manage/ai/providers/vercel-ai-gateway), and [Custom](/manage/ai/providers/custom) may match a catalog ID with approximate pricing. For local or self-hosted models on a Custom provider, set your own rates with [`custom` catalog entries](/manage/ai/model-catalog#pricing-custom-providers).
 
-If the upstream omits usage, Pangolin estimates tokens from the request and response.
+If the upstream omits usage, Praxis estimates tokens from the request and response.
 
 The check uses **prior** recorded usage. A request that would cross the cap can still complete, so usage can slightly overshoot. Reset periods are trailing windows from now, not calendar months. Daily means the last 24 hours.
 
 ## How Usage Is Calculated
 
-After each call, Pangolin records prompt, cache-read, cache-write, completion, and reasoning tokens.
+After each call, Praxis records prompt, cache-read, cache-write, completion, and reasoning tokens.
 
 - **Token** budgets sum those counts.
 - **USD** budgets multiply the same counts by catalog rates, then sum dollars.

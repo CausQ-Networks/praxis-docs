@@ -3,7 +3,7 @@ title: "Health Checks and Failover"
 description: "Monitor public resource targets and automatically remove unhealthy targets from routing"
 ---
 
-Health checks for public resources monitor each target and keep bad targets out of traffic automatically. When a target fails its check, Pangolin marks it unhealthy and removes it from load balancing. When it recovers and passes again, Pangolin adds it back.
+Health checks for public resources monitor each target and keep bad targets out of traffic automatically. When a target fails its check, Praxis marks it unhealthy and removes it from load balancing. When it recovers and passes again, Praxis adds it back.
 
 ## Benefits
 
@@ -20,7 +20,7 @@ Health checks for public resources monitor each target and keep bad targets out 
 
 ## How it works
 
-For every target on a public resource, Pangolin runs checks at your configured intervals and evaluates the result against your health criteria.
+For every target on a public resource, Praxis runs checks at your configured intervals and evaluates the result against your health criteria.
 
 - Passing checks keep the target in rotation.
 - Failing checks remove the target from rotation.
@@ -52,16 +52,16 @@ Public resource target health checks support the same two probe types used by ar
 
 Each target can have its own health check settings.
 
-<Frame caption="Create health check in the Pangolin dashboard">
-  <img src="/images/create-healthcheck.png" alt="Create health check form in the Pangolin dashboard" />
+<Frame caption="Create health check in the Praxis dashboard">
+  <img src="/images/create-healthcheck.png" alt="Create health check form in the Praxis dashboard" />
 </Frame>
 
 ## Common parameters
 
 Some of the most important settings to tune are:
 
-- `healthy interval`: how often Pangolin probes when a target is currently healthy.
-- `unhealthy interval`: how often Pangolin probes when a target is currently unhealthy (usually shorter for faster recovery detection).
+- `healthy interval`: how often Praxis probes when a target is currently healthy.
+- `unhealthy interval`: how often Praxis probes when a target is currently unhealthy (usually shorter for faster recovery detection).
 - `healthy threshold`: how many consecutive successful checks are required before marking a target healthy again.
 - `unhealthy threshold`: how many consecutive failed checks are required before marking a target unhealthy.
 - `timeout`: maximum time a probe can take before it is treated as failed.

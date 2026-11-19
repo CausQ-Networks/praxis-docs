@@ -1,25 +1,25 @@
 ---
 title: "Endpoints & Relays"
 icon: "network-wired"
-description: "Pangolin Cloud hostnames for firewall allowlists and network whitelisting"
+description: "Praxis Cloud hostnames for firewall allowlists and network whitelisting"
 ---
 
 <Note>
-    This page applies to [Pangolin Cloud](https://app.pangolin.net/auth/signup)
-    only. If you self-host Pangolin, see [DNS &
+    This page applies to [Praxis Cloud](https://app.praxis.causq.com/auth/signup)
+    only. If you self-host Praxis, see [DNS &
     Networking](/self-host/dns-and-networking) for the hostnames and ports on
     your own deployment.
 </Note>
 
-Use this page when you need to allowlist Pangolin in a corporate firewall, proxy, or egress policy. Sites, clients, and browsers connect to two classes of infrastructure on Pangolin Cloud: the **control plane** and **points of presence** (also called relays).
+Use this page when you need to allowlist Praxis in a corporate firewall, proxy, or egress policy. Sites, clients, and browsers connect to two classes of infrastructure on Praxis Cloud: the **control plane** and **points of presence** (also called relays).
 
 ## Control Plane
 
-The control plane is the central Pangolin service that runs the dashboard, REST API, authentication, and configuration orchestration.
+The control plane is the central Praxis service that runs the dashboard, REST API, authentication, and configuration orchestration.
 
 | Hostname           | Purpose                                                                           |
 | ------------------ | --------------------------------------------------------------------------------- |
-| `app.pangolin.net` | Dashboard, API, authentication, and WebSocket configuration for sites and clients |
+| `app.praxis.causq.com` | Dashboard, API, authentication, and WebSocket configuration for sites and clients |
 
 Sites and clients use this hostname as their **endpoint**. For example, Sites connect here to register, receive policy, and maintain their control channel.
 
@@ -45,19 +45,19 @@ Points of presence (PoPs), also called relays, are the networking edge where sit
 - **Public resources** send all traffic through a PoP.
 - **Private resources** use PoPs to coordinate [NAT traversal](/manage/clients/nat-traversal) between a client and a site. If hole punching fails, traffic relays through the PoP instead. When the client and site are on the same local network, they connect over the LAN and the data path does not use a PoP.
 
-Pangolin sites and clients automatically select the most optimal PoP to connect to. You do not choose a PoP manually during normal operation.
+Praxis sites and clients automatically select the most optimal PoP to connect to. You do not choose a PoP manually during normal operation.
 
 ## Remote Nodes
 
 If you use [remote nodes](/manage/remote-node/understanding-nodes), the point of presence (relay) for your traffic is your self-hosted node, not the cloud PoPs listed above.
 
-The control plane endpoint for dashboard access, API calls, and authentication remains `app.pangolin.net`.
+The control plane endpoint for dashboard access, API calls, and authentication remains `app.praxis.causq.com`.
 
 ## Whitelisting Checklist
 
-To allow Pangolin Cloud on an outbound firewall or proxy, permit traffic to:
+To allow Praxis Cloud on an outbound firewall or proxy, permit traffic to:
 
-1. `app.pangolin.net` for the control plane
+1. `app.praxis.causq.com` for the control plane
 2. All `*.pop.pangolin.net` hostnames listed above for site and client data traffic
 
 If you use remote nodes, also allow traffic to your remote node's public hostname or IP address.

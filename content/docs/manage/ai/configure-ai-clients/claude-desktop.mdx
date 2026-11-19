@@ -1,6 +1,6 @@
 ---
 title: "Claude Desktop"
-description: "Connect Claude Desktop's third-party inference to a Pangolin AI Gateway resource"
+description: "Connect Claude Desktop's third-party inference to a Praxis AI Gateway resource"
 ---
 
 Claude Desktop can route its requests through a third-party inference gateway instead of Anthropic directly. Point it at an AI Gateway resource that has an Anthropic-compatible provider attached — Anthropic itself, Bedrock, Vertex AI, or a custom Anthropic-compatible endpoint. See [AI Gateway Overview](/manage/ai/overview) if you haven't set that up yet.
@@ -46,6 +46,6 @@ You'll need the resource's URL (its `<endpoint>`) and its API key (`<key>`). Bot
 </Frame>
 6. Restart Claude Desktop.
 
-Send a message to confirm it's working — check the resource's activity in Pangolin's logs if you want to verify traffic is actually flowing through the gateway rather than straight to Anthropic.
+Send a message to confirm it's working — check the resource's activity in Praxis's logs if you want to verify traffic is actually flowing through the gateway rather than straight to Anthropic.
 
-For a private resource, put `none` in the API Key field rather than leaving it blank, and make sure the Pangolin client is installed and connected on the same machine as Claude Desktop.
+For a private resource, put `none` in the API Key field rather than leaving it blank, and make sure the Praxis client is installed and connected on the same machine as Claude Desktop.

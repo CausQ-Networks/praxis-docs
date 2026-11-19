@@ -6,12 +6,12 @@ title: "Home Assistant Add-on"
 This is a set of community add-ons and is not officially supported. If you have any issues, please reach out to the [author](https://github.com/Ferdinand99/home-assistant-newt-addon).
 </Note>
 
-This Home Assistant add-on allows you to easily run **Newt** or **Pangolin-CLI** directly in Home Assistant.
+This Home Assistant add-on allows you to easily run **Newt** or **Praxis-CLI** directly in Home Assistant.
 
 ## Features
 
 - Easy installation via Home Assistant Add-on Store
-- Automated setup and execution of the Newt/Pangolin-CLI container
+- Automated setup and execution of the Newt/Praxis-CLI container
 - Supports `amd64`, `armv7`, `armhf`, and `aarch64` architectures
 - Automatic restart on crash
 
@@ -38,10 +38,10 @@ This Home Assistant add-on allows you to easily run **Newt** or **Pangolin-CLI**
 1. Click **Add** and wait for the repository to load.
 
 ### **2. Install and Start the Add-on**
-#### Pangolin-CLI
-1. Find **Pangolin-CLI** in the list and click **Install**.
+#### Praxis-CLI
+1. Find **Praxis-CLI** in the list and click **Install**.
 2. Go to the **Configuration** tab and enter your values for:
-   - **PANGOLIN_ENDPOINT** (e.g., `https://example.com`)
+   - **PRAXIS_ENDPOINT** (e.g., `https://example.com`)
    - **SITE_ID**
    - **SITE_SECRET**
 3. Click **Save** and then **Start**.
@@ -50,7 +50,7 @@ This Home Assistant add-on allows you to easily run **Newt** or **Pangolin-CLI**
 #### Newt
 1. Find **Newt Add-on** in the list and click **Install**.
 2. Go to the **Configuration** tab and enter your values for:
-   - **PANGOLIN_ENDPOINT** (e.g., `https://example.com`)
+   - **PRAXIS_ENDPOINT** (e.g., `https://example.com`)
    - **NEWT_ID**
    - **NEWT_SECRET**
 3. Click **Save** and then **Start**.
@@ -59,25 +59,25 @@ This Home Assistant add-on allows you to easily run **Newt** or **Pangolin-CLI**
 ## **Configuration**
 
 After installation, you can configure the add-on via the Home Assistant UI:
-### Pangolin-CLI
+### Praxis-CLI
 ```yaml
-PANGOLIN_ENDPOINT: "https://example.com"
+PRAXIS_ENDPOINT: "https://example.com"
 SITE_ID: "your_site_id"
 SITE_SECRET: "your_site_secret"
 ```
 
 ### Newt
 ```yaml
-PANGOLIN_ENDPOINT: "https://example.com"
+PRAXIS_ENDPOINT: "https://example.com"
 NEWT_ID: "your_newt_id"
 NEWT_SECRET: "your_newt_secret"
 ```
 
 ### **Docker Environment Variables**
-#### Pangolin-CLI
+#### Praxis-CLI
 The following environment variables are passed to the `Newt` container:
 
-- `PANGOLIN_ENDPOINT`
+- `PRAXIS_ENDPOINT`
 - `SITE_ID`
 - `SITE_SECRET`
 
@@ -85,13 +85,13 @@ The following environment variables are passed to the `Newt` container:
 #### Newt
 The following environment variables are passed to the `Newt` container:
 
-- `PANGOLIN_ENDPOINT`
+- `PRAXIS_ENDPOINT`
 - `NEWT_ID`
 - `NEWT_SECRET`
 
 ## Exposing Home Assistant through addon
-1. Connect addon to your Pangolin by completing environment variables and starting the addon
-2. In Pangolin create new HTTP resource for your new Tunnel with subdomain
+1. Connect addon to your Praxis by completing environment variables and starting the addon
+2. In Praxis create new HTTP resource for your new Tunnel with subdomain
 3. Within the created Resource add new Target Configuration
 
 | Method | IP / Hostname | Port |
@@ -106,10 +106,10 @@ http:
     - 127.0.0.1
 homeassistant:
   allowlist_external_urls:
-    - "https://<subdomain>.example.com" # <-- Replace with URL of created resource in Pangolin
+    - "https://<subdomain>.example.com" # <-- Replace with URL of created resource in Praxis
 ```
 
-4.5: If you want to use SSO Authentication in Pangolin you need to set up the `configuration.yaml` like this:
+4.5: If you want to use SSO Authentication in Praxis you need to set up the `configuration.yaml` like this:
 ```
 http:
 cors_allowed_origins:
@@ -124,24 +124,24 @@ trusted_proxies:
 - VPS IP
 ```
 
-You also need to set up `Resource rules` in the pangolin dashboard. [See rule overview here](/manage/access-control/rules).
+You also need to set up `Resource rules` in the praxis dashboard. [See rule overview here](/manage/access-control/rules).
 
 Many thanks to steuerlexi for finding this out!
 
-https://github.com/fosrl/pangolin/issues/757#issuecomment-2903774897
+https://github.com/CausQ-Networks/praxis/issues/757#issuecomment-2903774897
 
 <Note>
 Please see [http](https://www.home-assistant.io/integrations/http/) documentation and [allowlist_external_urls](https://www.home-assistant.io/integrations/homeassistant/#external_url) on Home Assistant site.
 </Note>
 
-5. Restart Home Assistant and your new Pangolin Proxy should be alive
+5. Restart Home Assistant and your new Praxis Proxy should be alive
 
 ## Troubleshooting
 
 #### **Add-on does not start?**
 
 - Check the logs in Home Assistant (`Settings → Add-ons → Newt → Logs`).
-- Ensure that `PANGOLIN_ENDPOINT`, `NEWT_ID`, and `NEWT_SECRET` are set correctly.
+- Ensure that `PRAXIS_ENDPOINT`, `NEWT_ID`, and `NEWT_SECRET` are set correctly.
 
 #### **Changes in configuration do not take effect?**
 

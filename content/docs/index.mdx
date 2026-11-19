@@ -1,14 +1,14 @@
 ---
-title: "Introduction to Pangolin"
+title: "Introduction to Praxis"
 description: "Connect and protect your users with an open-source networking and security platform"
 ---
 
-Pangolin is an open-source platform for secure access to your apps, infrastructure, and AI. Connect and protect your workforce, AI agents, and infrastructure, wherever they are.
+Praxis is an open-source platform for secure access to your apps, infrastructure, and AI. Connect and protect your workforce, AI agents, and infrastructure, wherever they are.
 
-Pangolin gives people access to exactly what their role allows (web apps, SSH, remote desktops, private hosts, and AI models) without exposing anything to the public internet or opening up a whole network with a legacy VPN. Share a link and someone can sign in from a browser, or install a client to reach private resources by name. Every access decision follows identity and gets logged.
+Praxis gives people access to exactly what their role allows (web apps, SSH, remote desktops, private hosts, and AI models) without exposing anything to the public internet or opening up a whole network with a legacy VPN. Share a link and someone can sign in from a browser, or install a client to reach private resources by name. Every access decision follows identity and gets logged.
 
-<Frame caption="Public resources in the Pangolin dashboard: HTTPS, SSH, RDP, VNC, and AI Gateway.">
-  <img src="/images/hero.png" alt="Manage Public Resources page in the Pangolin dashboard"/>
+<Frame caption="Public resources in the Praxis dashboard: HTTPS, SSH, RDP, VNC, and AI Gateway.">
+  <img src="/images/hero.png" alt="Manage Public Resources page in the Praxis dashboard"/>
 </Frame>
 
 ## What You Get
@@ -19,24 +19,24 @@ Pangolin gives people access to exactly what their role allows (web apps, SSH, r
 - **Audits with less work.** Every access decision is logged with who, what, and when.
 - **AI under the same rules.** An identity-aware AI Gateway puts roles, budgets, and session history in front of cloud and self-hosted model APIs, so AI agents follow the same policy as people.
 
-## Why Pangolin
+## Why Praxis
 
-Connectivity and security belong together. SASE platforms like Cloudflare One, Zscaler, and Prisma Access got that idea right, but delivered it as heavyweight, closed, cloud-locked stacks. Pangolin brings them into one platform with a single identity and policy model, and keeps it simple enough to run yourself.
+Connectivity and security belong together. SASE platforms like Cloudflare One, Zscaler, and Prisma Access got that idea right, but delivered it as heavyweight, closed, cloud-locked stacks. Praxis brings them into one platform with a single identity and policy model, and keeps it simple enough to run yourself.
 
 - **Open source and auditable.** Every component, from the server to the clients, is on GitHub. See exactly how traffic is handled and how access decisions are made.
 - **Lightweight by design.** The control plane runs on a modest server. A user-space connector sits in your private networks.
-- **Run it your way.** [Self-host](/self-host/quick-install) or use [Pangolin Cloud](https://app.pangolin.net/auth/signup). No lock-in.
+- **Run it your way.** [Self-host](/self-host/quick-install) or use [Praxis Cloud](https://app.praxis.causq.com/auth/signup). No lock-in.
 
 ## Core Concepts
 
-Pangolin is organized around a few pieces you will use everywhere:
+Praxis is organized around a few pieces you will use everywhere:
 
-1. A **server** is the control plane. It holds identity, policy, and coordination. You can use [Pangolin Cloud](/about/pangolin-cloud-vs-self-hosted) or [self-host](/self-host/quick-install) the same software.
+1. A **server** is the control plane. It holds identity, policy, and coordination. You can use [Praxis Cloud](/about/praxis-cloud-vs-self-hosted) or [self-host](/self-host/quick-install) the same software.
 2. **[Sites](/manage/sites/understanding-sites)** connect the networks where your applications and infrastructure live.
 3. **[Resources](/manage/resources/understanding-resources)** are the specific things users are allowed to reach: web apps, SSH, desktops, private hosts, and AI providers.
 4. **[Clients](/manage/clients/understanding-clients)** give devices a private path to those resources.
 
-<Card title="How Pangolin Works" icon="brain" href="/about/how-pangolin-works">
+<Card title="How Praxis Works" icon="brain" href="/about/how-pangolin-works">
   Learn the fundamentals: server, sites, resources, clients, and how they fit together.
 </Card>
 
@@ -60,14 +60,14 @@ Pangolin is organized around a few pieces you will use everywhere:
 ## Keep Reading
 
 <CardGroup cols={2}>
-  <Card title="Cloud vs. Self-Hosted" icon="server" href="/about/pangolin-cloud-vs-self-hosted">
+  <Card title="Cloud vs. Self-Hosted" icon="server" href="/about/praxis-cloud-vs-self-hosted">
     Choose a managed control plane or run the same software on your own infrastructure.
   </Card>
-  <Card title="Pangolin vs. Proxy vs. VPN" icon="book" href="/about/pangolin-vs-reverse-proxy-vs-vpn">
-    How Pangolin relates to traditional reverse proxies and VPNs, and what it does beyond either.
+  <Card title="Praxis vs. Proxy vs. VPN" icon="book" href="/about/praxis-vs-reverse-proxy-vs-vpn">
+    How Praxis relates to traditional reverse proxies and VPNs, and what it does beyond either.
   </Card>
-  <Card title="Pangolin vs. Bifrost vs. LiteLLM" icon="sparkles" href="/about/pangolin-vs-bifrost-vs-litellm">
-    How Pangolin's identity-aware AI Gateway compares to dedicated LLM gateways.
+  <Card title="Praxis vs. Bifrost vs. LiteLLM" icon="sparkles" href="/about/praxis-vs-bifrost-vs-litellm">
+    How Praxis's identity-aware AI Gateway compares to dedicated LLM gateways.
   </Card>
   <Card title="System Architecture" icon="diagram-project" href="/development/system-architecture">
     A technical picture of the control plane, nodes, connectors, and how traffic moves.
@@ -76,13 +76,13 @@ Pangolin is organized around a few pieces you will use everywhere:
 
 ## Deployment Options
 
-See [Cloud vs. Self-Hosted](/about/pangolin-cloud-vs-self-hosted) for the differences, including [remote nodes](/manage/remote-node/understanding-nodes) as a hybrid.
+See [Cloud vs. Self-Hosted](/about/praxis-cloud-vs-self-hosted) for the differences, including [remote nodes](/manage/remote-node/understanding-nodes) as a hybrid.
 
 <Columns cols={2}>
-  <Card title="Pangolin Cloud" icon="cloud" href="https://app.pangolin.net/auth/signup">
+  <Card title="Praxis Cloud" icon="cloud" href="https://app.praxis.causq.com/auth/signup">
     A managed control plane. Install sites and clients, then define resources. Optionally self-host a node to keep traffic on your network.
   </Card>
-  <Card title="Self-host Pangolin" icon="server" href="/self-host/quick-install">
-    Run a fully isolated Pangolin server. Install Community Edition or Enterprise Edition with the quick installer.
+  <Card title="Self-host Praxis" icon="server" href="/self-host/quick-install">
+    Run a fully isolated Praxis server. Install Community Edition or Enterprise Edition with the quick installer.
   </Card>
 </Columns>

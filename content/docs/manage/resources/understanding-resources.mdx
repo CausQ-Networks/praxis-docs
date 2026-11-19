@@ -19,7 +19,7 @@ There are two categories of resources: **public resources** and **private resour
 </Card>
 
 <Card title="Private Resources">
-  - Zero-trust VPN access over the Pangolin client
+  - Zero-trust VPN access over the Praxis client
   - Every resource requires authentication
   - Not browser-rendered; requires a connected client
 </Card>
@@ -27,15 +27,15 @@ There are two categories of resources: **public resources** and **private resour
 
 ### Public Resource Types
 
-Public resources create a public proxy on the Pangolin server. The protocol changes per type, but the overall model is the same: traffic enters through Pangolin and is forwarded to your backend on a remote site.
+Public resources create a public proxy on the Praxis server. The protocol changes per type, but the overall model is the same: traffic enters through Praxis and is forwarded to your backend on a remote site.
 
-HTTP/HTTPS, SSH, RDP, and VNC are all **browser-based**. You assign a fully qualified domain name (FQDN) to each resource and users open it in a web browser—no client-side software is required. Pangolin authentication and access rules protect all of these types the same way. You can configure those rules inline on each resource or share them through a [resource policy](/manage/resources/public/resource-policies).
+HTTP/HTTPS, SSH, RDP, and VNC are all **browser-based**. You assign a fully qualified domain name (FQDN) to each resource and users open it in a web browser—no client-side software is required. Praxis authentication and access rules protect all of these types the same way. You can configure those rules inline on each resource or share them through a [resource policy](/manage/resources/public/resource-policies).
 
 [AI Gateway](/manage/resources/public/ai-gateway) also gets a public FQDN, but coding agents call it as an API. Visiting the URL in a browser is how users retrieve a virtual API key, not how they run the workload.
 
-SSH, RDP, and VNC require a **Pangolin Site**. HTTP/HTTPS, AI Gateway, and TCP/UDP resources can also run on local and basic WireGuard sites.
+SSH, RDP, and VNC require a **Praxis Site**. HTTP/HTTPS, AI Gateway, and TCP/UDP resources can also run on local and basic WireGuard sites.
 
-TCP and UDP are the exception. They do not receive a FQDN. Instead, they bind to a port on the Pangolin server host and act as simple protocol-agnostic pipes to the downstream resource. Because they are not protocol-aware, they do not enforce Pangolin authentication or access rules.
+TCP and UDP are the exception. They do not receive a FQDN. Instead, they bind to a port on the Praxis server host and act as simple protocol-agnostic pipes to the downstream resource. Because they are not protocol-aware, they do not enforce Praxis authentication or access rules.
 
 <CardGroup cols={3}>
 <Card title="HTTP / HTTPS" icon="globe" href="/manage/resources/public/http-https" arrow="true">
@@ -47,7 +47,7 @@ TCP and UDP are the exception. They do not receive a FQDN. Instead, they bind to
 </Card>
 
 <Card title="SSH" icon="terminal" href="/manage/resources/public/ssh" arrow="true">
-  Full terminal in the browser with password, key, or Pangolin identity (PAM).
+  Full terminal in the browser with password, key, or Praxis identity (PAM).
 </Card>
 
 <Card title="RDP" icon="desktop" href="/manage/resources/public/rdp" arrow="true">
@@ -59,18 +59,18 @@ TCP and UDP are the exception. They do not receive a FQDN. Instead, they bind to
 </Card>
 
 <Card title="TCP" icon="network-wired" href="/manage/resources/public/raw-resources" arrow="true">
-  Raw TCP proxy on a Pangolin server port. No authentication.
+  Raw TCP proxy on a Praxis server port. No authentication.
 </Card>
 
 <Card title="UDP" icon="network-wired" href="/manage/resources/public/raw-resources" arrow="true">
-  Raw UDP proxy on a Pangolin server port. No authentication.
+  Raw UDP proxy on a Praxis server port. No authentication.
 </Card>
 </CardGroup>
 
 #### Site Compatibility
 
 <CardGroup cols={3}>
-<Card title="Pangolin Site" icon="plug" href="/manage/sites/understanding-sites#pangolin-site-recommended">
+<Card title="Praxis Site" icon="plug" href="/manage/sites/understanding-sites#praxis-site-recommended">
   All public resource types supported.
 
   Required for SSH, RDP, and VNC.
@@ -91,7 +91,7 @@ TCP and UDP are the exception. They do not receive a FQDN. Instead, they bind to
 
 ### Private Resource Types
 
-Private resources require users to connect with the Pangolin client before any traffic can flow. Nothing is exposed on the public internet. Users gain access to all resources their account is permitted to use once connected.
+Private resources require users to connect with the Praxis client before any traffic can flow. Nothing is exposed on the public internet. Users gain access to all resources their account is permitted to use once connected.
 
 <CardGroup cols={2}>
 <Card title="Host" icon="server" href="/manage/resources/private/host" arrow="true">
@@ -111,7 +111,7 @@ Private resources require users to connect with the Pangolin client before any t
 </Card>
 
 <Card title="SSH" icon="terminal" href="/manage/resources/private/ssh" arrow="true">
-  Traditional terminal SSH over the tunnel via `pangolin ssh`.
+  Traditional terminal SSH over the tunnel via `praxis ssh`.
 </Card>
 
 <Card title="Exit Node" icon="route" href="/manage/resources/private/exit-node" arrow="true">
@@ -119,19 +119,19 @@ Private resources require users to connect with the Pangolin client before any t
 </Card>
 </CardGroup>
 
-Private resources can only be created on Pangolin Sites.
+Private resources can only be created on Praxis Sites.
 
 **Private resources function like a zero-trust virtual private network (VPN).** Explicit access to resources must be granted for users and roles to be able to access them. For raw TCP/UDP traffic that does not need a public proxy, prefer a private host or CIDR resource over public TCP/UDP resources.
 
-Private resources support [aliases](/manage/resources/private/alias) for human-readable internal hostnames. When multiple sites can reach the same destination, Pangolin [intelligently routes](/manage/resources/private/multi-site-routing) traffic through the healthiest path.
+Private resources support [aliases](/manage/resources/private/alias) for human-readable internal hostnames. When multiple sites can reach the same destination, Praxis [intelligently routes](/manage/resources/private/multi-site-routing) traffic through the healthiest path.
 
 #### Site Compatibility
 
 <CardGroup cols={3}>
-<Card title="Pangolin Site" icon="plug" href="/manage/sites/understanding-sites#pangolin-site-recommended">
+<Card title="Praxis Site" icon="plug" href="/manage/sites/understanding-sites#praxis-site-recommended">
   Supported.
 
-  Private resources require a Pangolin Site.
+  Private resources require a Praxis Site.
 </Card>
 
 <Card title="Local Site" icon="server" href="/manage/sites/understanding-sites#local-site">

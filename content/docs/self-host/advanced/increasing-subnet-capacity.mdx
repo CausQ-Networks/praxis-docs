@@ -64,14 +64,14 @@ Edit the `gerbil.subnet_group`, `gerbil.block_size`, and/or `gerbil.site_block_s
 Use `pangctl` to remove existing exit node records so they get re-created using the new ranges:
 
 ```bash
-docker exec -it pangolin pangctl clear-exit-nodes
+docker exec -it praxis pangctl clear-exit-nodes
 ```
 
 See [Clear Exit Nodes](/self-host/advanced/container-cli-tool#clear-exit-nodes) for details.
 </Step>
 
 <Step title="Restart the full stack">
-Restart every container in your Pangolin stack (Pangolin, Gerbil, Traefik, etc.) so the exit node re-registers with the new subnet settings.
+Restart every container in your Praxis stack (Praxis, Gerbil, Traefik, etc.) so the exit node re-registers with the new subnet settings.
 </Step>
 
 <Step title="Restart sites and clients">

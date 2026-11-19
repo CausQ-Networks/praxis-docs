@@ -1,23 +1,23 @@
 ---
 title: "Firewall Quirks"
-description: "Improve Pangolin direct-connect success behind restrictive firewalls"
+description: "Improve Praxis direct-connect success behind restrictive firewalls"
 ---
 
-Most of the time, Pangolin works with existing firewall policies without any special tuning. Pangolin Sites and Pangolin Clients attempt NAT traversal first so traffic can flow directly between client and site. When direct connectivity cannot be established, traffic falls back to relaying through Gerbil. You can [learn more about how holepunching works here](https://pangolin.net/news/nat-holepunching).
+Most of the time, Praxis works with existing firewall policies without any special tuning. Praxis Sites and Praxis Clients attempt NAT traversal first so traffic can flow directly between client and site. When direct connectivity cannot be established, traffic falls back to relaying through Gerbil. You can [learn more about how holepunching works here](https://praxis.net/news/nat-holepunching).
 
 For background on direct vs relayed paths and how to verify connection type, see [NAT Traversal](/manage/clients/nat-traversal).
 
-When a client and site are on the same local network, the connection stays on the LAN and does not go through your firewall's NAT, so the workarounds on this page do not apply to it. Those connections show as `Local` in the client status. Same-network detection requires Pangolin 1.21 or later clients and sites.
+When a client and site are on the same local network, the connection stays on the LAN and does not go through your firewall's NAT, so the workarounds on this page do not apply to it. Those connections show as `Local` in the client status. Same-network detection requires Praxis 1.21 or later clients and sites.
 
 ## Firewall compatibility and workarounds
 
 The table below summarizes common behavior and practical mitigations reported by users.
 
-| Firewall platform | Typical behavior with Pangolin | Practical workaround |
+| Firewall platform | Typical behavior with Praxis | Practical workaround |
 | --- | --- | --- |
-| Barracuda | Often relayed | Increase available UDP session capacity; optionally allow a dedicated inbound Pangolin Site port |
+| Barracuda | Often relayed | Increase available UDP session capacity; optionally allow a dedicated inbound Praxis Site port |
 | Check Point | Usually direct | No workaround typically required |
-| Cisco | Often relayed | Allow required UDP flows and, if needed, open a fixed Pangolin Site listening port |
+| Cisco | Often relayed | Allow required UDP flows and, if needed, open a fixed Praxis Site listening port |
 | Cisco Umbrella Endpoint Security | Usually relayed | Endpoint filtering commonly prevents direct paths |
 | Fortinet | Often connects directly | No workaround typically required |
 | OPNsense | Often relayed by default | Disable hard NAT |
@@ -28,9 +28,9 @@ The table below summarizes common behavior and practical mitigations reported by
 
 If your firewall is not listed and connections are consistently relayed, start with:
 
-1. Confirm current path with `pangolin status` (CLI) or client status JSON (`isRelay`, `isLocal`). A `Local` connection is not affected by firewall NAT.
+1. Confirm current path with `praxis status` (CLI) or client status JSON (`isRelay`, `isLocal`). A `Local` connection is not affected by firewall NAT.
 2. Keep relaying enabled for reliability while testing firewall adjustments.
-3. If needed, pin the Pangolin Site to a fixed listening port with `--port` / `PORT` and forward that port to the Pangolin Site host.
+3. If needed, pin the Praxis Site to a fixed listening port with `--port` / `PORT` and forward that port to the Praxis Site host.
 
 ## Platform notes
 
@@ -41,11 +41,11 @@ Barracuda environments commonly struggle with simultaneous UDP flows from multip
 What helps:
 
 - Increase the firewall's maximum UDP session capacity [by increasing the max udp parameter](https://campus.barracuda.com/product/cloudgenfirewall/doc/95258827/general-firewall-configuration/?sl=AX5zwzvyOBUvMAhoTe4U&so=2) 
-- If direct connectivity is still inconsistent, use a fixed Pangolin Site listening port and forward it explicitly.
+- If direct connectivity is still inconsistent, use a fixed Praxis Site listening port and forward it explicitly.
 
 ### Check Point
 
-Check Point deployments generally allow Pangolin direct connectivity without extra configuration.
+Check Point deployments generally allow Praxis direct connectivity without extra configuration.
 
 ### Cisco
 
@@ -89,8 +89,8 @@ Here is the Markdown table based on the image provided:
 
 | Interface | Source | Source Port | Destination | Destination Port | NAT Address | NAT Port | Static Port | Description |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| WAN | LAN net | udp/ * | * | udp/ * | Interface address | * | YES | Pangolin IPv4 |
-| WAN | LAN net | udp/ * | * | udp/ * | Interface address | * | YES | Pangolin IPv6 |
+| WAN | LAN net | udp/ * | * | udp/ * | Interface address | * | YES | Praxis IPv4 |
+| WAN | LAN net | udp/ * | * | udp/ * | Interface address | * | YES | Praxis IPv6 |
 
 Check Static Port in the Translation section of the page. Select Save. Select Apply Changes.
 
@@ -112,7 +112,7 @@ With older PAN-OS releases it is possible to use the Static IP NAT Policy to ena
 
 ### Sophos
 
-Sophos gateways usually work well with Pangolin's direct-connect flow under default NAT behavior.
+Sophos gateways usually work well with Praxis's direct-connect flow under default NAT behavior.
 
 If relay usage rises unexpectedly, verify no extra IPS/inspection rule set is rewriting UDP sessions.
 
@@ -129,7 +129,7 @@ In UniFi Network version 9.0.108 and later, select to Network, Security, Protect
 After each firewall change, validate results from a client:
 
 1. Reconnect the site/client pair.
-2. Run `pangolin status` (or check JSON status in GUI clients).
+2. Run `praxis status` (or check JSON status in GUI clients).
 3. Confirm `RELAY=false` / `isRelay: false` for sessions expected to be direct. Sessions between devices on the same network should show `Local` (`isLocal: true`).
 
 If direct paths still fail, keep relay enabled and continue iterating with narrower firewall adjustments rather than broad allow-all rules.

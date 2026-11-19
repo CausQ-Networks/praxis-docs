@@ -3,22 +3,22 @@ title: "Add Identity Providers"
 description: "Configure external identity providers for user authentication to resources and the organization"
 ---
 
-Identity providers allow your users to log into Pangolin and Pangolin resources using their existing accounts from external identity systems like Google, Microsoft Azure, or Okta. Instead of creating separate Pangolin accounts, users can authenticate with their familiar work or personal credentials.
+Identity providers allow your users to log into Praxis and Praxis resources using their existing accounts from external identity systems like Google, Microsoft Azure, or Okta. Instead of creating separate Praxis accounts, users can authenticate with their familiar work or personal credentials.
 
-Here is an example using Microsoft Azure Entra ID as SSO for Pangolin:
+Here is an example using Microsoft Azure Entra ID as SSO for Praxis:
 
 **This feature is for you if:**
 - Your organization already uses an identity provider like Google Workspace, Microsoft Entra ID, Okta, or similar systems
-- You want to centralize user management and avoid maintaining separate Pangolin accounts
-- You need to control who can access Pangolin resources through your existing user directory
-- You want users to access Pangolin using their existing credentials without creating new passwords
+- You want to centralize user management and avoid maintaining separate Praxis accounts
+- You need to control who can access Praxis resources through your existing user directory
+- You want users to access Praxis using their existing credentials without creating new passwords
 
 <Note>
-	Assigning more than one role per user is only available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
+	Assigning more than one role per user is only available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
 </Note>
 
 <Frame>
-  <img src="/images/create-idp.png" alt="Identity provider creation form in the Pangolin dashboard" />
+  <img src="/images/create-idp.png" alt="Identity provider creation form in the Praxis dashboard" />
 </Frame>
 
 ## Identity Provider Types
@@ -30,7 +30,7 @@ Organization identity providers are configured per organization and only apply t
 Organization only identity providers appear only on the organization login page.
 
 <Note>
-	Available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) and [Enterprise Edition](/self-host/enterprise-edition). For [Enterprise Edition](/self-host/enterprise-edition), you must set `app.identity_provider_mode: "org"` in the [private config file](/self-host/advanced/private-config-file#param-identity-provider-mode) `privateConfig.yml`.
+	Available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) and [Enterprise Edition](/self-host/enterprise-edition). For [Enterprise Edition](/self-host/enterprise-edition), you must set `app.identity_provider_mode: "org"` in the [private config file](/self-host/advanced/private-config-file#param-identity-provider-mode) `privateConfig.yml`.
 </Note>
 
 #### Sharing an identity provider across organizations
@@ -44,7 +44,7 @@ Global identity providers are managed at the server level and not the individual
 Global identity providers appear on the global server login page.
 
 <Tip>
-	Global identity providers are the only supported method in Pangolin Community.
+	Global identity providers are the only supported method in Praxis Community.
 </Tip>
 
 ## Supported Identity Providers
@@ -61,15 +61,15 @@ This can be used to connect to any external identity provider that supports the 
 ### Google
 
 <Note>
-Google IdP is only available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
+Google IdP is only available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
 </Note>
 
-Easily set up Google Workspace authentication for your organization. Users can sign in with their Google accounts and access Pangolin resources using their existing Google credentials. Perfect for organizations already using Google Workspace for email, calendar, and other services.
+Easily set up Google Workspace authentication for your organization. Users can sign in with their Google accounts and access Praxis resources using their existing Google credentials. Perfect for organizations already using Google Workspace for email, calendar, and other services.
 
 ### Azure Entra ID
 
 <Note>
-Azure Entra ID IdP is only available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
+Azure Entra ID IdP is only available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
 </Note>
 
 Integrate with Microsoft's enterprise identity platform to allow users to authenticate using their Azure Active Directory accounts. Ideal for organizations using Microsoft 365 or other Azure services, providing seamless single sign-on across your Microsoft ecosystem.
@@ -82,7 +82,7 @@ When using global IDPs, identity providers are created and managed via the Serve
 
 <Steps>
 <Step title="Navigate to Identity Providers">
-  In the Pangolin organization, select the "Identity Providers" section in the sidebar.
+  In the Praxis organization, select the "Identity Providers" section in the sidebar.
 </Step>
 
 <Step title="Add New Provider">
@@ -94,9 +94,9 @@ When using global IDPs, identity providers are created and managed via the Serve
 </Step>
 
 <Step title="Set up Auto Provisioning (Optional)">
-  Select the "Auto Provision Users" checkbox to automatically provision users and assign roles in Pangolin when they log in using an external identity provider. See [Auto Provision](/manage/identity-providers/auto-provisioning) for more information.
+  Select the "Auto Provision Users" checkbox to automatically provision users and assign roles in Praxis when they log in using an external identity provider. See [Auto Provision](/manage/identity-providers/auto-provisioning) for more information.
   
-  If this is disabled, you will need to pre-provision a user in Pangolin before they can log in using an external identity provider. Pre-provision means creating a user in Pangolin with a role and organization before they log in using an external identity provider.
+  If this is disabled, you will need to pre-provision a user in Praxis before they can log in using an external identity provider. Pre-provision means creating a user in Praxis with a role and organization before they log in using an external identity provider.
 </Step>
 
 <Step title="Configure Settings">
@@ -108,21 +108,21 @@ When using global IDPs, identity providers are created and managed via the Serve
 
 You can [configure a custom login page](/manage/access-control/login-page) for your organization to be served at a [custom domain](/manage/access-control/login-page#configuration) of your choice. The login page for every resource is served at this URL, and you can visit the same URL to log in to the organization dashboard.
 
-Custom login pages are most useful with organization-scoped identity providers: the page lists those IdPs so users can choose how to sign in. Without per-org IdPs, the page only shows a button to log in with Pangolin credentials, which redirects back to the main login page. On self-hosted Pangolin Enterprise Edition, set `app.identity_provider_mode: "org"` in your [private config file](/self-host/advanced/private-config-file#param-identity-provider-mode) `privateConfig.yml`.
+Custom login pages are most useful with organization-scoped identity providers: the page lists those IdPs so users can choose how to sign in. Without per-org IdPs, the page only shows a button to log in with Praxis credentials, which redirects back to the main login page. On self-hosted Praxis Enterprise Edition, set `app.identity_provider_mode: "org"` in your [private config file](/self-host/advanced/private-config-file#param-identity-provider-mode) `privateConfig.yml`.
 
 ## Auto Provisioning
 
-See [Auto Provision](/manage/identity-providers/auto-provisioning) for more information on how to automatically provision users and assign orgs and roles in Pangolin when they log in using an external identity provider.
+See [Auto Provision](/manage/identity-providers/auto-provisioning) for more information on how to automatically provision users and assign orgs and roles in Praxis when they log in using an external identity provider.
 
 ## Session Revalidation
 
-In [Pangolin Cloud](https://app.pangolin.net/auth/signup) and [Enterprise Edition](/self-host/enterprise-edition), enable [continuous session revalidation](/manage/identity-providers/session-revalidation) on an identity provider to have Pangolin periodically check sessions with the provider and end them when the provider revokes the user's access.
+In [Praxis Cloud](https://app.praxis.causq.com/auth/signup) and [Enterprise Edition](/self-host/enterprise-edition), enable [continuous session revalidation](/manage/identity-providers/session-revalidation) on an identity provider to have Praxis periodically check sessions with the provider and end them when the provider revokes the user's access.
 
 ## Troubleshooting
 
 <AccordionGroup>
 <Accordion title={'No policies matched for <unique_identifier>. This user must be added to an organization before logging in.'}>
-  This error means the identity provider authenticated the user, but Pangolin could not place them in an organization. That usually comes down to one of two causes.
+  This error means the identity provider authenticated the user, but Praxis could not place them in an organization. That usually comes down to one of two causes.
 
   **The user is not created in the organization as an external user.**
 

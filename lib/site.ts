@@ -1,10 +1,10 @@
 /** Outbound links and copy for the docs header, sidebar and footer. */
 
-export const SITE = 'https://pangolin.net';
+export const SITE = 'https://praxis.net';
 
 export const LINKS = {
-  signup: 'https://app.pangolin.net/auth/signup',
-  github: 'https://github.com/fosrl/pangolin',
+  signup: 'https://app.praxis.causq.com/auth/signup',
+  github: 'https://github.com/CausQ-Networks/praxis',
   status: 'https://status.pangolin.net',
   trust: 'https://trust.pangolin.net',
 } as const;
@@ -44,8 +44,8 @@ export const FOOTER_COLUMNS: { title: string; links: FooterLink[] }[] = [
     title: 'Get started',
     links: [
       { label: 'Introduction', href: '/' },
-      { label: 'How Pangolin Works', href: '/about/how-pangolin-works' },
-      { label: 'Cloud vs. Self-Hosted', href: '/about/pangolin-cloud-vs-self-hosted' },
+      { label: 'How Praxis Works', href: '/about/how-pangolin-works' },
+      { label: 'Cloud vs. Self-Hosted', href: '/about/praxis-cloud-vs-self-hosted' },
       { label: 'System Architecture', href: '/development/system-architecture' },
     ],
   },
@@ -76,14 +76,14 @@ export const FOOTER_COLUMNS: { title: string; links: FooterLink[] }[] = [
     links: [
       { label: 'Discord', href: `${SITE}/discord` },
       { label: 'Slack', href: `${SITE}/slack` },
-      { label: 'GitHub', href: 'https://github.com/fosrl/pangolin' },
-      { label: 'Discussions', href: 'https://github.com/fosrl/pangolin/discussions' },
+      { label: 'GitHub', href: 'https://github.com/CausQ-Networks/praxis' },
+      { label: 'Discussions', href: 'https://github.com/CausQ-Networks/praxis/discussions' },
       { label: 'Contribution Guide', href: '/development/contributing' },
       { label: 'Feature Requests & Bugs', href: '/development/feature-requests-and-bug-reports' },
     ],
   },
   {
-    title: 'Pangolin',
+    title: 'Praxis',
     links: [
       { label: 'Website', href: SITE },
       { label: 'Downloads', href: `${SITE}/downloads` },

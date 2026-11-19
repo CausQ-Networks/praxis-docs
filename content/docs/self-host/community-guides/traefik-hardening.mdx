@@ -167,7 +167,7 @@ certificatesResolvers:
           - "1.0.0.1:53"
 ```
 
-## Pangolin dashboard (`/rules/pangolin.yml`)
+## Praxis dashboard (`/rules/praxis.yml`)
 
 Routers below use `chain-secure@file` from `/rules/middlewares.yml`.
 
@@ -194,12 +194,12 @@ http:
     next-service:
       loadBalancer:
         servers:
-          - url: "http://pangolin:3002" # Next.js server
+          - url: "http://praxis:3002" # Next.js server
 
     api-service:
       loadBalancer:
         servers:
-          - url: "http://pangolin:3000" # API/WebSocket server
+          - url: "http://praxis:3000" # API/WebSocket server
 
 tcp:
   serversTransports:

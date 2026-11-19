@@ -1,36 +1,36 @@
 ---
 title: "Android"
-description: "Install, configure, and update the Pangolin app for Android"
+description: "Install, configure, and update the Praxis app for Android"
 ---
 
-<Frame caption="Pangolin for Android — home screen">
+<Frame caption="Praxis for Android — home screen">
   <img
     src="/images/android_client_ui.png"
-    alt="Pangolin Android app home screen showing connected status, account, and links"
+    alt="Praxis Android app home screen showing connected status, account, and links"
     style={{ width: "280px", height: "auto" }}
   />
 </Frame>
 
 ## Install
 
-- [Pangolin on Google Play](https://play.google.com/store/apps/details?id=net.pangolin.Pangolin) - This is the official page to download the latest Pangolin app for Android devices.
+- [Praxis on Google Play](https://play.google.com/store/apps/details?id=com.causq.praxis) - This is the official page to download the latest Praxis app for Android devices.
 - [All Versions](https://github.com/fosrl/android/releases) - The releases section of this repository contains release notes and download artifacts for the latest version and all older versions.
 
 ### Installation Steps
 
-1. **Download and install the Pangolin app**
+1. **Download and install the Praxis app**
 
-   Download and install the Pangolin app from the Google Play Store using the link above.
+   Download and install the Praxis app from the Google Play Store using the link above.
 
-2. **Launch Pangolin**
+2. **Launch Praxis**
 
-   Open the Pangolin app from your app drawer or home screen.
+   Open the Praxis app from your app drawer or home screen.
 
-3. **Log in with your Pangolin account**
+3. **Log in with your Praxis account**
 
-   Log in on your Pangolin Cloud account or your self-hosted Pangolin instance. 
+   Log in on your Praxis Cloud account or your self-hosted Praxis instance. 
 
-4. **Connect to Pangolin**
+4. **Connect to Praxis**
 
    Tap the Connect button to establish a VPN connection. On the first connection, you may be prompted to allow the VPN connection.
 
@@ -42,47 +42,47 @@ This section covers the general settings for this platform. DNS, MTU, and other 
 
 ### Always-on VPN
 
-Always-on VPN keeps Pangolin connected and brings the tunnel back up if it drops. Connect once in the Pangolin app first so Android lists Pangolin under VPN, then turn it on in system settings:
+Always-on VPN keeps Praxis connected and brings the tunnel back up if it drops. Connect once in the Praxis app first so Android lists Praxis under VPN, then turn it on in system settings:
 
 1. Open the **Settings** app.
 2. Go to **Network & internet**, then **VPN**. On some devices this is under **Connections** > **More connection settings** > **VPN**.
-3. Tap the settings icon next to **Pangolin**.
+3. Tap the settings icon next to **Praxis**.
 4. Turn on **Always-on VPN**.
 
 <Frame caption="Android Always-on VPN Settings">
     <img
         src="/images/android_always_on.png"
-        alt="Always-on VPN turned on for Pangolin in Android settings"
+        alt="Always-on VPN turned on for Praxis in Android settings"
         style={{ width: "250px", height: "auto" }}
     />
 </Frame>
 
 ### Private DNS
 
-Set Android's Private DNS to **Automatic** or **Off** when using Pangolin. If it is set to a provider hostname (for example `one.one.one.one` or a NextDNS address), Android sends every DNS lookup to that provider and skips Pangolin's DNS. Aliases and private resources then resolve to the wrong address or not at all, even though the app shows **Connected**.
+Set Android's Private DNS to **Automatic** or **Off** when using Praxis. If it is set to a provider hostname (for example `one.one.one.one` or a NextDNS address), Android sends every DNS lookup to that provider and skips Praxis's DNS. Aliases and private resources then resolve to the wrong address or not at all, even though the app shows **Connected**.
 
 1. Open the **Settings** app.
 2. Go to **Network & internet**, then **Private DNS**. On some devices this is under **Connections** > **More connection settings** > **Private DNS**.
 3. Select **Automatic** or **Off**.
-4. Disconnect and reconnect Pangolin.
+4. Disconnect and reconnect Praxis.
 
 <Note>
-Pangolin shows a warning when it detects this mode, but some devices don't report the setting to apps, so check it yourself if names don't resolve.
+Praxis shows a warning when it detects this mode, but some devices don't report the setting to apps, so check it yourself if names don't resolve.
 </Note>
 
 ### Show Persistent VPN Notification
 
-When enabled, Pangolin keeps a status notification while connected. A temporary notification may still appear when connecting or recovering. Android's own VPN indicators are unaffected.
+When enabled, Praxis keeps a status notification while connected. A temporary notification may still appear when connecting or recovering. Android's own VPN indicators are unaffected.
 
 Leaving this on makes it less likely that Android will stop the connection while the app is in the background.
 
 ### Battery Optimization
 
-To ensure Pangolin functions correctly in the background on Android devices, it's recommended to disable battery optimization for the app. This prevents the operating system from restricting its background activities, which could lead to disconnections.
+To ensure Praxis functions correctly in the background on Android devices, it's recommended to disable battery optimization for the app. This prevents the operating system from restricting its background activities, which could lead to disconnections.
 
 1. Open the **Settings** app on your Android device.
 2. Navigate to **Apps & notifications** (or simply **Apps** on some devices).
-3. Find and select the Pangolin app from the list of installed apps.
+3. Find and select the Praxis app from the list of installed apps.
 4. Tap on **App battery usage**.
 5. Select **Allow background usage** and enable if disabled.
 6. From the options menu, choose **Unrestricted**.
@@ -101,7 +101,7 @@ Updates are delivered through the Google Play Store. Release notes and older bui
 
 ## Uninstall
 
-1. If **Always-on VPN** is enabled for Pangolin, turn it off first: **Settings** > **Network & internet** > **VPN** > Pangolin settings, then disable **Always-on VPN**.
-2. Uninstall Pangolin from **Settings** > **Apps** > **Pangolin** > **Uninstall**, or touch and hold the app icon and choose uninstall.
+1. If **Always-on VPN** is enabled for Praxis, turn it off first: **Settings** > **Network & internet** > **VPN** > Praxis settings, then disable **Always-on VPN**.
+2. Uninstall Praxis from **Settings** > **Apps** > **Praxis** > **Uninstall**, or touch and hold the app icon and choose uninstall.
 
-Deleting the app removes the VPN profile. Reinstall from Google Play or a [GitHub release](https://github.com/fosrl/android/releases) if you want to use Pangolin again.
+Deleting the app removes the VPN profile. Reinstall from Google Play or a [GitHub release](https://github.com/fosrl/android/releases) if you want to use Praxis again.

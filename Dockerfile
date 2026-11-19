@@ -9,7 +9,7 @@ WORKDIR /app
 # sitemap lastmod comes from git history
 RUN apk add --no-cache git
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG NEXT_PUBLIC_SITE_URL=https://docs.pangolin.net
+ARG NEXT_PUBLIC_SITE_URL=https://docs.praxis.causq.com
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .

@@ -1,7 +1,7 @@
 import { createGetUrl } from 'fumadocs-core/source';
 
-export const appName = 'Pangolin Docs';
-export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://docs.pangolin.net';
+export const appName = 'Praxis Docs';
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://docs.praxis.causq.com';
 export const siteDescription =
   'Modern networking and security platform providing secure access and connectivity to apps, infrastructure, and AI workloads. Connect and protect your users.';
 

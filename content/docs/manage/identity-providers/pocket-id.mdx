@@ -2,11 +2,11 @@
 title: "Pocket ID"
 description: "Configure Pocket ID Single Sign-On using OpenID Connect"
 ---
-The following steps will integrate Pocket ID with Pangolin SSO using OpenID Connect (OIDC).
+The following steps will integrate Pocket ID with Praxis SSO using OpenID Connect (OIDC).
 
 ## Prerequisites
 
-Before you can start, you'll need to have Pocket ID accessible and ensure it's not secured with Pangolin SSO.
+Before you can start, you'll need to have Pocket ID accessible and ensure it's not secured with Praxis SSO.
 
 ### Creating an OIDC Client in Pocket ID
 
@@ -14,7 +14,7 @@ In Pocket ID, create a new OIDC Client.
 
 <Steps>
 <Step title="Set Name">
-  Set the name to something memorable (eg. Pangolin).
+  Set the name to something memorable (eg. Praxis).
 </Step>
 
 <Step title="Configure Callback URL">
@@ -27,7 +27,7 @@ In Pocket ID, create a new OIDC Client.
 </Steps>
 
 <Note>
-The callback URL is displayed in the IdP settings after you create the IdP in Pangolin.
+The callback URL is displayed in the IdP settings after you create the IdP in Praxis.
 </Note>
 
 After you have created the OIDC Client, take note of the following fields from the top of the page (click "Show more details" to see all of them):
@@ -37,9 +37,9 @@ After you have created the OIDC Client, take note of the following fields from t
 - **Authorization URL**
 - **Token URL**
 
-## Configuring Identity Providers in Pangolin
+## Configuring Identity Providers in Praxis
 
-In Pangolin, go to “Identity Providers” and click “Add Identity Provider”. Select the OAuth2/OIDC provider option.
+In Praxis, go to “Identity Providers” and click “Add Identity Provider”. Select the OAuth2/OIDC provider option.
 
 "Name" should be set to something memorable (eg. Pocket ID). The "Provider Type" should be set to the default `OAuth2/OIDC`.
 
@@ -75,4 +75,4 @@ When you're done, click "Create Identity Provider"! Then, copy the Redirect URL 
 
 ## Returning to Pocket ID
 
-Lastly, you'll need to return to your Pocket ID OIDC client in order to add the redirect URI created by Pangolin. Add the URI to "Callback URLs", then save your changes! Your configuration should now be complete. You'll now need to add an external user to Pangolin, or if you have "Auto Provision Users" enabled, you can now log in using Pocket ID SSO.
+Lastly, you'll need to return to your Pocket ID OIDC client in order to add the redirect URI created by Praxis. Add the URI to "Callback URLs", then save your changes! Your configuration should now be complete. You'll now need to add an external user to Praxis, or if you have "Auto Provision Users" enabled, you can now log in using Pocket ID SSO.

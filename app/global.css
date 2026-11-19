@@ -43,7 +43,7 @@
   --docs-bar-height: 0px;
 }
 
-/* dark: the Pangolin dashboard's dark theme (fosrl/pangolin src/app/globals.css) */
+/* dark: the Praxis dashboard's dark theme (causq-networks/praxis src/app/globals.css) */
 .dark {
   color-scheme: dark;
   --background: #141415;

@@ -1,11 +1,11 @@
 ---
 title: "How to Update"
-description: "Keep your self-hosted Pangolin server up to date with the latest features and security patches"
+description: "Keep your self-hosted Praxis server up to date with the latest features and security patches"
 ---
 
-Updating Pangolin is straightforward since it's a collection of Docker images. Simply pull the latest images and restart the stack.
+Updating Praxis is straightforward since it's a collection of Docker images. Simply pull the latest images and restart the stack.
 
-This page covers updating your self-hosted Pangolin server. To update sites and clients, see the respective guides:
+This page covers updating your self-hosted Praxis server. To update sites and clients, see the respective guides:
 
 <CardGroup cols={2}>
 <Card title="Update Sites" icon="plug" href="/manage/sites/update-site">
@@ -18,15 +18,15 @@ This page covers updating your self-hosted Pangolin server. To update sites and 
 
 ## Migration Scripts
 
-When Pangolin starts and detects a version update, it runs migration scripts automatically to update your database and configuration files. Pangolin stores the last successfully run version in the database, so it knows which scripts still need to run. Scripts run in order, starting from the oldest unrun script through the latest.
+When Praxis starts and detects a version update, it runs migration scripts automatically to update your database and configuration files. Praxis stores the last successfully run version in the database, so it knows which scripts still need to run. Scripts run in order, starting from the oldest unrun script through the latest.
 
 These are commonly SQL schema updates, and sometimes data migrations.
 
-If a release includes a Badger update, Pangolin also tries to update the Traefik config when it still matches the default Pangolin installer Traefik config. If Pangolin cannot apply that change, it fails silently so you can update Badger yourself.
+If a release includes a Badger update, Praxis also tries to update the Traefik config when it still matches the default Praxis installer Traefik config. If Praxis cannot apply that change, it fails silently so you can update Badger yourself.
 
 A failed database migration blocks startup and prevents the server from running.
 
-If you are using SQLite, Pangolin automatically creates a copy of the database file before a migration runs so you can roll back if needed. You can disable this by setting the `DISABLE_BACKUP_ON_MIGRATION` environment variable to `true`.
+If you are using SQLite, Praxis automatically creates a copy of the database file before a migration runs so you can roll back if needed. You can disable this by setting the `DISABLE_BACKUP_ON_MIGRATION` environment variable to `true`.
 
 <Warning>
 Because migrations can change the database schema, downgrading is sometimes impossible and is not recommended. The database may become incompatible with older versions. Always back up your database before updating.
@@ -56,10 +56,10 @@ sudo docker compose down
 <Step title="Check latest versions">
   Find the latest version numbers:
   
-  - **Pangolin**: [GitHub Releases](https://github.com/fosrl/pangolin/releases)
-  - **Gerbil**: [GitHub Releases](https://github.com/fosrl/gerbil/releases)
+  - **Praxis**: [GitHub Releases](https://github.com/CausQ-Networks/praxis/releases)
+  - **Gerbil**: [GitHub Releases](https://github.com/CausQ-Networks/praxis-gerbil/releases)
   - **Traefik**: [Docker Hub](https://github.com/traefik/traefik/releases)
-  - **Badger**: [GitHub Releases](https://github.com/fosrl/badger/releases)
+  - **Badger**: [GitHub Releases](https://github.com/CausQ-Networks/praxis-badger/releases)
   
   <Info>
   Look for the latest stable release (not pre-release or beta versions).
@@ -72,11 +72,11 @@ sudo docker compose down
 ```yaml title="docker-compose.yml"
 services:
   pangolin:
-      image: fosrl/pangolin:1.22.0 # Check GitHub Releases for latest version tag
+      image: causq-networks/praxis:1.22.0 # Check GitHub Releases for latest version tag
       # ... rest of config
 
   gerbil:
-      image: fosrl/gerbil:1.5.1 # Check GitHub Releases for latest version tag
+      image: causq-networks/praxis-gerbil:1.5.1 # Check GitHub Releases for latest version tag
       # ... rest of config
   
     traefik:
@@ -90,7 +90,7 @@ services:
   experimental:
     plugins:
       badger:
-        moduleName: github.com/fosrl/badger
+        moduleName: github.com/CausQ-Networks/praxis-badger
         version: v1.7.0 # Check GitHub Releases for latest version tag
   ```
   
@@ -126,7 +126,7 @@ sudo docker compose logs -f
 <Step title="Verify functionality">
   Test that everything is working:
   
-  1. Access your Pangolin dashboard
+  1. Access your Praxis dashboard
   2. Check that all sites are accessible
   3. Verify tunnel connections (if using Gerbil)
   4. Test any custom configurations

@@ -3,9 +3,9 @@ title: "Host"
 description: "Route client traffic to a single IP address or FQDN on the remote network"
 ---
 
-A host private resource exposes a single machine on your remote network to connected Pangolin clients. When a user connects with the Pangolin client and has access to the resource, traffic destined for that host is carried over the tunnel to the site, which delivers it on the remote network.
+A host private resource exposes a single machine on your remote network to connected Praxis clients. When a user connects with the Praxis client and has access to the resource, traffic destined for that host is carried over the tunnel to the site, which delivers it on the remote network.
 
-Host resources are the most common private resource type. They do not render in a browser—you use native applications (a database client, `curl`, an RDP client, etc.) against the destination address while the Pangolin client is connected.
+Host resources are the most common private resource type. They do not render in a browser—you use native applications (a database client, `curl`, an RDP client, etc.) against the destination address while the Praxis client is connected.
 
 ## Benefits
 
@@ -25,7 +25,7 @@ Host resources are the most common private resource type. They do not render in 
 
 ## How Host Resources Work
 
-When a user with access connects, the Pangolin client starts routing traffic for the host over the encrypted tunnel. That covers the destination address and, if the resource has one, its alias, which the client resolves through Pangolin. A site attached to the resource receives the traffic and sends it to the destination on its local network. Responses come back the same way.
+When a user with access connects, the Praxis client starts routing traffic for the host over the encrypted tunnel. That covers the destination address and, if the resource has one, its alias, which the client resolves through Praxis. A site attached to the resource receives the traffic and sends it to the destination on its local network. Responses come back the same way.
 
 The site resolves the destination, so an FQDN only needs to resolve from the site's network, not from the user's device. Traffic to any other address stays on the user's normal network path, since the client only routes resources the user has access to.
 
@@ -41,7 +41,7 @@ Every host resource has a [destination](/manage/resources/private/destinations):
 
 ### Loopback on the Site Host
 
-If the service runs on the same machine as the site connector, set the destination to `127.0.0.1` or `localhost`. On the user's machine, `localhost` always refers to their own computer—not the remote site. You must add an [alias](/manage/resources/private/alias) (for example `metrics.site-internal.example`) so users connect to a name that Pangolin resolves over the tunnel.
+If the service runs on the same machine as the site connector, set the destination to `127.0.0.1` or `localhost`. On the user's machine, `localhost` always refers to their own computer—not the remote site. You must add an [alias](/manage/resources/private/alias) (for example `metrics.site-internal.example`) so users connect to a name that Praxis resolves over the tunnel.
 
 ## Port Restrictions
 
@@ -49,7 +49,7 @@ By default, all TCP and UDP ports on the destination are reachable. Tighten acce
 
 ## Multi-Site Routing
 
-Attach multiple sites to a host resource when the same destination is reachable from more than one connector. Pangolin [routes traffic through the best available site](/manage/resources/private/multi-site-routing) and fails over automatically when a site goes offline.
+Attach multiple sites to a host resource when the same destination is reachable from more than one connector. Praxis [routes traffic through the best available site](/manage/resources/private/multi-site-routing) and fails over automatically when a site goes offline.
 
 ## Aliases
 

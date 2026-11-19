@@ -1,9 +1,9 @@
 ---
 title: "Podman Quadlets (Rootless)"
-description: "Deploy Pangolin manually using Podman Quadlets (rootless) without the automated installer"
+description: "Deploy Praxis manually using Podman Quadlets (rootless) without the automated installer"
 ---
 
-This guide walks through a manual deployment using the same file layout the installer generates from `install/config/*` in the Pangolin source tree. Use it if you want the installer's defaults, but you want to create and maintain the files yourself.
+This guide walks through a manual deployment using the same file layout the installer generates from `install/config/*` in the Praxis source tree. Use it if you want the installer's defaults, but you want to create and maintain the files yourself.
 
 This guide assumes you already have a Linux server with Podman installed and has been tested on Debian 13.5 with Podman version 5.4.2.
 
@@ -23,7 +23,7 @@ If you do not want tunneling, see [Without Tunneling](/self-host/advanced/withou
 </Tip>
 
 <Note>
-`base domain` is the parent domain you will attach resources to, such as `example.com`. `dashboard hostname` is the specific hostname for the Pangolin UI and API, such as `pangolin.example.com`.
+`base domain` is the parent domain you will attach resources to, such as `example.com`. `dashboard hostname` is the specific hostname for the Praxis UI and API, such as `pangolin.example.com`.
 </Note>
 
 <Warning>
@@ -62,7 +62,7 @@ Create the following project structure:
 
 The following files are created later by the running services or added only when you enable optional features:
 
-- `config/db/db.sqlite` is created by Pangolin on first startup.
+- `config/db/db.sqlite` is created by Praxis on first startup.
 - `config/key` is created by Gerbil when tunneling is enabled.
 - `config/GeoLite2-Country.mmdb` is optional and only needed for [geo-blocking](/self-host/advanced/enable-geoblocking). It is not downloaded by the running services in a manual install; download it manually before enabling geo-blocking.
 
@@ -80,12 +80,12 @@ mkdir -p config/db config/letsencrypt config/traefik/logs
 
 <Steps>
 <Step title="Create container and pod files">
-  This section defines the Pangolin, Gerbil, and Traefik containers, the pod, their shared volumes, and the ports exposed on the host.
+  This section defines the Praxis, Gerbil, and Traefik containers, the pod, their shared volumes, and the ports exposed on the host.
 
 ```ini title="pangolin.container"
 [Container]
 ContainerName=pangolin
-Image=docker.io/fosrl/pangolin:ee-latest
+Image=docker.io/causq-networks/praxis:ee-latest
 
 Pod=services.pod
 
@@ -112,7 +112,7 @@ Requires=pangolin.service
 
 [Container]
 ContainerName=gerbil
-Image=docker.io/fosrl/gerbil:latest
+Image=docker.io/causq-networks/praxis-gerbil:latest
 
 Pod=services.pod
 
@@ -154,7 +154,7 @@ WantedBy=default.target
 
 ```ini title="services.pod"
 [Unit]
-Description=Pangolin Pod
+Description=Praxis Pod
 Wants=network-online.target
 After=network-online.target
 
@@ -200,8 +200,8 @@ providers:
 experimental:
   plugins:
     badger:
-      moduleName: "github.com/fosrl/badger"
-      version: "v1.4.0" # Check github.com/fosrl/badger for the latest release.
+      moduleName: "github.com/CausQ-Networks/praxis-badger"
+      version: "v1.4.0" # Check github.com/CausQ-Networks/praxis-badger for the latest release.
 
 log:
   level: "INFO"
@@ -250,7 +250,7 @@ ping:
 </Step>
 
 <Step title="Create config/traefik/dynamic_config.yml">
-  This file defines the routers, middleware, and services that send dashboard, API, and WebSocket traffic to Pangolin.
+  This file defines the routers, middleware, and services that send dashboard, API, and WebSocket traffic to Praxis.
 
 ```yaml title="config/traefik/dynamic_config.yml"
 http:
@@ -326,7 +326,7 @@ tcp:
 </Step>
 
 <Step title="Create config/config.yml">
-  This file contains Pangolin's application settings, dashboard domain, base domain, CORS origin, and server secret.
+  This file contains Praxis's application settings, dashboard domain, base domain, CORS origin, and server secret.
 
 ```yaml title="config/config.yml"
 gerbil:
@@ -334,7 +334,7 @@ gerbil:
     base_endpoint: "pangolin.example.com" # REPLACE WITH YOUR DASHBOARD DOMAIN
 
 app:
-    dashboard_url: "https://pangolin.example.com" # REPLACE WITH YOUR DASHBOARD DOMAIN
+    dashboard_url: "https://praxis.example.com" # REPLACE WITH YOUR DASHBOARD DOMAIN
     log_level: "info"
     telemetry:
         anonymous_usage: true
@@ -346,7 +346,7 @@ domains:
 server:
     secret: "replace-with-a-long-random-secret" # REPLACE WITH SECURE SECRET
     cors:
-        origins: ["https://pangolin.example.com"] # REPLACE WITH YOUR DASHBOARD DOMAIN
+        origins: ["https://praxis.example.com"] # REPLACE WITH YOUR DASHBOARD DOMAIN
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
         allowed_headers: ["X-CSRF-Token", "Content-Type"]
         credentials: false
@@ -381,7 +381,7 @@ Please note you will need to run `podman exec ...` instead of `docker exec ...`.
 
 ### Optional Email Configuration
 
-If you want Pangolin to send email, add this block to `config/config.yml` and set `flags.require_email_verification` to `true`:
+If you want Praxis to send email, add this block to `config/config.yml` and set `flags.require_email_verification` to `true`:
 
 ```yaml title="config/config.yml"
 email:
@@ -421,7 +421,7 @@ See [Enable Geo-blocking](/self-host/advanced/enable-geoblocking) for the full p
 
 <Step title="Watch the logs">
   ```bash
-  podman logs -f pangolin traefik gerbil
+  podman logs -f praxis traefik gerbil
   ```
 </Step>
 
@@ -433,24 +433,24 @@ See [Enable Geo-blocking](/self-host/advanced/enable-geoblocking) for the full p
   `pangolin`, `traefik`, and `gerbil` should all report as running after the first startup finishes.
 </Step>
 
-<Step title="Get the setup token from the Pangolin logs">
-  Check the Pangolin container logs:
+<Step title="Get the setup token from the Praxis logs">
+  Check the Praxis container logs:
 
   ```bash
   podman logs pangolin
   ```
 
-  Pangolin prints a setup token to stdout on first boot. Copy that token before continuing.
+  Praxis prints a setup token to stdout on first boot. Copy that token before continuing.
 </Step>
 
 <Step title="Open the initial setup page">
   Visit:
 
   ```text
-  https://pangolin.example.com/auth/initial-setup
+  https://praxis.example.com/auth/initial-setup
   ```
 
-  Replace the hostname with your real dashboard domain, then use the setup token from the Pangolin logs to register the first admin account.
+  Replace the hostname with your real dashboard domain, then use the setup token from the Praxis logs to register the first admin account.
 </Step>
 </Steps>
 
@@ -461,7 +461,7 @@ You should expect the following on a healthy first install:
 - `podman ps -a` shows `pangolin`, `traefik`, and `gerbil` as running.
 - `podman logs pangolin` includes the one-time setup token for the first admin account.
 - Visiting `https://<your-dashboard-domain>/auth/initial-setup` loads the setup page.
-- `config/db/db.sqlite` exists after Pangolin starts.
+- `config/db/db.sqlite` exists after Praxis starts.
 - `config/key` exists after Gerbil starts.
 
 <Tip>
@@ -471,7 +471,7 @@ The first Let's Encrypt certificate request can take a short while. If the page 
 ## If Something Fails
 
 - If the setup page does not load, confirm your DNS record points to the server and ports `80` and `443` are reachable.
-- If you cannot complete first-time signup, check `podman logs pangolin` and copy the setup token printed by Pangolin.
+- If you cannot complete first-time signup, check `podman logs pangolin` and copy the setup token printed by Praxis.
 - If certificates are not issued, confirm `admin@example.com` was replaced and that nothing else is already bound to ports `80` or `443` (or whatever alternate ports you selected on the host).
 - If `pangolin` never becomes healthy, inspect `podman logs -f pangolin`.
 - If tunneling does not work, inspect `podman logs -f gerbil` and confirm UDP ports `51820` and `21820` are open.

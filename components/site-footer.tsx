@@ -46,7 +46,7 @@ export function SiteFooter() {
           <div className="col-span-2 flex flex-col gap-6 md:col-span-3 lg:col-span-1">
             <Link
               href="/"
-              aria-label="Pangolin Docs home"
+              aria-label="Praxis Docs home"
               title="Fossorial (adj.): adapted for digging. Like a pangolin."
               className="flex w-fit items-center gap-2.5"
             >

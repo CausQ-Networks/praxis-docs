@@ -3,10 +3,10 @@ title: "Helm (Newt)"
 description: "Install and manage Newt sites on Kubernetes using the Newt Helm chart."
 ---
 
-This guide installs and manages Newt sites in Kubernetes using the `fosrl/newt` Helm chart.
+This guide installs and manages Newt sites in Kubernetes using the `causq-networks/praxis-newt` Helm chart.
 
 <Note>
-New sites should use the [Pangolin CLI chart](/manage/sites/kubernetes/helm), which runs sites with the Pangolin CLI. This page covers the Newt chart for existing Newt deployments, which keep working.
+New sites should use the [Praxis CLI chart](/manage/sites/kubernetes/helm), which runs sites with the Praxis CLI. This page covers the Newt chart for existing Newt deployments, which keep working.
 </Note>
 
 See [Version Matrix](https://github.com/fosrl/helm-charts/blob/main/VERSION_MATRIX.md) for chart and default app version references.
@@ -32,12 +32,12 @@ Before installing Newt, you need:
 - Kubernetes `1.30.14` or newer
 - Helm 3.x
 - `kubectl` access to the target cluster
-- a reachable Pangolin instance
+- a reachable Praxis instance
 - either:
-  - Newt credentials from Pangolin: `NEWT_ID` and `NEWT_SECRET`
+  - Newt credentials from Praxis: `NEWT_ID` and `NEWT_SECRET`
   - or a provisioning key for provisioning installs
 
-The chart quickstart lists Kubernetes `>=1.30.14`, Helm 3.x, configured `kubectl`, and Newt credentials from Pangolin as prerequisites.
+The chart quickstart lists Kubernetes `>=1.30.14`, Helm 3.x, configured `kubectl`, and Newt credentials from Praxis as prerequisites.
 
 See [Prerequisites](/self-host/manual/kubernetes/prerequisites) for cluster, namespace, storage, networking, and security planning.
 
@@ -70,7 +70,7 @@ If your cluster uses Pod Security Admission labels, namespace labels, or policy 
 Example:
 
 ```bash
-kubectl label namespace pangolin \
+kubectl label namespace praxis \
   pod-security.kubernetes.io/enforce=baseline \
   pod-security.kubernetes.io/audit=restricted \
   pod-security.kubernetes.io/warn=restricted
@@ -82,18 +82,18 @@ The chart can create namespaces through `namespace.create`, but creating the nam
 
 ### Step 2: Create the Newt Secret
 
-Create a Secret with the credentials from Pangolin:
+Create a Secret with the credentials from Praxis:
 
 ```bash
 kubectl create secret generic newt-auth \
-  --namespace pangolin \
-  --from-literal=PANGOLIN_ENDPOINT=https://pangolin.example.com \
+  --namespace praxis \
+  --from-literal=PRAXIS_ENDPOINT=https://praxis.example.com \
   --from-literal=NEWT_ID=<your-newt-id> \
   --from-literal=NEWT_SECRET=<your-newt-secret>
 ```
 
 <Tip>
-Get the Newt credentials from the Pangolin dashboard for the site you want this Newt instance to connect to.
+Get the Newt credentials from the Praxis dashboard for the site you want this Newt instance to connect to.
 </Tip>
 
 ### Step 3: Create a values file
@@ -112,7 +112,7 @@ newtInstances:
 The default Secret keys are:
 
 ```yaml
-PANGOLIN_ENDPOINT
+PRAXIS_ENDPOINT
 NEWT_ID
 NEWT_SECRET
 ```
@@ -128,7 +128,7 @@ newtInstances:
     auth:
       existingSecretName: newt-auth
       keys:
-        endpointKey: PANGOLIN_ENDPOINT
+        endpointKey: PRAXIS_ENDPOINT
         idKey: NEWT_ID
         secretKey: NEWT_SECRET
     replicas: 1
@@ -149,7 +149,7 @@ Install Newt:
 
 ```bash
 helm upgrade --install newt fossorial/newt \
-  --namespace pangolin \
+  --namespace praxis \
   --values values-newt.yaml
 ```
 
@@ -166,14 +166,14 @@ helm status newt --namespace pangolin
 Check the pods:
 
 ```bash
-kubectl get pods --namespace pangolin \
+kubectl get pods --namespace praxis \
   -l app.kubernetes.io/component=newt
 ```
 
 Check the logs:
 
 ```bash
-kubectl logs --namespace pangolin \
+kubectl logs --namespace praxis \
   -l app.kubernetes.io/component=newt \
   --tail=50
 ```
@@ -183,7 +183,7 @@ Wait for the Newt pod to become ready:
 ```bash
 kubectl wait --for=condition=ready pod \
   -l app.kubernetes.io/component=newt \
-  --namespace pangolin \
+  --namespace praxis \
   --timeout=60s
 ```
 
@@ -199,7 +199,7 @@ Create `values-newt.yaml`:
 newtInstances:
   - name: main-tunnel
     enabled: true
-    pangolinEndpoint: https://pangolin.example.com
+    pangolinEndpoint: https://praxis.example.com
     provisioningKey: "<your-provisioning-key>"
     newtName: "my-site"
     configPersistence:
@@ -213,7 +213,7 @@ Install Newt:
 
 ```bash
 helm upgrade --install newt fossorial/newt \
-  --namespace pangolin \
+  --namespace praxis \
   --values values-newt.yaml
 ```
 
@@ -227,7 +227,7 @@ Example with an existing PVC:
 newtInstances:
   - name: main-tunnel
     enabled: true
-    pangolinEndpoint: https://pangolin.example.com
+    pangolinEndpoint: https://praxis.example.com
     provisioningKey: "<your-provisioning-key>"
     newtName: "my-site"
     configPersistence:
@@ -245,20 +245,20 @@ The Newt README includes both `emptyDir` and existing PVC provisioning examples.
 Follow the Newt logs:
 
 ```bash
-kubectl logs --namespace pangolin \
+kubectl logs --namespace praxis \
   -l app.kubernetes.io/component=newt \
   --follow
 ```
 
-In the Pangolin dashboard, verify that the site connected by this Newt instance is online.
+In the Praxis dashboard, verify that the site connected by this Newt instance is online.
 
 If the pod is running but the site does not connect, check:
 
-* `PANGOLIN_ENDPOINT`
+* `PRAXIS_ENDPOINT`
 * Newt credentials or provisioning key
 * DNS resolution from inside the cluster
 * outbound network access from the Newt pod
-* TLS validity for the Pangolin endpoint
+* TLS validity for the Praxis endpoint
 
 ## Upgrade
 
@@ -272,7 +272,7 @@ Upgrade the release:
 
 ```bash
 helm upgrade newt fossorial/newt \
-  --namespace pangolin \
+  --namespace praxis \
   --values values-newt.yaml
 ```
 
@@ -314,14 +314,14 @@ Create a separate Secret for each site:
 
 ```bash
 kubectl create secret generic newt-auth-site-a \
-  --namespace pangolin \
-  --from-literal=PANGOLIN_ENDPOINT=https://pangolin.example.com \
+  --namespace praxis \
+  --from-literal=PRAXIS_ENDPOINT=https://praxis.example.com \
   --from-literal=NEWT_ID=<site-a-newt-id> \
   --from-literal=NEWT_SECRET=<site-a-newt-secret>
 
 kubectl create secret generic newt-auth-site-b \
-  --namespace pangolin \
-  --from-literal=PANGOLIN_ENDPOINT=https://pangolin.example.com \
+  --namespace praxis \
+  --from-literal=PRAXIS_ENDPOINT=https://praxis.example.com \
   --from-literal=NEWT_ID=<site-b-newt-id> \
   --from-literal=NEWT_SECRET=<site-b-newt-secret>
 ```
@@ -378,7 +378,7 @@ Install from OCI:
 ```bash
 helm upgrade --install newt oci://ghcr.io/fosrl/helm-charts/newt \
   --version 1.6.0 \
-  --namespace pangolin \
+  --namespace praxis \
   --values values-newt.yaml
 ```
 
@@ -390,7 +390,7 @@ OCI changes where Helm pulls the chart from. It does not change the values file 
   <Card title="Chart README" href="https://github.com/fosrl/helm-charts/blob/main/charts/newt/README.md" icon="book" />
   <Card title="values.yaml" href="https://github.com/fosrl/helm-charts/blob/main/charts/newt/values.yaml" icon="file-code" />
   <Card title="values.schema.json" href="https://github.com/fosrl/helm-charts/blob/main/charts/newt/values.schema.json" icon="file-code" />
-  <Card title="Artifact Hub" href="https://artifacthub.io/packages/helm/fosrl/newt" icon="box" />
+  <Card title="Artifact Hub" href="https://artifacthub.io/packages/helm/causq-networks/praxis-newt" icon="box" />
   <Card title="Issues" href="https://github.com/fosrl/helm-charts/issues" icon="circle-question" />
 </CardGroup>
 
@@ -406,7 +406,7 @@ OCI changes where Helm pulls the chart from. It does not change the values file 
 	<Card title="Kustomize Install" href="/manage/sites/kubernetes/kustomize" icon="layer-group">
 		Install Newt with rendered manifests and Kustomize overlays.
 	</Card>
-	<Card title="Pangolin Helm" href="/self-host/manual/kubernetes/pangolin/helm" icon="server">
-		Install the Pangolin control plane.
+	<Card title="Praxis Helm" href="/self-host/manual/kubernetes/praxis/helm" icon="server">
+		Install the Praxis control plane.
 	</Card>
 </CardGroup>

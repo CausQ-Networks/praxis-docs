@@ -1,6 +1,6 @@
 ---
 title: "Clustering Requirements"
-description: "Hosts, networking, and DNS delegation needed before deploying a Pangolin cluster"
+description: "Hosts, networking, and DNS delegation needed before deploying a Praxis cluster"
 ---
 
 <Note>
@@ -13,27 +13,27 @@ Review these requirements before you start deploying. They cover the hosts you n
 
 You need a minimum of **three hosts**:
 
-- **Node 1** - runs Pangolin, Gerbil, and Traefik
-- **Node 2** - runs Pangolin, Gerbil, and Traefik
+- **Node 1** - runs Praxis, Gerbil, and Traefik
+- **Node 2** - runs Praxis, Gerbil, and Traefik
 - **A database host** - runs PostgreSQL and a Redis-compatible server (Valkey, Redis, etc.)
 
 <Tip>
 The database host doesn't need to be a dedicated instance. You can run PostgreSQL and Redis however you like - a managed cloud database, an existing cluster, etc. - as long as both nodes can reach them. The only hard requirement is that the Redis-compatible server supports **pub/sub**.
 </Tip>
 
-You can add more Pangolin nodes beyond two for additional capacity or regional distribution. The two-node topology in this guide is the minimum for high availability.
+You can add more Praxis nodes beyond two for additional capacity or regional distribution. The two-node topology in this guide is the minimum for high availability.
 
-For sizing information, see [Choosing a VPS](/self-host/choosing-a-vps) - the same sizing from single Pangolin node deployments applies to each node in a cluster.
+For sizing information, see [Choosing a VPS](/self-host/choosing-a-vps) - the same sizing from single Praxis node deployments applies to each node in a cluster.
 
 ## Networking
 
 - **Node 1 and Node 2 each need a public, static IP address**, reachable from the internet
 - **Node 1 and Node 2 need to be able to address each other** over an internal network
-- **You must provide your own HA load balancer** in front of both nodes. It needs to terminate HTTPS for the Pangolin UI and accept UDP port 53 for DNS and route to both nodes
+- **You must provide your own HA load balancer** in front of both nodes. It needs to terminate HTTPS for the Praxis UI and accept UDP port 53 for DNS and route to both nodes
 
 ### Dashboard Domain
 
-You also need a domain for the Pangolin UI and API itself (e.g. `pangolin.example.com`) - this is separate from the nameserver domain above, which is the nameserver to resolve resource DNS.
+You also need a domain for the Praxis UI and API itself (e.g. `pangolin.example.com`) - this is separate from the nameserver domain above, which is the nameserver to resolve resource DNS.
 
 Point this domain's DNS record at your **load balancer**, not at either node directly. The load balancer is also responsible for obtaining and serving the TLS certificate for this domain - the nodes' built-in ACME client only issues certificates for resource domains under the delegated nameserver zone, not for the dashboard domain. Terminate TLS at the load balancer and forward plain HTTP to the nodes.
 
@@ -41,18 +41,18 @@ You must also set this domain as `app.dashboard_url` and add it to `server.cors.
 
 ### Required Ports
 
-Configure the following firewall rules on each Pangolin node.
+Configure the following firewall rules on each Praxis node.
 
 **Inbound**
 
 | Type | Protocol | Port range | Source | Description |
 | --- | --- | --- | --- | --- |
 | HTTP | TCP | 80 | 0.0.0.0/0 | Ping and redirects |
-| HTTPS | TCP | 443 | 0.0.0.0/0 | Pangolin public resources |
+| HTTPS | TCP | 443 | 0.0.0.0/0 | Praxis public resources |
 | Custom UDP | UDP | 21820 | 0.0.0.0/0 | WireGuard relay port |
 | Custom UDP | UDP | 51820 | 0.0.0.0/0 | WireGuard port |
 | DNS (UDP) | UDP | 53 | Load balancer | DNS |
-| HTTP | TCP | 3000 | Load balancer | Pangolin dashboard UI and API |
+| HTTP | TCP | 3000 | Load balancer | Praxis dashboard UI and API |
 | Custom TCP | TCP | 3004 | Self + all other nodes | Gerbil node API |
 
 **Outbound**
@@ -63,7 +63,7 @@ Configure the following firewall rules on each Pangolin node.
 
 ## DNS Delegation
 
-Pangolin's built-in DNS server needs to be delegated authority for a nameserver subdomain. Point an NS record at your load balancer, then optionally delegate additional subdomains through it.
+Praxis's built-in DNS server needs to be delegated authority for a nameserver subdomain. Point an NS record at your load balancer, then optionally delegate additional subdomains through it.
 
 <Steps>
 <Step title="Create the nameserver record">
@@ -103,7 +103,7 @@ dns:
 
 - **Contact email** for Let's Encrypt ACME registration
 - **GeoIP databases** - download and keep up to date the MaxMind `GeoLite2-Country.mmdb` and `GeoLite2-ASN.mmdb` databases, placed in each node's `config/` directory. See [Enable Geo-location](/self-host/advanced/enable-geolocation) and [Enable ASN Lookup](/self-host/advanced/enable-asn-lookup)
-- **Site type support** - in clustered deployments, only Pangolin Sites are supported. Local sites and basic WireGuard sites are not supported
+- **Site type support** - in clustered deployments, only Praxis Sites are supported. Local sites and basic WireGuard sites are not supported
 
 <Card title="Deploy a Cluster" href="/self-host/clustering/deploy-a-cluster" icon="server">
   Once these requirements are met, follow the full deployment walkthrough.

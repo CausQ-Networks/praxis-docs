@@ -3,7 +3,7 @@ title: "Model Catalog"
 description: "Known models, pricing for budgets, and how to load a custom catalog"
 ---
 
-The model catalog is Pangolin's list of known model ids, which provider type owns them, and token pricing. It is used for:
+The model catalog is Praxis's list of known model ids, which provider type owns them, and token pricing. It is used for:
 
 - The **Known Models** picker on a provider's Models tab
 - Expanding wildcard allows in `GET /v1/models`
@@ -14,7 +14,7 @@ See [Model Routing](/manage/ai/providers/model-routing) for allow lists, inherit
 
 ## Catalog Providers
 
-Default source: `https://api.fossorial.io/api/v1/models`. Typed AI provider types map as follows:
+Default source: `https://api.github.com/repos/CausQ-Networks/praxis-cli/api/v1/models`. Typed AI provider types map as follows:
 
 | Provider type | Catalog |
 |---|---|
@@ -57,7 +57,7 @@ Models on a [Custom](/manage/ai/providers/custom) provider, such as a local Olla
 
 `providerNiceId` is optional. It limits the entry to the Custom provider with that **Identifier**, which is shown on the provider's General settings and in its URL. If you leave it out, the entry applies to every Custom provider. If both kinds exist for the same model, the entry with the matching `providerNiceId` wins. Use it when two Custom providers serve the same model id at different costs.
 
-When a Custom provider handles a request, Pangolin looks for a `custom` entry first. If there is none, it falls back to an [approximate match](/manage/ai/budgets#estimates-not-invoices) against the other catalogs. `custom` entries also fill that provider's Known Models list and are used for wildcard expansion, token limits, and capability flags in `GET /v1/models`. They never apply to OpenRouter, Vercel AI Gateway, or typed providers.
+When a Custom provider handles a request, Praxis looks for a `custom` entry first. If there is none, it falls back to an [approximate match](/manage/ai/budgets#estimates-not-invoices) against the other catalogs. `custom` entries also fill that provider's Known Models list and are used for wildcard expansion, token limits, and capability flags in `GET /v1/models`. They never apply to OpenRouter, Vercel AI Gateway, or typed providers.
 
 ### Estimating Cost from Power Draw
 
@@ -71,12 +71,12 @@ For example, a GPU drawing 250 W at $0.30/kWh while generating 40 tokens/s costs
 
 ## Loading a Custom Catalog
 
-Self-hosted Pangolin loads and refreshes the catalog from [`config.yml`](/self-host/advanced/config-file#ai-model-catalog):
+Self-hosted Praxis loads and refreshes the catalog from [`config.yml`](/self-host/advanced/config-file#ai-model-catalog):
 
 ```yaml
 ai:
   model_catalog:
-    upstream_url: "https://api.fossorial.io/api/v1/models"
+    upstream_url: "https://api.github.com/repos/CausQ-Networks/praxis-cli/api/v1/models"
     file: "config/ai-models.json"
     merge_file: "config/ai-models-extra.json"
     refresh_interval_min_hours: 6

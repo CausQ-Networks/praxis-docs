@@ -2,7 +2,7 @@
 title: "Targets"
 description: "Configure destination endpoints for resource routing and load balancing"
 ---
-When you create a resource in Pangolin, you define different targets that specify where traffic should be routed within your network. Each target represents a specific destination that the resource can proxy to when handling incoming requests.
+When you create a resource in Praxis, you define different targets that specify where traffic should be routed within your network. Each target represents a specific destination that the resource can proxy to when handling incoming requests.
 
 ## How Targets Work
 
@@ -17,11 +17,11 @@ Targets function as destination endpoints for your resources:
 
 ## Additional Proxy Settings
 
-In the public resource **Proxy** tab, Pangolin also provides additional proxy settings for how requests are sent to the upstream target.
+In the public resource **Proxy** tab, Praxis also provides additional proxy settings for how requests are sent to the upstream target.
 
 ### Load Balancing Strategy
 
-When an [HTTP / HTTPS](/manage/resources/public/http-https) resource has more than one eligible target in the same routing group, Pangolin spreads requests across those targets. Choose the strategy on the resource **Proxy** tab (or with `load-balancing-strategy` in a [blueprint](/manage/blueprints#load-balancing-example)).
+When an [HTTP / HTTPS](/manage/resources/public/http-https) resource has more than one eligible target in the same routing group, Praxis spreads requests across those targets. Choose the strategy on the resource **Proxy** tab (or with `load-balancing-strategy` in a [blueprint](/manage/blueprints#load-balancing-example)).
 
 | Strategy | Behavior |
 | --- | --- |
@@ -38,7 +38,7 @@ Notes:
 
 ### Sticky Sessions
 
-Enable **Sticky Sessions** on the **Proxy** tab when clients should stay on the same target after the first request. For HTTP/HTTPS, Pangolin sets a sticky cookie (`p_sticky`). Sticky sessions work alongside the load balancing strategy: the strategy picks the first target, then sticky keeps follow-up requests on that target while it remains available.
+Enable **Sticky Sessions** on the **Proxy** tab when clients should stay on the same target after the first request. For HTTP/HTTPS, Praxis sets a sticky cookie (`p_sticky`). Sticky sessions work alongside the load balancing strategy: the strategy picks the first target, then sticky keeps follow-up requests on that target while it remains available.
 
 ### Custom Host Header
 
@@ -64,7 +64,7 @@ X-Environment: production
 Typical uses include upstream shared-secret headers, feature flags, or tenant-routing headers that your application expects on every request.
 
 <Note>
-Custom headers are static resource-level headers. If you need Pangolin to pass user identity to the upstream app, use [Forwarded Headers](/manage/access-control/forwarded-headers) instead.
+Custom headers are static resource-level headers. If you need Praxis to pass user identity to the upstream app, use [Forwarded Headers](/manage/access-control/forwarded-headers) instead.
 </Note>
 
 ## Multi-Site Targets
@@ -89,9 +89,9 @@ You can configure targets across different sites for the same resource:
 This is an [Enterprise Edition](/self-host/enterprise-edition)-only feature.
 </Note>
 
-On highly available clustered Enterprise Pangolin servers (like the cloud platform), different sites can connect to different nodes. If one of the nodes goes down, the site moves to another node. This has implications for site-based load balancing, because DNS can only route a FQDN to one Pangolin server node at a time.
+On highly available clustered Enterprise Praxis servers (like the cloud platform), different sites can connect to different nodes. If one of the nodes goes down, the site moves to another node. This has implications for site-based load balancing, because DNS can only route a FQDN to one Praxis server node at a time.
 
-Load balancing between different targets only works when those sites are connected to the same Pangolin node. The strategy you choose still applies, but each node only sees targets for sites attached to it. In Pangolin instances with multiple remote nodes, pin the sites you want to load balance together to the same node.
+Load balancing between different targets only works when those sites are connected to the same Praxis node. The strategy you choose still applies, but each node only sees targets for sites attached to it. In Praxis instances with multiple remote nodes, pin the sites you want to load balance together to the same node.
 
 To ensure effective load balancing in multi-node environments:
 
@@ -112,11 +112,11 @@ Each target can be configured with optional path routing parameters:
 - **Path**: The path pattern to match against incoming requests
 - **Match**: The matching strategy to use when comparing the request path
 
-When a request comes in, Pangolin evaluates the path against all targets and routes traffic to the target with the matching path configuration.
+When a request comes in, Praxis evaluates the path against all targets and routes traffic to the target with the matching path configuration.
 
 ### Match Types
 
-Pangolin supports three different matching strategies:
+Praxis supports three different matching strategies:
 
 #### Exact Match
 
@@ -136,13 +136,13 @@ Example: Path `/api` with prefix match matches `/api/users`, `/api/orders`, `/ap
 
 Example: Path `^/api/users/[0-9]+$` with regex match matches `/api/users/123` but not `/api/users/abc`
 
-<Frame caption="Pangolin UI showing targets with path-based routing configuration">
+<Frame caption="Praxis UI showing targets with path-based routing configuration">
   <img src="/images/targets_config_path_match.png" alt="Targets example"/>
 </Frame>
 
 ### Load Balancing with Path-Based Routing
 
-When multiple targets have the same path and match configuration, Pangolin load balances between them using the resource [load balancing strategy](#load-balancing-strategy) (default: round robin).
+When multiple targets have the same path and match configuration, Praxis load balances between them using the resource [load balancing strategy](#load-balancing-strategy) (default: round robin).
 
 **Example Scenario:**
 - Target 1: Path `/api`, Match `prefix`, Address `10.0.1.10:8080`
@@ -163,7 +163,7 @@ Path rewriting allows you to modify the request path before it reaches your back
 
 ### How Path Rewriting Works
 
-After Pangolin matches a request using path-based routing, it can rewrite the path before forwarding the request to your target service. Each target with path matching configured can optionally include path rewriting:
+After Praxis matches a request using path-based routing, it can rewrite the path before forwarding the request to your target service. Each target with path matching configured can optionally include path rewriting:
 
 - **Rewrite Type**: The strategy to use for rewriting the path
 - **Rewrite Value**: The new path or pattern to apply (optional for Strip Prefix)
@@ -172,7 +172,7 @@ The rewriting happens after the path match evaluation but before the request rea
 
 ### Rewrite Types
 
-Pangolin supports four different rewriting strategies:
+Praxis supports four different rewriting strategies:
 
 #### Prefix Rewrite
 
@@ -210,7 +210,7 @@ Example: Match path `/api` (prefix) → Strip Prefix transforms `/api/users` int
 
 Example with new prefix: Match path `/old` (prefix) → Strip Prefix + Rewrite to `/new` transforms `/old/users` into `/new/users`
 
-<Frame caption="Pangolin UI showing path rewriting configuration">
+<Frame caption="Praxis UI showing path rewriting configuration">
   <img src="/images/targets_config_path_rewrite.png" alt="Targets with path rewriting"/>
 </Frame>
 
@@ -226,7 +226,7 @@ Example with new prefix: Match path `/old` (prefix) → Strip Prefix + Rewrite t
 
 ### Automatic Path Normalization
 
-Pangolin automatically normalizes paths to ensure correct routing:
+Praxis automatically normalizes paths to ensure correct routing:
 - Non-regex paths that don't start with `/` will have `/` prepended automatically
 - Non-regex rewrite paths that don't start with `/` will have `/` prepended automatically
 - This ensures consistent behavior across different configurations

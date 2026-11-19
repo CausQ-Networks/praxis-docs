@@ -5,10 +5,10 @@ description: "Require a trusted client certificate before any other public resou
 
 Client certificate (mTLS) authentication requires browsers and API clients to present a certificate signed by a CA you trust. It is configured on public resources alongside PIN, passcode, email OTP, and other auth methods, but it is enforced earlier: during the TLS handshake, before those methods run.
 
-Pangolin does not issue or host client certificates. You bring your own CA and distribute client certificates to the devices or clients that should connect.
+Praxis does not issue or host client certificates. You bring your own CA and distribute client certificates to the devices or clients that should connect.
 
 <Info>
-    This is separate from [Pangolin Site
+    This is separate from [Praxis Site
     mTLS](/manage/sites/configure-site#mtls-authentication), which authenticates
     a Newt site to the control plane.
 </Info>
@@ -41,7 +41,7 @@ If you already run a PKI, use your existing CA and skip ahead to [Configure mTLS
     -subj "/CN=My-Local-CA"
   ```
 
-  `ca.crt` is the file you upload to Pangolin. Keep `ca.key` somewhere safe and off the server, since anyone who has it can sign client certificates your resource will accept.
+  `ca.crt` is the file you upload to Praxis. Keep `ca.key` somewhere safe and off the server, since anyone who has it can sign client certificates your resource will accept.
 </Step>
 <Step title="Create a client key and certificate signing request">
   Each user or device should get its own key. The `CN` shows up as the subject in the certificate details forwarded to your backend, so a username or device name works well.
@@ -63,7 +63,7 @@ If you already run a PKI, use your existing CA and skip ahead to [Configure mTLS
 </Steps>
 
 <Note>
-  You do not need to create a server certificate. Pangolin already serves the resource over HTTPS with its own certificate; the CA you create here is only used to verify clients.
+  You do not need to create a server certificate. Praxis already serves the resource over HTTPS with its own certificate; the CA you create here is only used to verify clients.
 </Note>
 
 ## Configure mTLS
@@ -115,11 +115,11 @@ If the resource also uses [header authentication](/manage/resources/public/authe
 
 ## How It Behaves
 
-- When mTLS is required, clients without a valid certificate fail the TLS handshake. Browsers show a connection error, not the Pangolin login page.
+- When mTLS is required, clients without a valid certificate fail the TLS handshake. Browsers show a connection error, not the Praxis login page.
 - There is no optional mode: if enabled, a valid client certificate is always required.
 - After the handshake succeeds, other configured auth methods still apply (SSO, PIN, passcode, email OTP, header auth, shareable links, and access rules).
 - Access rules cannot skip mTLS. Bypass-auth rules only skip later authentication stages.
 
 ## Backend Certificate Details
 
-When a client connects successfully, Pangolin forwards verified certificate details to your backend in the `X-Forwarded-Tls-Client-Cert-Info` header (subject, issuer, serial number, validity, and SANs). This is separate from the identity headers documented in [Forwarded Headers](/manage/access-control/forwarded-headers).
+When a client connects successfully, Praxis forwards verified certificate details to your backend in the `X-Forwarded-Tls-Client-Cert-Info` header (subject, issuer, serial number, validity, and SANs). This is separate from the identity headers documented in [Forwarded Headers](/manage/access-control/forwarded-headers).

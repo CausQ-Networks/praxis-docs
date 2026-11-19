@@ -3,10 +3,10 @@ title: "Network Logs"
 description: "Network logs are a record of TCP and UDP sessions between clients and private resources on sites"
 ---
 
-Network logs record each TCP and UDP session that traverses the tunnel between Pangolin clients and resources on your sites. They apply to private resources reached through the Pangolin client (and related tunnel traffic), not to public resources served only through the reverse proxy. You can see which clients and users opened sessions to which private resources, the source and destination addresses and protocols (TCP and UDP), the start and end times of the sessions, and more.
+Network logs record each TCP and UDP session that traverses the tunnel between Praxis clients and resources on your sites. They apply to private resources reached through the Praxis client (and related tunnel traffic), not to public resources served only through the reverse proxy. You can see which clients and users opened sessions to which private resources, the source and destination addresses and protocols (TCP and UDP), the start and end times of the sessions, and more.
 
 <Note>
-Network logs are only available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
+Network logs are only available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
 </Note>
 
 ## What are Network Logs?
@@ -31,7 +31,7 @@ Each network log entry contains the following fields:
 | `timestamp` | number | Unix timestamp (in seconds) when the session started |
 | `protocol` | string | Transport protocol for the session (`tcp` or `udp`) |
 | `siteResourceId` | number \| null | The ID of the [private resource](/manage/resources/understanding-resources) for the session (if applicable) |
-| `clientId` | number \| null | The Pangolin [client ID](/manage/clients/understanding-clients) for the session |
+| `clientId` | number \| null | The Praxis [client ID](/manage/clients/understanding-clients) for the session |
 | `clientEndpoint` | string \| null | The client-side endpoint for the session (e.g. `123.123.123.123:12345`) |
 | `userId` | string \| null | The user ID when the session is tied to an authenticated user |
 | `sourceAddr` | string | Source address for the session (typically the client-side endpoint) |
@@ -50,4 +50,4 @@ Network logs can generate significant data volume depending on session churn and
 
 ## Exporting
 
-Logs can be exported into CSV format for external analysis and archival. Logs can be exported from the table view in the Pangolin dashboard or via the Pangolin API. When exporting, you can specify date ranges and filters to narrow down the logs you need.
+Logs can be exported into CSV format for external analysis and archival. Logs can be exported from the table view in the Praxis dashboard or via the Praxis API. When exporting, you can specify date ranges and filters to narrow down the logs you need.

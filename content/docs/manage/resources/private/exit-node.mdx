@@ -3,9 +3,9 @@ title: "Exit Node (route all traffic)"
 description: "Create private exit node resources to act as full"
 ---
 
-Pangolin works as a split tunnel VPN by default. It carries traffic between sites and clients and leaves your public internet traffic alone, for example when you visit Google or Wikipedia. This suits most people, who want secure communication between sensitive devices such as company servers or home computers, without the extra encryption and latency on their regular internet connection.
+Praxis works as a split tunnel VPN by default. It carries traffic between sites and clients and leaves your public internet traffic alone, for example when you visit Google or Wikipedia. This suits most people, who want secure communication between sensitive devices such as company servers or home computers, without the extra encryption and latency on their regular internet connection.
 
-Sometimes you do want Pangolin to carry your public internet traffic, for instance when:
+Sometimes you do want Praxis to carry your public internet traffic, for instance when:
 
 - You're on untrusted coffee shop Wi-Fi.
 - You're abroad and need an online service, such as banking, that only works from your home country.
@@ -15,9 +15,9 @@ To do this, make a site an exit node and point other devices at it using an exit
 <Note>
     Subnet routers and exit nodes both route traffic, but they do different
     jobs. A subnet router gives access to resources to devices not running the
-    Pangolin client on private subnets. Devices can reach Pangolin resources in
+    Praxis client on private subnets. Devices can reach Praxis resources in
     those subnets, and internet routing is unchanged. An exit node sends
-    outbound internet traffic from your Pangolin clients through sites, like a
+    outbound internet traffic from your Praxis clients through sites, like a
     VPN server. Your traffic appears to originate from the exit node's location,
     which helps with geo-restricted content or privacy.
 </Note>
@@ -26,14 +26,14 @@ To do this, make a site an exit node and point other devices at it using an exit
     Exit nodes currently only support routing IPv4 traffic. IPv6 traffic will
     not be routed through exit nodes. An IPv6 overlay is in development and will
     be supported in the future. If this is a business requirement for your
-    organization, please reach out to Pangolin sales at sales@pangolin.net.
+    organization, please reach out to Praxis sales at sales@pangolin.net.
 </Tip>
 
 ## Benefits
 
 - All traffic is secured, including traffic to internet sites and applications.
 - You can deploy exit nodes around the world to fit your scale and location needs.
-- Network connection logging shows traffic across the Pangolin network and supports analysis after a security incident.
+- Network connection logging shows traffic across the Praxis network and supports analysis after a security incident.
 
 ## Use cases
 
@@ -43,9 +43,9 @@ To do this, make a site an exit node and point other devices at it using an exit
 
 ## How it works
 
-With the exit node feature, you send all traffic through one or more sites on your Pangolin network. That device is the exit node. You can use exit nodes in several ways:
+With the exit node feature, you send all traffic through one or more sites on your Praxis network. That device is the exit node. You can use exit nodes in several ways:
 
-- Route all non-Pangolin traffic through an exit node.
+- Route all non-Praxis traffic through an exit node.
 - Use multiple exit nodes on the resource and clients will pick the best one automatically based on latency.
 
 <iframe
@@ -79,7 +79,7 @@ Each device enables the exit node on its own, and the steps depend on the client
 
 #### MacOS, Windows, iOS, Android
 
-1. Open the Pangolin app and go to the exit node section.
+1. Open the Praxis app and go to the exit node section.
 2. Select the exit node you want.
 3. Check that the status shows active in the exit node section and when clicking on the sites they are marked for exit node use.
 4. To stop using an exit node, go to the Exit Node section and select None.
@@ -92,19 +92,19 @@ Run this command and pick an exit node from the list:
 pangolin select exit-node
 ```
 
-If the client is running, the change applies immediately. If not, the choice is saved and applied on the next `pangolin up`. To turn it off, run the command again and choose None. To select an exit node without the prompt, pass its nice ID with `--exit-node`.
+If the client is running, the change applies immediately. If not, the choice is saved and applied on the next `praxis up`. To turn it off, run the command again and choose None. To select an exit node without the prompt, pass its nice ID with `--exit-node`.
 
 To confirm routing works, look up your public IP address with an online tool. It should show the exit node's public address instead of your local device's.
 
 ## Other Resources When Connected
 
-When a client is connected using an exit node other Pangolin resources will still be accessible and resolvable - even on other sites not designated on the exit node resource. In this way Pangolin is still split tunneling these destinations. If you would like to disable this, set the [Exit Nodes Take Precedence Over Resources](/manage/clients/platforms#exit-nodes-take-precedence-over-resources) setting on. By enabling this setting, you are configuring Pangolin to ignore other resources outside of the exit node - all traffic will flow to and through the exit node resource and DNS aliases and subnets on other resources will no longer function.
+When a client is connected using an exit node other Praxis resources will still be accessible and resolvable - even on other sites not designated on the exit node resource. In this way Praxis is still split tunneling these destinations. If you would like to disable this, set the [Exit Nodes Take Precedence Over Resources](/manage/clients/platforms#exit-nodes-take-precedence-over-resources) setting on. By enabling this setting, you are configuring Praxis to ignore other resources outside of the exit node - all traffic will flow to and through the exit node resource and DNS aliases and subnets on other resources will no longer function.
 
 ## Logging
 
 All exit node traffic appears in the network connection logs.
 
 <Tip>
-    Network connection logs are available on Enterprise Edition and Pangolin
+    Network connection logs are available on Enterprise Edition and Praxis
     Cloud.
 </Tip>

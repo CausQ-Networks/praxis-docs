@@ -1,12 +1,12 @@
 ---
 title: "Database Options"
-description: "Configure SQLite or PostgreSQL database for Pangolin"
+description: "Configure SQLite or PostgreSQL database for Praxis"
 ---
 ## Overview
 
 > Choose between SQLite (default) or PostgreSQL for your database
 
-Pangolin supports two database options: SQLite for simplicity and PostgreSQL for production deployments.
+Praxis supports two database options: SQLite for simplicity and PostgreSQL for production deployments.
 
 <CardGroup cols={2}>
 <Card title="SQLite (Default)" icon="database">
@@ -26,23 +26,23 @@ Pangolin supports two database options: SQLite for simplicity and PostgreSQL for
 
 ## SQLite
 
-By default, Pangolin uses SQLite for its ease of use and portability.
+By default, Praxis uses SQLite for its ease of use and portability.
 
-**Docker Image**: `fosrl/pangolin:<version>`
+**Docker Image**: `causq-networks/praxis:<version>`
 
 <Note>
-No configuration is required to use SQLite with Pangolin.
+No configuration is required to use SQLite with Praxis.
 </Note>
 
 ## PostgreSQL
 
 You can optionally use PostgreSQL for production deployments.
 
-**Docker Image**: `fosrl/pangolin:postgresql-<version>`
+**Docker Image**: `causq-networks/praxis:postgresql-<version>`
 
 ### Configuration
 
-Add the following section to your Pangolin configuration file:
+Add the following section to your Praxis configuration file:
 
 ```yaml title="config.yml"
 postgres:
@@ -55,13 +55,13 @@ Replace the placeholders with your actual PostgreSQL connection details.
 
 ### Docker Compose Example
 
-This example sets up PostgreSQL with health checks to ensure the database is ready before Pangolin starts:
+This example sets up PostgreSQL with health checks to ensure the database is ready before Praxis starts:
 
 ```yaml title="docker-compose.yml"
 name: pangolin
 services:
   pangolin:
-    image: fosrl/pangolin:postgresql-latest
+    image: causq-networks/praxis:postgresql-latest
     container_name: pangolin
     restart: unless-stopped
     depends_on:

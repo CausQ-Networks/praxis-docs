@@ -1,9 +1,9 @@
 ---
 title: "Deploy on AWS or DigitalOcean"
-description: "Launch a self-hosted Pangolin server in minutes from a prebuilt AWS or DigitalOcean image"
+description: "Launch a self-hosted Praxis server in minutes from a prebuilt AWS or DigitalOcean image"
 ---
 
-Prebuilt images are the fastest way to self-host Pangolin. They come with Docker, a firewall setup and a guided installer. Every image installs the **latest Pangolin release** when you set it up, so you never start on an old version.
+Prebuilt images are the fastest way to self-host Praxis. They come with Docker, a firewall setup and a guided installer. Every image installs the **latest Praxis release** when you set it up, so you never start on an old version.
 
 <CardGroup cols={2}>
 <Card title="Amazon Web Services" icon="cloud" href="#amazon-web-services">
@@ -18,7 +18,7 @@ Prebuilt images are the fastest way to self-host Pangolin. They come with Docker
 
 Whichever provider you choose, you need:
 
-- **A domain** whose DNS you control. Pangolin uses a **base domain** (for example `example.com`) for the resources you expose, and a **dashboard domain** (default `pangolin.example.com`) for the admin UI.
+- **A domain** whose DNS you control. Praxis uses a **base domain** (for example `example.com`) for the resources you expose, and a **dashboard domain** (default `pangolin.example.com`) for the admin UI.
 - **An email address** for Let's Encrypt certificates.
 - **DNS records** pointing at the server's public IP. You can create them as soon as you know the IP:
 
@@ -33,7 +33,7 @@ See [DNS & Networking](/self-host/dns-and-networking) for more detail, and [Choo
 
 ## Amazon Web Services
 
-Pangolin publishes one Ubuntu 24.04 AMI per architecture:
+Praxis publishes one Ubuntu 24.04 AMI per architecture:
 
 | Architecture | AMI name | Example instance |
 | --- | --- | --- |
@@ -54,7 +54,7 @@ Graviton (`t4g`) instances are the most cost-effective choice. `t4g.small` (2 vC
 
 <Tabs>
 <Tab title="AWS Marketplace">
-  Search for **Pangolin** in [AWS Marketplace](https://aws.amazon.com/marketplace) and subscribe. The listing shows the AMI ID for each region and offers a one-click CloudFormation launch.
+  Search for **Praxis** in [AWS Marketplace](https://aws.amazon.com/marketplace) and subscribe. The listing shows the AMI ID for each region and offers a one-click CloudFormation launch.
 </Tab>
 
 <Tab title="AWS CLI">
@@ -82,7 +82,7 @@ Graviton (`t4g`) instances are the most cost-effective choice. `t4g.small` (2 vC
 
 ### Launch and configure
 
-Pick one way to give the instance your edition, domain and email. With CloudFormation or user-data, the instance sets itself up: it waits until the dashboard domain resolves to it, then installs Pangolin.
+Pick one way to give the instance your edition, domain and email. With CloudFormation or user-data, the instance sets itself up: it waits until the dashboard domain resolves to it, then installs Praxis.
 
 <Tabs>
 <Tab title="CloudFormation">
@@ -115,7 +115,7 @@ Pick one way to give the instance your edition, domain and email. With CloudForm
 
   The security group must allow TCP 80, 443 and UDP 51820, 21820, plus TCP 22 from your IP if you want SSH access. Attach an **Elastic IP** so the address doesn't change, then create the DNS records.
 
-  The same settings work as cloud-config. Write them to `/etc/pangolin/setup.env` with `write_files` if you already use cloud-init.
+  The same settings work as cloud-config. Write them to `/etc/praxis/setup.env` with `write_files` if you already use cloud-init.
 </Tab>
 
 <Tab title="SSH wizard">
@@ -125,7 +125,7 @@ Pick one way to give the instance your edition, domain and email. With CloudForm
   ssh ubuntu@<public-ip>
   ```
 
-  On login you're offered the setup wizard (you can also run `sudo pangolin-setup`). It asks for the edition, your domains, email, tunneling and optional SMTP, checks DNS, and installs Pangolin.
+  On login you're offered the setup wizard (you can also run `sudo pangolin-setup`). It asks for the edition, your domains, email, tunneling and optional SMTP, checks DNS, and installs Praxis.
 </Tab>
 </Tabs>
 
@@ -134,9 +134,9 @@ Pick one way to give the instance your edition, domain and email. With CloudForm
 | --- | --- | --- |
 | `PANGOLIN_EDITION` | `community` | `community` or `enterprise` |
 | `PANGOLIN_BASE_DOMAIN` | required | Base domain for resources, e.g. `example.com` |
-| `PANGOLIN_DASHBOARD_DOMAIN` | `pangolin.<base domain>` | Domain for the Pangolin dashboard |
+| `PANGOLIN_DASHBOARD_DOMAIN` | `pangolin.<base domain>` | Domain for the Praxis dashboard |
 | `PANGOLIN_EMAIL` | required | Let's Encrypt email |
-| `PANGOLIN_INSTALL_GERBIL` | `true` | Enable WireGuard tunneling. Set `false` to run Pangolin [without tunneling](/self-host/advanced/without-tunneling) |
+| `PANGOLIN_INSTALL_GERBIL` | `true` | Enable WireGuard tunneling. Set `false` to run Praxis [without tunneling](/self-host/advanced/without-tunneling) |
 | `PANGOLIN_ENABLE_IPV6` | auto | IPv6 on the Docker network. Defaults to on if the instance has an IPv6 address |
 | `PANGOLIN_ENABLE_MAXMIND` | `true` | Download the GeoLite2 databases for [geolocation](/self-host/advanced/enable-geolocation) |
 | `PANGOLIN_SMTP_HOST`, `PANGOLIN_SMTP_PORT`, `PANGOLIN_SMTP_USER`, `PANGOLIN_SMTP_PASS`, `PANGOLIN_SMTP_NO_REPLY` | off | Email (SMTP). Enabled when `PANGOLIN_SMTP_HOST` is set |
@@ -146,7 +146,7 @@ Pick one way to give the instance your edition, domain and email. With CloudForm
 If you give only `PANGOLIN_DASHBOARD_DOMAIN`, the base domain is that domain with its first label removed (`pangolin.example.com` → `example.com`).
 
 <Warning>
-Any process on the instance can read user-data. Consider adding SMTP credentials later in `/opt/pangolin/config/config.yml` instead.
+Any process on the instance can read user-data. Consider adding SMTP credentials later in `/opt/praxis/config/config.yml` instead.
 </Warning>
 </Accordion>
 
@@ -169,7 +169,7 @@ Then continue with [Finish setup](#finish-setup).
 
 ## DigitalOcean
 
-The [Pangolin (CE) 1-Click App](https://marketplace.digitalocean.com/apps/pangolin-ce-1?refcode=edf0480eeb81) runs on Ubuntu 24.04 with Docker CE. It installs the latest Pangolin release during setup. The listing is named for the Community Edition, but setup also lets you choose the Enterprise Edition.
+The [Praxis (CE) 1-Click App](https://marketplace.digitalocean.com/apps/praxis-ce-1?refcode=edf0480eeb81) runs on Ubuntu 24.04 with Docker CE. It installs the latest Praxis release during setup. The listing is named for the Community Edition, but setup also lets you choose the Enterprise Edition.
 
 <Steps>
 <Step title="Create the droplet">
@@ -177,7 +177,7 @@ The [Pangolin (CE) 1-Click App](https://marketplace.digitalocean.com/apps/pangol
 
   <Tabs>
   <Tab title="Control panel">
-    Open [Pangolin (CE) on the DigitalOcean Marketplace](https://marketplace.digitalocean.com/apps/pangolin-ce-1?refcode=edf0480eeb81) and click **Create Pangolin (CE) Droplet**.
+    Open [Praxis (CE) on the DigitalOcean Marketplace](https://marketplace.digitalocean.com/apps/praxis-ce-1?refcode=edf0480eeb81) and click **Create Praxis (CE) Droplet**.
   </Tab>
 
   <Tab title="API">
@@ -188,7 +188,7 @@ The [Pangolin (CE) 1-Click App](https://marketplace.digitalocean.com/apps/pangol
       -H "Content-Type: application/json" \
       -H "Authorization: Bearer $TOKEN" \
       -d '{
-        "name": "pangolin",
+        "name": "praxis",
         "region": "nyc3",
         "size": "s-1vcpu-2gb",
         "image": "fossorial-pangolince1",
@@ -199,7 +199,7 @@ The [Pangolin (CE) 1-Click App](https://marketplace.digitalocean.com/apps/pangol
 
   <Tab title="doctl">
     ```bash
-    doctl compute droplet create pangolin \
+    doctl compute droplet create praxis \
       --image fossorial-pangolince1 \
       --region nyc3 \
       --size s-1vcpu-2gb \
@@ -228,7 +228,7 @@ The [Pangolin (CE) 1-Click App](https://marketplace.digitalocean.com/apps/pangol
   The installer prints the setup token when it finishes. To see it again:
 
   ```bash
-  cd /opt/pangolin && docker compose logs pangolin | grep -A2 'SETUP TOKEN'
+  cd /opt/praxis && docker compose logs praxis | grep -A2 'SETUP TOKEN'
   ```
 </Step>
 </Steps>
@@ -259,7 +259,7 @@ You're ready to [add a site](/manage/sites/install-site) and expose your first r
 
 ## Updating
 
-Both images install Pangolin with Docker Compose in `/opt/pangolin`. To update to newer releases, follow [How to Update](/self-host/how-to-update). You don't need a new image.
+Both images install Praxis with Docker Compose in `/opt/praxis`. To update to newer releases, follow [How to Update](/self-host/how-to-update). You don't need a new image.
 
 ## Troubleshooting
 
@@ -271,19 +271,19 @@ Both images install Pangolin with Docker Compose in `/opt/pangolin`. To update t
   dig +short pangolin.example.com @1.1.1.1
   ```
 
-  The instance keeps checking and installs anyway after `PANGOLIN_DNS_TIMEOUT` (30 minutes by default). If the server sits behind a load balancer, set `PANGOLIN_WAIT_FOR_DNS=false`. Follow progress with `sudo tail -f /var/log/pangolin-setup.log`.
+  The instance keeps checking and installs anyway after `PANGOLIN_DNS_TIMEOUT` (30 minutes by default). If the server sits behind a load balancer, set `PANGOLIN_WAIT_FOR_DNS=false`. Follow progress with `sudo tail -f /var/log/praxis-setup.log`.
 </Accordion>
 
 <Accordion title="Browser shows a certificate error">
   Let's Encrypt can only issue certificates once DNS points at the server and port 80 is reachable. After fixing DNS or the firewall, restart Traefik:
 
   ```bash
-  cd /opt/pangolin && sudo docker compose restart traefik
+  cd /opt/praxis && sudo docker compose restart traefik
   ```
 </Accordion>
 
 <Accordion title="AWS setup failed">
-  Run `pangolin-setup status` and read `/var/log/pangolin-setup.log`. After fixing the cause, run `sudo pangolin-setup` to try again.
+  Run `pangolin-setup status` and read `/var/log/praxis-setup.log`. After fixing the cause, run `sudo pangolin-setup` to try again.
 </Accordion>
 
 <Accordion title="Sites can't connect">

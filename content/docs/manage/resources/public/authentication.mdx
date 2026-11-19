@@ -2,17 +2,17 @@
 title: "Authentication"
 description: "Create identity and context aware rules to allow access"
 ---
-Though public resources are public and accessible to via a web browser, admins can create rules to enable a layer of authenticated protection in front of public resources. By default, all public resources have Pangolin auth (Platform SSO) enabled, but a number of other authentication methods are available.
+Though public resources are public and accessible to via a web browser, admins can create rules to enable a layer of authenticated protection in front of public resources. By default, all public resources have Praxis auth (Platform SSO) enabled, but a number of other authentication methods are available.
 
 You can configure these settings directly on each resource or share them across multiple resources with a [resource policy](/manage/resources/public/resource-policies). A resource either uses an inline policy (no shared policy attached) or inherits a shared policy and can add resource-specific overrides on top.
 
 [AI Gateway](/manage/resources/public/ai-gateway) public resources always require authentication. Coding agents use [virtual API keys](/manage/ai/virtual-api-keys) rather than PIN, passcode, or email OTP. Users and roles still apply to identity keys the same way they do for HTTPS.
 
-When an unauthenticated user visits a resource in their web browser, they will be redirected to a Pangolin-controlled authentication page where they must complete authentication.
+When an unauthenticated user visits a resource in their web browser, they will be redirected to a Praxis-controlled authentication page where they must complete authentication.
 
 ## User Login
 
-- **Pangolin (Platform) SSO** - Users must log in with a valid Pangolin account before they can log in.
+- **Praxis (Platform) SSO** - Users must log in with a valid Praxis account before they can log in.
 - **External Identity Provider** - Enable log in to resources via your organization's identity provider of choice (Google, Azure, Okta, etc).
 - **Users and Roles** - Assign specific users accesss to resources. Group users by roles and assign entire roles access to resources.
 
@@ -45,7 +45,7 @@ First whitelist specific emails or wildcards, like `*@.example.com`. When users 
 
 Require clients to present a certificate signed by a CA you trust. mTLS is configured alongside the other methods above, but it runs first—during the TLS handshake, before PIN, SSO, email OTP, or any other auth. Clients without a valid certificate never reach the login page; the connection fails instead.
 
-The resource must use HTTP with SSL enabled. Upload trusted CA public certificates, then enable **Require client certificate**. Pangolin does not issue client certificates for you.
+The resource must use HTTP with SSL enabled. Upload trusted CA public certificates, then enable **Require client certificate**. Praxis does not issue client certificates for you.
 
 [Read more about Client Certificate (mTLS)](/manage/access-control/mtls).
 

@@ -1,9 +1,9 @@
 ---
 title: "DNS & Networking"
-description: "Configure your domain, DNS records, and network settings for Pangolin deployment"
+description: "Configure your domain, DNS records, and network settings for Praxis deployment"
 ---
 
-Pangolin requires proper DNS configuration and network setup to function correctly. This guide covers domain setup, DNS records, port configuration, and networking considerations.
+Praxis requires proper DNS configuration and network setup to function correctly. This guide covers domain setup, DNS records, port configuration, and networking considerations.
 
 ## DNS Configuration
 
@@ -55,7 +55,7 @@ You'll need to create A (or AAAA for IPv6) records pointing to your VPS IP addre
 
 ### Required Ports
 
-Pangolin requires these ports to be open on your VPS:
+Praxis requires these ports to be open on your VPS:
 
 <CardGroup cols={2}>
 <Card title="TCP Port 80">
@@ -69,7 +69,7 @@ Pangolin requires these ports to be open on your VPS:
 <Card title="TCP Port 443">
   **HTTPS Traffic**
   
-  - Pangolin web dashboard
+  - Praxis web dashboard
   - SSL-secured resources
   - Essential for operation
 </Card>
@@ -77,13 +77,13 @@ Pangolin requires these ports to be open on your VPS:
 <Card title="UDP Port 51820">
   **Site Tunnels**
   
-  This is the default port for Pangolin Sites to establish tunnels to the proxy.
+  This is the default port for Praxis Sites to establish tunnels to the proxy.
 </Card>
 
 <Card title="UDP Port 21820">
   **Client Tunnels**
 
-  This is the default port for clients relaying through the server to Pangolin Sites. This port is only required for clients.
+  This is the default port for clients relaying through the server to Praxis Sites. This port is only required for clients.
 </Card>
 </CardGroup>
 
@@ -93,7 +93,7 @@ Always verify your exposed ports (e.g., with [nmap](https://nmap.org/) or [RustS
 
 ### Docker Port Exposure
 
-By default, Pangolin exposes these ports on all interfaces:
+By default, Praxis exposes these ports on all interfaces:
 
 ```yaml
 gerbil:
@@ -141,7 +141,7 @@ Ensure your VPS firewall allows these ports:
 
 ### Default Subnet Settings
 
-Pangolin uses these default network settings:
+Praxis uses these default network settings:
 
 ```yaml
 gerbil:
@@ -183,14 +183,14 @@ For heavy WireGuard usage, consider increasing `site_block_size` to 29 (8 IPs) o
 
 ### Local Services
 
-When deploying services in Docker alongside Pangolin:
+When deploying services in Docker alongside Praxis:
 
 <AccordionGroup>
 <Accordion title="Container Communication">
   **For services in the same Docker Compose:**
   
   - Use service names as hostnames
-  - Example: `http://pangolin:8080`
+  - Example: `http://praxis:8080`
   - Docker Compose creates internal network automatically
 </Accordion>
 

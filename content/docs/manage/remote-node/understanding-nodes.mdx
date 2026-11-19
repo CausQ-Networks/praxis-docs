@@ -1,25 +1,25 @@
 ---
 title: "Remote Nodes"
-description: "Control your own Pangolin node with cloud management"
+description: "Control your own Praxis node with cloud management"
 ---
 <Note>
-    Remote nodes are only available in [Pangolin
-    Cloud](https://app.pangolin.net/auth/signup) and [Enterprise
+    Remote nodes are only available in [Praxis
+    Cloud](https://app.praxis.causq.com/auth/signup) and [Enterprise
     Edition](/self-host/enterprise-edition).
 </Note>
 
-Remote nodes, you run your own Pangolin node - your tunnels, SSL termination, and traffic all stay on your server and use your bandwidth. The difference is that management and monitoring are handled through our cloud. The node just handles terminating Wireguard tunnels, serving HTTP(S) traffic, and routing relayed client connections - it is essentially a remote networking hub.
+Remote nodes, you run your own Praxis node - your tunnels, SSL termination, and traffic all stay on your server and use your bandwidth. The difference is that management and monitoring are handled through our cloud. The node just handles terminating Wireguard tunnels, serving HTTP(S) traffic, and routing relayed client connections - it is essentially a remote networking hub.
 
 Think of different nodes as the "front doors" to your applications - users connect to the closest one, and it securely routes their requests to your backend services.
 
 <Tip>
-    You can deploy a remote Pangolin node [using the installer](/manage/remote-node/quick-install-remote). 
+    You can deploy a remote Praxis node [using the installer](/manage/remote-node/quick-install-remote). 
 </Tip>
 
 ## How It Works
 
-- **Host the Node**: Run Gerbil, Traefik, and a light weight agent on your server that communicates with the central Pangolin control plane with a websocket connection.
-- **Delegate the DNS**: Your domain and DNS config is still controlled by the Pangolin control plane and the central DNS server routes to the right node when connecting.
+- **Host the Node**: Run Gerbil, Traefik, and a light weight agent on your server that communicates with the central Praxis control plane with a websocket connection.
+- **Delegate the DNS**: Your domain and DNS config is still controlled by the Praxis control plane and the central DNS server routes to the right node when connecting.
 - **Certificates and Config**: The control plane pushes down WireGuard configs, SSL certificates, and routing rules to your node as you create resources and sites.
 - **Failover**: If you have multiple nodes, the control plane will failover between them. If one node becomes unavailable, traffic can optionally fail over to our cloud infrastructure or other nodes until you restore service.
 
@@ -44,12 +44,12 @@ Since all tunnel traffic flows through your own server, you benefit from your ow
 ## Features
 
 ### Local Sites
-With a remote node you can use [local sites](/manage/sites/understanding-sites#local-site) to run the reverse proxy wherever you want and point resources at services without creating a tunnel. Deploy the node on the same host or network as your applications, and it proxies traffic straight to your targets. There is no Pangolin Site connector to install and no WireGuard tunnel in the path.
+With a remote node you can use [local sites](/manage/sites/understanding-sites#local-site) to run the reverse proxy wherever you want and point resources at services without creating a tunnel. Deploy the node on the same host or network as your applications, and it proxies traffic straight to your targets. There is no Praxis Site connector to install and no WireGuard tunnel in the path.
 
 This is useful when the node already has direct network access to your backend, such as a node running in the same VPC, datacenter, or LAN as the services it fronts.
 
 <Note>
-    Local sites can only host public resources. Private resources, health checking, and Docker socket scanning require a [Pangolin Site](/manage/sites/understanding-sites).
+    Local sites can only host public resources. Private resources, health checking, and Docker socket scanning require a [Praxis Site](/manage/sites/understanding-sites).
 </Note>
 
 ## Restrictions
@@ -58,4 +58,4 @@ This is useful when the node already has direct network access to your backend, 
 Resources on local sites are limited to public resources. If you need private resources, create a regular site with a tunnel to the network.
 
 ### AI Gateway Providers
-AI Gateway providers are only routed to the Pangolin server nodes. Sites that are connected to remote nodes will not be accessible to be routed to as targets on providers. DNS resolution of gateway resources will not point at remote nodes. Users using gateway resources with custom targets on sites may wish to create a separate org for these resources so sites are able to connect to regular nodes.
+AI Gateway providers are only routed to the Praxis server nodes. Sites that are connected to remote nodes will not be accessible to be routed to as targets on providers. DNS resolution of gateway resources will not point at remote nodes. Users using gateway resources with custom targets on sites may wish to create a separate org for these resources so sites are able to connect to regular nodes.

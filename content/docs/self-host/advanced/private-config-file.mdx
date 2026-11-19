@@ -1,11 +1,11 @@
 ---
 title: "Private Configuration File"
-description: "Configure advanced Pangolin settings using the privateConfig.yml file for enterprise features"
+description: "Configure advanced Praxis settings using the privateConfig.yml file for enterprise features"
 ---
 The `privateConfig.yml` file provides advanced configuration options for enterprise deployments. This file is mounted at `config/privateConfig.yml` in your Docker container.
 
 <Note>
-The private configuration file is only used on enterprise deployments. If you're using Pangolin Community, refer to the [main configuration file documentation](/self-host/advanced/config-file) instead. The private config file is not required.
+The private configuration file is only used on enterprise deployments. If you're using Praxis Community, refer to the [main configuration file documentation](/self-host/advanced/config-file) instead. The private config file is not required.
 </Note>
 
 ## Setting up your `privateConfig.yml`
@@ -45,7 +45,7 @@ This section contains the complete reference for all configuration options in `p
 	  </ResponseField>
   
     <ResponseField name="region" type="string" default="default">
-      The region identifier for this Pangolin instance. Used for multi-region deployments.
+      The region identifier for this Praxis instance. Used for multi-region deployments.
       
       ```yaml
       app:
@@ -92,7 +92,7 @@ This section contains the complete reference for all configuration options in `p
 ### Redis Configuration
 
 <ResponseField name="redis" type="object">
-  Redis connection settings for caching, sessions, and rate limiting. Useful for clustering Pangolin nodes.
+  Redis connection settings for caching, sessions, and rate limiting. Useful for clustering Praxis nodes.
 
   <Expandable title="properties">
     <ResponseField name="host" type="string" required>
@@ -175,7 +175,7 @@ This section contains the complete reference for all configuration options in `p
 ### DNS Server Configuration
 
 <ResponseField name="dns" type="object">
-  Configuration for Pangolin's built-in authoritative DNS nameserver. This lets Pangolin answer DNS queries directly for domains delegated to it (via CNAME or NS delegation), issue ACME DNS-01 challenge responses, and resolve site tunnel subnet addresses.
+  Configuration for Praxis's built-in authoritative DNS nameserver. This lets Praxis answer DNS queries directly for domains delegated to it (via CNAME or NS delegation), issue ACME DNS-01 challenge responses, and resolve site tunnel subnet addresses.
 
   <Expandable title="properties">
     <ResponseField name="enabled" type="boolean" default="false">
@@ -197,7 +197,7 @@ This section contains the complete reference for all configuration options in `p
     </ResponseField>
 
     <ResponseField name="nameserver_name" type="string" required>
-      The FQDN Pangolin advertises as itself when acting as a nameserver. Used as the `mname` in SOA responses and included in the NS record set returned for zones it is authoritative for. This is the hostname you point your domain's nameservers at when using NS-based domain delegation (e.g. `ns1.pangolin-ns.net`).
+      The FQDN Praxis advertises as itself when acting as a nameserver. Used as the `mname` in SOA responses and included in the NS record set returned for zones it is authoritative for. This is the hostname you point your domain's nameservers at when using NS-based domain delegation (e.g. `ns1.pangolin-ns.net`).
 
       ```yaml
       dns:
@@ -206,7 +206,7 @@ This section contains the complete reference for all configuration options in `p
     </ResponseField>
 
     <ResponseField name="cname_extension" type="string" required>
-      The domain suffix used for single-domain CNAME delegation. When an org adds a domain using the CNAME delegation type, Pangolin generates `{domainId}.{cname_extension}` and `_acme-challenge.{domainId}.{cname_extension}` targets to point your records at.
+      The domain suffix used for single-domain CNAME delegation. When an org adds a domain using the CNAME delegation type, Praxis generates `{domainId}.{cname_extension}` and `_acme-challenge.{domainId}.{cname_extension}` targets to point your records at.
 
       ```yaml
       dns:
@@ -224,7 +224,7 @@ This section contains the complete reference for all configuration options in `p
     </ResponseField>
 
     <ResponseField name="cname_alternate_extensions" type="array" default="[]">
-      Additional CNAME suffixes (besides `cname_extension`) that are treated the same way. Useful when Pangolin should respond to more than one CNAME delegation domain, such as for white-label/multi-brand deployments.
+      Additional CNAME suffixes (besides `cname_extension`) that are treated the same way. Useful when Praxis should respond to more than one CNAME delegation domain, such as for white-label/multi-brand deployments.
 
       ```yaml
       dns:
@@ -234,7 +234,7 @@ This section contains the complete reference for all configuration options in `p
     </ResponseField>
 
     <ResponseField name="alternate_nameservers" type="array" default="[]">
-      Additional nameserver hostnames appended after `nameserver_name` in the NS record set Pangolin returns for a zone, and in the NS records shown when using NS-based domain delegation (e.g. `ns2.pangolin-ns.net`, `ns3.pangolin-ns.net`).
+      Additional nameserver hostnames appended after `nameserver_name` in the NS record set Praxis returns for a zone, and in the NS records shown when using NS-based domain delegation (e.g. `ns2.pangolin-ns.net`, `ns3.pangolin-ns.net`).
 
       ```yaml
       dns:
@@ -315,7 +315,7 @@ This section contains the complete reference for all configuration options in `p
 
   <Expandable title="properties">
     <ResponseField name="local_exit_node_reachable_at" type="string" default="http://gerbil:3004">
-      URL where the local Gerbil exit node can be reached by Pangolin. Useful when clustering multiple pangolin nodes. Overrides the value stored in the database. Useful when using Docker and address the local gerbil container using the host's address.
+      URL where the local Gerbil exit node can be reached by Praxis. Useful when clustering multiple praxis nodes. Overrides the value stored in the database. Useful when using Docker and address the local gerbil container using the host's address.
       
       ```yaml
       gerbil:
@@ -365,7 +365,7 @@ This section contains the complete reference for all configuration options in `p
 ### ACME Certificate Configuration
 
 <ResponseField name="acme" type="object">
-  Configuration for Pangolin's self-hosted ACME client, which issues and renews TLS certificates directly using DNS-01 challenges served by Pangolin's own [authoritative DNS server](#dns-server-configuration), as an alternative to relying on Traefik's built-in ACME resolver.
+  Configuration for Praxis's self-hosted ACME client, which issues and renews TLS certificates directly using DNS-01 challenges served by Praxis's own [authoritative DNS server](#dns-server-configuration), as an alternative to relying on Traefik's built-in ACME resolver.
 
   <Expandable title="properties">
     <ResponseField name="cert_mode" type="string" default="traefik">
@@ -373,16 +373,16 @@ This section contains the complete reference for all configuration options in `p
 
       Possible values:
       - `traefik`: (default) Traefik's built-in ACME resolver handles certificate issuance and renewal itself.
-      - `pangolin`: Pangolin issues and manages certificates itself via its self-hosted ACME client, using DNS-01 challenges. Requires `dns.enabled` and `acme.enable_acme_client` to both be `true`. ENSURE ONLY ONE NODE IN A CLUSTER HAS THE `acme.enable_acme_client` FLAG ENABLED, OTHERWISE MULTIPLE NODES WILL TRY TO ISSUE CERTIFICATES SIMULTANEOUSLY.
+      - `pangolin`: Praxis issues and manages certificates itself via its self-hosted ACME client, using DNS-01 challenges. Requires `dns.enabled` and `acme.enable_acme_client` to both be `true`. ENSURE ONLY ONE NODE IN A CLUSTER HAS THE `acme.enable_acme_client` FLAG ENABLED, OTHERWISE MULTIPLE NODES WILL TRY TO ISSUE CERTIFICATES SIMULTANEOUSLY.
 
       ```yaml
       acme:
-        cert_mode: "pangolin"
+        cert_mode: "praxis"
       ```
     </ResponseField>
 
     <ResponseField name="enable_acme_client" type="boolean" default="false">
-       Enable the self-hosted ACME client and its certificate issuance/renewal jobs. Must be `true`, along with `cert_mode: "pangolin"`, for the certificate manager to start.
+       Enable the self-hosted ACME client and its certificate issuance/renewal jobs. Must be `true`, along with `cert_mode: "praxis"`, for the certificate manager to start.
 
       ```yaml
       acme:
@@ -400,7 +400,7 @@ This section contains the complete reference for all configuration options in `p
     </ResponseField>
 
     <ResponseField name="acme_directory_url" type="string" default="https://acme-v02.api.letsencrypt.org/directory">
-      The ACME server directory URL Pangolin's client talks to.
+      The ACME server directory URL Praxis's client talks to.
 
       ```yaml
       acme:
@@ -427,7 +427,7 @@ This section contains the complete reference for all configuration options in `p
     </ResponseField>
 
     <ResponseField name="renewal_check_interval_ms" type="number" default="3600000">
-      How often, in milliseconds, Pangolin checks for certificates approaching expiry and renews them.
+      How often, in milliseconds, Praxis checks for certificates approaching expiry and renews them.
 
       ```yaml
       acme:
@@ -436,7 +436,7 @@ This section contains the complete reference for all configuration options in `p
     </ResponseField>
 
     <ResponseField name="new_cert_check_interval_ms" type="number" default="5000">
-      How often, in milliseconds, Pangolin checks for newly-needed certificates and issues them. Set much lower than `renewal_check_interval_ms` since new certificates are user-facing and blocking.
+      How often, in milliseconds, Praxis checks for newly-needed certificates and issues them. Set much lower than `renewal_check_interval_ms` since new certificates are user-facing and blocking.
 
       ```yaml
       acme:
@@ -445,7 +445,7 @@ This section contains the complete reference for all configuration options in `p
     </ResponseField>
 
     <ResponseField name="acme_requests_per_second" type="number" default="15">
-      Shared rate limit on outbound calls Pangolin's client makes directly to the ACME server (create order, get authorizations, verify challenge, finalize, get certificate). Kept under Let's Encrypt's ~20 req/s limit. 
+      Shared rate limit on outbound calls Praxis's client makes directly to the ACME server (create order, get authorizations, verify challenge, finalize, get certificate). Kept under Let's Encrypt's ~20 req/s limit. 
 
       ```yaml
       acme:
@@ -454,7 +454,7 @@ This section contains the complete reference for all configuration options in `p
     </ResponseField>
 
     <ResponseField name="dns_check_interval_ms" type="number" default="60000">
-      How often, in milliseconds, Pangolin checks pending (not-yet-verified) domains' DNS records against live DNS to flip them to verified once the records are in place.
+      How often, in milliseconds, Praxis checks pending (not-yet-verified) domains' DNS records against live DNS to flip them to verified once the records are in place.
 
       ```yaml
       acme:
@@ -463,7 +463,7 @@ This section contains the complete reference for all configuration options in `p
     </ResponseField>
 
     <ResponseField name="domain_reverification_interval_ms" type="number" default="3600000">
-      How often, in milliseconds, Pangolin runs a periodic pass re-checking already-verified domains, to catch removing or changing their DNS records after the fact.
+      How often, in milliseconds, Praxis runs a periodic pass re-checking already-verified domains, to catch removing or changing their DNS records after the fact.
 
       ```yaml
       acme:
@@ -490,7 +490,7 @@ This section contains the complete reference for all configuration options in `p
     </ResponseField>
 
     <ResponseField name="dns_resolvers" type="array" default='["8.8.8.8", "1.1.1.1", "9.9.9.9", "208.67.222.222"]'>
-      Upstream public DNS resolvers used to perform live lookups against real DNS (not Pangolin's own authoritative server) when validating or reverifying domain records. Resolvers are rotated across on each attempt so a single resolver's cache or propagation lag doesn't wrongly fail a check.
+      Upstream public DNS resolvers used to perform live lookups against real DNS (not Praxis's own authoritative server) when validating or reverifying domain records. Resolvers are rotated across on each attempt so a single resolver's cache or propagation lag doesn't wrongly fail a check.
 
       ```yaml
       acme:

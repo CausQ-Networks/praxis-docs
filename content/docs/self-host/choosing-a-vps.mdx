@@ -1,9 +1,9 @@
 ---
 title: "Choosing a VPS"
-description: "Compare hosting options and find the best VPS for your Pangolin deployment"
+description: "Compare hosting options and find the best VPS for your Praxis deployment"
 ---
 
-Pangolin generally requires minimal resources to run effectively. A basic VPS with **1 vCPU, 2GB RAM, and 8GB SSD** is sufficient for most deployments.
+Praxis generally requires minimal resources to run effectively. A basic VPS with **1 vCPU, 2GB RAM, and 8GB SSD** is sufficient for most deployments.
 
 <Note>
 If you choose a VPS with only 1GB RAM, you may need to create swap space to avoid memory pressure during installation, updates, or periods of higher traffic.
@@ -29,14 +29,14 @@ If you choose a VPS with only 1GB RAM, you may need to create swap space to avoi
 
 ## Recommended: One-Click Deploy
 
-The easiest way to get started is with a prebuilt image on AWS or DigitalOcean. The server comes with Docker, firewall rules, and the Pangolin installer ready to go, and always installs the latest Pangolin release. You only need to provide your domain and email.
+The easiest way to get started is with a prebuilt image on AWS or DigitalOcean. The server comes with Docker, firewall rules, and the Praxis installer ready to go, and always installs the latest Praxis release. You only need to provide your domain and email.
 
 <CardGroup cols={2}>
 <Card title="Amazon Web Services" icon="cloud" href="/self-host/one-click-deploy#amazon-web-services">
-  Launch the Pangolin AMI on x86 or Graviton and configure it with user-data, CloudFormation, or an SSH setup wizard.
+  Launch the Praxis AMI on x86 or Graviton and configure it with user-data, CloudFormation, or an SSH setup wizard.
 </Card>
 <Card title="DigitalOcean" icon="server" href="/self-host/one-click-deploy#digitalocean">
-  Create a droplet from the Pangolin 1-Click App on the <a href="https://marketplace.digitalocean.com/apps/pangolin-ce-1?refcode=edf0480eeb81">DigitalOcean Marketplace</a>.
+  Create a droplet from the Praxis 1-Click App on the <a href="https://marketplace.digitalocean.com/apps/praxis-ce-1?refcode=edf0480eeb81">DigitalOcean Marketplace</a>.
 </Card>
 </CardGroup>
 
@@ -44,7 +44,7 @@ See [Deploy on AWS or DigitalOcean](/self-host/one-click-deploy) for the full wa
 
 ## Provider Options
 
-If you'd rather use another provider, most general-purpose VPS providers will work well for Pangolin with the [quick install guide](/self-host/quick-install). Look for a provider with reliable uptime, a data center near your users, clear bandwidth limits, snapshots or backups, and the ability to open inbound TCP ports 80 and 443 plus the WireGuard UDP ports configured during installation.
+If you'd rather use another provider, most general-purpose VPS providers will work well for Praxis with the [quick install guide](/self-host/quick-install). Look for a provider with reliable uptime, a data center near your users, clear bandwidth limits, snapshots or backups, and the ability to open inbound TCP ports 80 and 443 plus the WireGuard UDP ports configured during installation.
 
 <AccordionGroup>
 <Accordion title="Performance Requirements">

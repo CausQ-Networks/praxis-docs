@@ -1,13 +1,13 @@
 ---
 title: "Alert Rules"
-description: "Subscribe to Pangolin events on sites, resources, and health checks and deliver email, webhooks, or integrations"
+description: "Subscribe to Praxis events on sites, resources, and health checks and deliver email, webhooks, or integrations"
 ---
 
 <Note>
-Only available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) and [Enterprise Edition](/self-host/enterprise-edition).
+Only available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) and [Enterprise Edition](/self-host/enterprise-edition).
 </Note>
 
-Alert rules let you react to changes in Pangolin: you pick a source (what to watch), a trigger (which change matters), and one or more actions (what to do). For example, when a site moves from online to offline, email your admins and support; when a [health check](/manage/alerting/health-checks) or resource becomes unhealthy, call a webhook so a tool like Zapier can fan out the event.
+Alert rules let you react to changes in Praxis: you pick a source (what to watch), a trigger (which change matters), and one or more actions (what to do). For example, when a site moves from online to offline, email your admins and support; when a [health check](/manage/alerting/health-checks) or resource becomes unhealthy, call a webhook so a tool like Zapier can fan out the event.
 
 ## Benefits
 
@@ -30,9 +30,9 @@ Each rule has three parts:
 
 1. A source: the sites, resources, or health checks to watch.
 2. A trigger: the state change that matters, such as going offline or becoming unhealthy.
-3. One or more actions: what Pangolin does when the trigger fires.
+3. One or more actions: what Praxis does when the trigger fires.
 
-When a watched entity changes state and matches the trigger, Pangolin runs every action on the rule.
+When a watched entity changes state and matches the trigger, Praxis runs every action on the rule.
 
 ## Where to create rules
 
@@ -42,7 +42,7 @@ You can also start a rule from a site or resource detail page: use Create alert 
 
 ## Actions
 
-When a trigger fires, Pangolin can:
+When a trigger fires, Praxis can:
 
 - Send email (recipients described below).
 - Call a webhook with a JSON payload (see [Webhook payloads](#webhook-payloads)).
@@ -52,7 +52,7 @@ You can attach several actions to the same rule (for example email plus a webhoo
 
 ### Email
 
-Choose users in your Pangolin organization, entire roles, and/or arbitrary email addresses that should receive the message when the condition is met.
+Choose users in your Praxis organization, entire roles, and/or arbitrary email addresses that should receive the message when the condition is met.
 
 ### Webhooks
 
@@ -61,7 +61,7 @@ Webhook actions issue an HTTP request to your endpoint when the trigger runs. Pa
 ## Creating an alert rule
 
 <Frame caption="Create alert rule: source (e.g. all sites), trigger (e.g. site status changes), and actions (email)">
-  <img src="/images/create-alert-rule.png" alt="Create alert rule wizard in the Pangolin dashboard" />
+  <img src="/images/create-alert-rule.png" alt="Create alert rule wizard in the Praxis dashboard" />
 </Frame>
 
 ### 1. Source

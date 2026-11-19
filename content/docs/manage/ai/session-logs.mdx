@@ -6,11 +6,11 @@ description: "Prompt and response transcripts for AI Gateway requests in an orga
 Session logs store the prompt and response for each AI Gateway call. Open **AI Gateway > Session Logs** to browse them. Use them to see what a client sent, what the upstream returned, and which user, key, provider, and resource handled the call.
 
 <Frame>
-  <img src="/images/ai/session-logs.png" alt="AI Gateway session logs table in the Pangolin dashboard" />
+  <img src="/images/ai/session-logs.png" alt="AI Gateway session logs table in the Praxis dashboard" />
 </Frame>
 
 <Note>
-Session logs are only available in [Pangolin Cloud](https://app.pangolin.net/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
+Session logs are only available in [Praxis Cloud](https://app.praxis.causq.com/auth/signup) or self-hosted [Enterprise Edition](/self-host/enterprise-edition).
 </Note>
 
 Token counts and estimated USD live in [Usage Analytics](/manage/ai/usage-analytics). Those records are separate. Changing session log retention does not delete usage data.
@@ -21,11 +21,11 @@ Set **AI Gateway Session Log Retention** in org settings before you expect rows.
 
 ## Enable Retention
 
-In org security settings, set **AI Gateway Session Log Retention** to how long Pangolin should keep transcripts. Logging starts only after that value is greater than zero. Older rows are removed when they pass the retention window.
+In org security settings, set **AI Gateway Session Log Retention** to how long Praxis should keep transcripts. Logging starts only after that value is greater than zero. Older rows are removed when they pass the retention window.
 
 ## What Each Row Contains
 
-After a gateway call that belongs to an organization, Pangolin stores:
+After a gateway call that belongs to an organization, Praxis stores:
 
 - Session id (shared with the usage record for that call)
 - Time, HTTP status, and whether the response was streamed

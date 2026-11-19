@@ -16,5 +16,5 @@ npm run dev                  # http://127.0.0.1:3005
 ```
 
 - Point `DATABASE_URL` at the same database the API uses (for local development, the api repo's `docker-compose.postgres.yml`). A read-only role is enough; `.env.example` has the grants.
-- `DOCS_SITE_URL` / `LANDING_SITE_URL` are where page links go (default https://docs.pangolin.net and https://pangolin.net).
+- `DOCS_SITE_URL` / `LANDING_SITE_URL` are where page links go (default https://docs.praxis.causq.com and https://praxis.net).
 - There is **no login**. The dev server only listens on 127.0.0.1. Add auth before deploying it anywhere.

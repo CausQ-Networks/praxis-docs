@@ -6,7 +6,7 @@ description: "Deploy sites on Kubernetes using Helm-rendered manifests and Kusto
 Use Kustomize when you want to manage sites with rendered manifests, environment-specific overlays, and explicit patches in Git.
 
 <Note>
-This page applies to both site charts: the recommended [Pangolin CLI chart](/manage/sites/kubernetes/helm) (`fosrl/pangolin-cli`) and the [Newt chart](/manage/sites/kubernetes/newt-helm) (`fosrl/newt`). They share the same layout. The examples use the Newt chart's names; for the Pangolin CLI chart use `siteInstances[]` instead of `newtInstances[]`, the Secret keys `SITE_ID` / `SITE_SECRET` instead of `NEWT_ID` / `NEWT_SECRET`, `siteName` instead of `newtName`, and the pod label `app.kubernetes.io/component=site` instead of `app.kubernetes.io/component=newt`. See [Migrating from the Newt chart](/manage/sites/kubernetes/helm#migrating-from-the-newt-chart) for the full list.
+This page applies to both site charts: the recommended [Praxis CLI chart](/manage/sites/kubernetes/helm) (`causq-networks/praxis-cli`) and the [Newt chart](/manage/sites/kubernetes/newt-helm) (`causq-networks/praxis-newt`). They share the same layout. The examples use the Newt chart's names; for the Praxis CLI chart use `siteInstances[]` instead of `newtInstances[]`, the Secret keys `SITE_ID` / `SITE_SECRET` instead of `NEWT_ID` / `NEWT_SECRET`, `siteName` instead of `newtName`, and the pod label `app.kubernetes.io/component=site` instead of `app.kubernetes.io/component=newt`. See [Migrating from the Newt chart](/manage/sites/kubernetes/helm#migrating-from-the-newt-chart) for the full list.
 </Note>
 
 For Newt, the supported Kustomize workflow is:
@@ -77,7 +77,7 @@ If your cluster uses Pod Security Admission, namespace labels, or other policy l
 Example:
 
 ```bash
-kubectl label namespace pangolin \
+kubectl label namespace praxis \
   pod-security.kubernetes.io/enforce=baseline \
   pod-security.kubernetes.io/audit=restricted \
   pod-security.kubernetes.io/warn=restricted
@@ -89,8 +89,8 @@ Create a Kubernetes Secret for each Newt site or instance.
 
 ```bash
 kubectl create secret generic newt-auth-site-a \
-  --namespace pangolin \
-  --from-literal=PANGOLIN_ENDPOINT=https://pangolin.example.com \
+  --namespace praxis \
+  --from-literal=PRAXIS_ENDPOINT=https://praxis.example.com \
   --from-literal=NEWT_ID=<site-a-newt-id> \
   --from-literal=NEWT_SECRET=<site-a-newt-secret>
 ```
@@ -99,8 +99,8 @@ For a second site:
 
 ```bash
 kubectl create secret generic newt-auth-site-b \
-  --namespace pangolin \
-  --from-literal=PANGOLIN_ENDPOINT=https://pangolin.example.com \
+  --namespace praxis \
+  --from-literal=PRAXIS_ENDPOINT=https://praxis.example.com \
   --from-literal=NEWT_ID=<site-b-newt-id> \
   --from-literal=NEWT_SECRET=<site-b-newt-secret>
 ```
@@ -125,7 +125,7 @@ newtInstances:
 This values file uses an existing Secret. The default Secret keys are:
 
 ```text
-PANGOLIN_ENDPOINT
+PRAXIS_ENDPOINT
 NEWT_ID
 NEWT_SECRET
 ```
@@ -147,7 +147,7 @@ Render the Newt chart:
 mkdir -p base overlays/site-a/patches overlays/site-b/patches values
 
 helm template newt fossorial/newt \
-  --namespace pangolin \
+  --namespace praxis \
   --values values/values-base.yaml \
   > base/newt.yaml
 ```
@@ -157,7 +157,7 @@ You can also render from the GHCR OCI chart:
 ```bash
 helm template newt oci://ghcr.io/fosrl/helm-charts/newt \
   --version 1.6.0 \
-  --namespace pangolin \
+  --namespace praxis \
   --values values/values-base.yaml \
   > base/newt.yaml
 ```
@@ -268,7 +268,7 @@ Then render a separate base for Site B:
 mkdir -p site-b/base
 
 helm template newt-site-b fossorial/newt \
-  --namespace pangolin \
+  --namespace praxis \
   --values values/values-site-b.yaml \
   > site-b/base/newt.yaml
 ```
@@ -451,10 +451,10 @@ kubectl apply -k overlays/site-a
 Verify the deployment:
 
 ```bash
-kubectl get pods --namespace pangolin \
+kubectl get pods --namespace praxis \
   -l app.kubernetes.io/component=newt
 
-kubectl logs --namespace pangolin \
+kubectl logs --namespace praxis \
   -l app.kubernetes.io/component=newt \
   --tail=50
 ```
@@ -471,7 +471,7 @@ Render the updated chart output:
 
 ```bash
 helm template newt fossorial/newt \
-  --namespace pangolin \
+  --namespace praxis \
   --values values/values-base.yaml \
   > base/newt.yaml
 ```
@@ -481,7 +481,7 @@ Or with OCI:
 ```bash
 helm template newt oci://ghcr.io/fosrl/helm-charts/newt \
   --version 1.6.0 \
-  --namespace pangolin \
+  --namespace praxis \
   --values values/values-base.yaml \
   > base/newt.yaml
 ```
@@ -555,7 +555,7 @@ Check live resources:
 
 ```bash
 kubectl get all --namespace pangolin
-kubectl get events --namespace pangolin --sort-by=.lastTimestamp
+kubectl get events --namespace praxis --sort-by=.lastTimestamp
 ```
 
 ## Troubleshooting
@@ -577,7 +577,7 @@ Check pod status and events:
 ```bash
 kubectl get pods --namespace pangolin
 kubectl describe pod <pod-name> --namespace pangolin
-kubectl get events --namespace pangolin --sort-by=.lastTimestamp
+kubectl get events --namespace praxis --sort-by=.lastTimestamp
 ```
 
 ### Newt does not connect
@@ -585,7 +585,7 @@ kubectl get events --namespace pangolin --sort-by=.lastTimestamp
 Check logs:
 
 ```bash
-kubectl logs --namespace pangolin \
+kubectl logs --namespace praxis \
   -l app.kubernetes.io/component=newt \
   --tail=100
 ```
@@ -593,10 +593,10 @@ kubectl logs --namespace pangolin \
 Verify:
 
 * the Secret exists in the same namespace
-* `PANGOLIN_ENDPOINT` is reachable from the pod
+* `PRAXIS_ENDPOINT` is reachable from the pod
 * `NEWT_ID` and `NEWT_SECRET` are correct
 * outbound DNS and HTTPS are allowed
-* TLS certificates for the Pangolin endpoint are valid
+* TLS certificates for the Praxis endpoint are valid
 
 ## Next steps
 
