@@ -1,5 +1,14 @@
 # Praxis Documentation
 
+<div align="center">
+  <a href="https://praxis.causq.com/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/CausQ-Networks/praxis/main/public/logo/praxis-logo-white.png">
+      <img alt="Praxis Logo" src="https://raw.githubusercontent.com/CausQ-Networks/praxis/main/public/logo/praxis-logo.png" width="280">
+    </picture>
+  </a>
+</div>
+
 [![Discord](https://img.shields.io/discord/1572896060949659679?logo=discord&style=flat-square&label=Discord)](https://praxis.causq.com/discord/)
 
 The Praxis docs site, built with [Fumadocs](https://fumadocs.dev) on Next.js.
