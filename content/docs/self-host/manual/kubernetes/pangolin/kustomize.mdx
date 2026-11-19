@@ -34,7 +34,7 @@ This page is aligned with the Praxis Helm chart `0.1.0-alpha.0`.
 | Praxis app version | `1.18.2` |
 | Kubernetes version | `>=1.30.14-0` |
 | Gerbil image tag | `1.3.1` |
-| pangolin-kube-controller image tag | `0.1.0-alpha.1` |
+| praxis-kube-controller image tag | `0.1.0-alpha.1` |
 | Traefik image tag | `v3.6.15` |
 
 ## Supported approach
@@ -54,23 +54,23 @@ Recommended ownership model:
 ## Example directory structure
 
 ```text
-pangolin-deployment/
+praxis-deployment/
 ├── base/
 │   ├── kustomization.yaml
-│   └── pangolin.yaml
+│   └── praxis.yaml
 ├── overlays/
 │   ├── dev/
 │   │   ├── kustomization.yaml
 │   │   └── patches/
-│   │       └── pangolin-resources.patch.yaml
+│   │       └── praxis-resources.patch.yaml
 │   ├── staging/
 │   │   ├── kustomization.yaml
 │   │   └── patches/
-│   │       └── pangolin-resources.patch.yaml
+│   │       └── praxis-resources.patch.yaml
 │   └── prod/
 │       ├── kustomization.yaml
 │       └── patches/
-│           ├── pangolin-resources.patch.yaml
+│           ├── praxis-resources.patch.yaml
 │           └── ingressroute-host.patch.yaml
 └── values/
     ├── values-base.yaml
@@ -84,7 +84,7 @@ pangolin-deployment/
 Create the namespace before applying rendered manifests:
 
 ```bash
-kubectl create namespace pangolin
+kubectl create namespace praxis
 ```
 
 Gerbil requires `NET_ADMIN` for WireGuard interface management. If your cluster enforces Pod Security Admission, label the namespace before creating workloads:
@@ -106,7 +106,7 @@ Do not use a restricted Pod Security profile for a namespace running Gerbil unle
 Create a Secret for `SERVER_SECRET`:
 
 ```bash
-kubectl create secret generic pangolin-app-secret \
+kubectl create secret generic praxis-app-secret \
   --namespace praxis \
   --from-literal=SERVER_SECRET='<strong-random-secret>'
 ```
@@ -127,22 +127,22 @@ database:
   mode: cloudnativepg
   cloudnativepg:
     cluster:
-      name: pangolin-db
+      name: praxis-db
 
 cnpg-operator:
   enabled: true
 
 cnpg-cluster:
   enabled: true
-  fullnameOverride: pangolin-db
+  fullnameOverride: praxis-db
   cluster:
     instances: 1
     storage:
       size: 8Gi
 
-pangolin:
+praxis:
   secret:
-    existingSecretName: pangolin-app-secret
+    existingSecretName: praxis-app-secret
     existingSecretKey: SERVER_SECRET
 
   config:
@@ -165,7 +165,7 @@ pangolin:
   ingressRoute:
     dashboard:
       enabled: true
-      host: pangolin.example.com
+      host: praxis.example.com
       entryPoints:
         - websecure
       tls:
@@ -183,7 +183,7 @@ gerbil:
 
 Replace:
 
-* `pangolin.example.com`
+* `praxis.example.com`
 * `example.com`
 * `vpn.example.com`
 * TLS resolver names
@@ -235,11 +235,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - pangolin.yaml
+  - praxis.yaml
 ```
 
 <Note>
-The namespace is already rendered by Helm through `--namespace pangolin`. You can also set `namespace: pangolin` in Kustomize, but avoid changing namespaces in overlays unless you have verified all rendered resources and references.
+The namespace is already rendered by Helm through `--namespace praxis`. You can also set `namespace: praxis` in Kustomize, but avoid changing namespaces in overlays unless you have verified all rendered resources and references.
 </Note>
 
 ## Step 6: Inspect rendered resource names
@@ -284,18 +284,18 @@ patches:
       group: apps
       version: v1
       kind: Deployment
-      name: pangolin
+      name: praxis
 
   - path: patches/ingressroute-host.patch.yaml
     target:
       group: traefik.io
       version: v1alpha1
       kind: IngressRoute
-      name: pangolin-dashboard
+      name: praxis-dashboard
 ```
 
 <Note>
-Replace `pangolin` and `pangolin-dashboard` with the actual names from your rendered manifests.
+Replace `praxis` and `praxis-dashboard` with the actual names from your rendered manifests.
 </Note>
 
 ## Step 8: Add patches
@@ -307,12 +307,12 @@ Replace `pangolin` and `pangolin-dashboard` with the actual names from your rend
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pangolin
+  name: praxis
 spec:
   template:
     spec:
       containers:
-        - name: pangolin
+        - name: praxis
           resources:
             requests:
               cpu: 500m
@@ -334,13 +334,13 @@ The Praxis chart uses Traefik `IngressRoute` for the dashboard and API in contro
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: pangolin-dashboard
+  name: praxis-dashboard
 spec:
   routes:
     - kind: Rule
-      match: Host(`pangolin-prod.example.com`) && PathPrefix(`/api/v1`)
+      match: Host(`praxis-prod.example.com`) && PathPrefix(`/api/v1`)
     - kind: Rule
-      match: Host(`pangolin-prod.example.com`)
+      match: Host(`praxis-prod.example.com`)
 ```
 
 <Warning>
@@ -354,7 +354,7 @@ Patch the rendered `IngressRoute` only after checking the route order and match 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pangolin
+  name: praxis
 spec:
   template:
     spec:
@@ -378,7 +378,7 @@ patches:
       group: apps
       version: v1
       kind: Deployment
-      name: pangolin
+      name: praxis
 ```
 
 ### Patch Gerbil startup mode
@@ -441,15 +441,15 @@ kubectl apply -k overlays/prod
 Verify workloads:
 
 ```bash
-kubectl get pods --namespace pangolin
-kubectl get deploy,statefulset --namespace pangolin
-kubectl get svc --namespace pangolin
+kubectl get pods --namespace praxis
+kubectl get deploy,statefulset --namespace praxis
+kubectl get svc --namespace praxis
 ```
 
 Verify Traefik resources:
 
 ```bash
-kubectl get ingressroute --namespace pangolin
+kubectl get ingressroute --namespace praxis
 ```
 
 Check events:
@@ -520,7 +520,7 @@ Do not run `helm upgrade` against a release that is managed by Kustomize.
 Avoid this pattern:
 
 ```bash
-helm upgrade praxis fossorial/praxis --namespace pangolin
+helm upgrade praxis fossorial/praxis --namespace praxis
 kubectl apply -k overlays/prod
 ```
 
@@ -543,7 +543,7 @@ patches:
       group: apps
       version: v1
       kind: Deployment
-      name: pangolin
+      name: praxis
 ```
 
 ### Patch IngressRoute host
@@ -555,7 +555,7 @@ patches:
       group: traefik.io
       version: v1alpha1
       kind: IngressRoute
-      name: pangolin-dashboard
+      name: praxis-dashboard
 ```
 
 ### Add annotations
@@ -566,7 +566,7 @@ patches:
       group: apps
       version: v1
       kind: Deployment
-      name: pangolin
+      name: praxis
     patch: |-
       - op: add
         path: /metadata/annotations
@@ -583,7 +583,7 @@ patches:
   - target:
       version: v1
       kind: Service
-      name: pangolin-gerbil
+      name: praxis-gerbil
     patch: |-
       - op: replace
         path: /spec/type
@@ -637,8 +637,8 @@ Then verify the patch target in your overlay.
 Check pod status and events:
 
 ```bash
-kubectl get pods --namespace pangolin
-kubectl describe pod <pod-name> --namespace pangolin
+kubectl get pods --namespace praxis
+kubectl describe pod <pod-name> --namespace praxis
 kubectl get events --namespace praxis --sort-by=.lastTimestamp
 ```
 
@@ -647,15 +647,15 @@ kubectl get events --namespace praxis --sort-by=.lastTimestamp
 Check the rendered and applied `IngressRoute`:
 
 ```bash
-kubectl get ingressroute --namespace pangolin
-kubectl describe ingressroute <name> --namespace pangolin
+kubectl get ingressroute --namespace praxis
+kubectl describe ingressroute <name> --namespace praxis
 ```
 
 Verify:
 
 * Traefik CRDs are installed.
 * A Traefik controller is watching the namespace and labels.
-* `pangolin.ingressRoute.dashboard.host` or the patched host matches DNS.
+* `praxis.ingressRoute.dashboard.host` or the patched host matches DNS.
 * The API route still contains `PathPrefix(/api/v1)`.
 * TLS settings match your Traefik setup.
 
@@ -673,8 +673,8 @@ Verify:
 * namespace allows `NET_ADMIN`
 * `gerbil.startupMode` is set correctly
 * Gerbil persistence is enabled or intentionally disabled
-* `pangolin.config.gerbil.start_port` matches `gerbil.ports.wg1`
-* `pangolin.config.gerbil.clients_start_port` matches `gerbil.ports.wg2`
+* `praxis.config.gerbil.start_port` matches `gerbil.ports.wg1`
+* `praxis.config.gerbil.clients_start_port` matches `gerbil.ports.wg2`
 
 ## Next steps
 

@@ -8,7 +8,7 @@ import { appName, siteDescription, siteUrl } from '@/lib/shared';
 import { FEATURE_BANNER_INIT_SCRIPT } from '@/lib/site';
 import './global.css';
 
-/** same fonts as pangolin.net: Inter (titles use 800) and IBM Plex Mono for code */
+/** same fonts as praxis.net: Inter (titles use 800) and IBM Plex Mono for code */
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',

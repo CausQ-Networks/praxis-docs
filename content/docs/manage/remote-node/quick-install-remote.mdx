@@ -45,10 +45,10 @@ Before installing Praxis, ensure you've opened the required port on your firewal
   The installer places all files in the current directory. Move the installer to your desired installation directory before running it.
 
   <Note>
-    If you're not using Praxis Cloud (`app.praxis.causq.com`) and instead have a self-hosted Praxis Enterprise deployment, pass its URL with the `--pangolin-endpoint` flag so the installer requests node credentials from your instance instead:
+    If you're not using Praxis Cloud (`app.praxis.causq.com`) and instead have a self-hosted Praxis Enterprise deployment, pass its URL with the `--praxis-endpoint` flag so the installer requests node credentials from your instance instead:
 
     ```bash
-    sudo ./installer --pangolin-endpoint https://praxis.example.com
+    sudo ./installer --praxis-endpoint https://praxis.example.com
     ```
   </Note>
 </Step>
@@ -87,7 +87,7 @@ Your managed credentials have been obtained successfully.
         Secret: n7sd18twfko0q0vrb7wyclqzbvvnx1fqt7ezv8xewhdb9s7d
 ```
 
-Go to the [Praxis dashboard](https://app.praxis.causq.com/) (or your own panel's URL if you passed `--pangolin-endpoint`) and log in. Navigate to the "Self-hosted" section and add a new node. Select the adopt method. Use this ID and secret to register your node.
+Go to the [Praxis dashboard](https://app.praxis.causq.com/) (or your own panel's URL if you passed `--praxis-endpoint`) and log in. Navigate to the "Self-hosted" section and add a new node. Select the adopt method. Use this ID and secret to register your node.
 
 <Tip>
 More than one account can use the same node credentials. This is useful for teams.

@@ -17,12 +17,12 @@ import { ThemeToggle } from './theme-toggle';
 /**
  * Docs header: logo, search and Ask AI front and centre, then the docs' outbound
  * links (`tabs` in lib/navigation.json) and one call to action. Same visual language
- * as pangolin.net (translucent bar, hairline, tactile primary button), but its own
- * content: the site menus live on pangolin.net.
+ * as praxis.net (translucent bar, hairline, tactile primary button), but its own
+ * content: the site menus live on praxis.net.
  */
 export function SiteHeader({ links, stars }: { links: NavLink[]; stars: string | null }) {
   // GitHub gets its own icon + stars; the Trust Center lives in the footer
-  const textLinks = links.filter((link) => !/github\.com|trust\.pangolin\.net/.test(link.href));
+  const textLinks = links.filter((link) => !/github\.com|trust\.praxis\.net/.test(link.href));
 
   return (
     <header className="sticky top-0 z-40 bg-background">

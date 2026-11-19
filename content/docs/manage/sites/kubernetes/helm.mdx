@@ -59,7 +59,7 @@ This is the recommended simple production pattern.
 ### Step 1: Create the namespace
 
 ```bash
-kubectl create namespace pangolin
+kubectl create namespace praxis
 ```
 
 If your cluster uses Pod Security Admission labels, namespace labels, or policy annotations, apply them before installing the chart:
@@ -145,7 +145,7 @@ Do not use `--create-namespace` here if you created and labeled the namespace ma
 Check the Helm release:
 
 ```bash
-helm status praxis-site --namespace pangolin
+helm status praxis-site --namespace praxis
 ```
 
 Check the pods. Site pods carry the `app.kubernetes.io/component=site` label, and each instance also carries `praxis-cli.instance=<name>`:
@@ -182,7 +182,7 @@ Create `values-site.yaml`:
 siteInstances:
   - name: main-tunnel
     enabled: true
-    pangolinEndpoint: https://praxis.example.com
+    praxisEndpoint: https://praxis.example.com
     provisioningKey: "<your-provisioning-key>"
     siteName: "my-site"
     configPersistence:
@@ -212,7 +212,7 @@ Example with an existing PVC:
 siteInstances:
   - name: main-tunnel
     enabled: true
-    pangolinEndpoint: https://praxis.example.com
+    praxisEndpoint: https://praxis.example.com
     provisioningKey: "<your-provisioning-key>"
     siteName: "my-site"
     configPersistence:
@@ -258,9 +258,9 @@ helm upgrade praxis-site fossorial/praxis-cli \
 Check upgrade status, and roll back if needed:
 
 ```bash
-helm status praxis-site --namespace pangolin
-helm history praxis-site --namespace pangolin
-helm rollback praxis-site <revision> --namespace pangolin
+helm status praxis-site --namespace praxis
+helm history praxis-site --namespace praxis
+helm rollback praxis-site <revision> --namespace praxis
 ```
 
 ## Multiple sites
@@ -326,7 +326,7 @@ siteInstances:
 Run only one connector per site. Uninstall the Newt release (or disable its instance) before installing the Praxis CLI chart for the same site:
 
 ```bash
-helm uninstall newt --namespace pangolin
+helm uninstall newt --namespace praxis
 helm upgrade --install praxis-site fossorial/praxis-cli \
   --namespace praxis \
   --values values-site.yaml

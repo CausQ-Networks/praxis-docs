@@ -23,7 +23,7 @@ This page is aligned with the Praxis Helm chart `0.1.0-alpha.0`.
 | Praxis app version | `1.18.2` |
 | Kubernetes version | `>=1.30.14-0` |
 | Gerbil image tag | `1.3.1` |
-| pangolin-kube-controller image tag | `0.1.0-alpha.1` |
+| praxis-kube-controller image tag | `0.1.0-alpha.1` |
 | Traefik image tag | `v3.6.15` |
 
 ## Configuration sections
@@ -51,7 +51,7 @@ deployment:
 
 | Setting                                    | Description                                                                                                     |
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
-| `deployment.type=controller`               | Uses `pangolin-kube-controller` and Traefik CRDs. Recommended for Kubernetes deployments.                       |
+| `deployment.type=controller`               | Uses `praxis-kube-controller` and Traefik CRDs. Recommended for Kubernetes deployments.                       |
 | `deployment.type=standalone`               | Runs an internal Traefik workload managed by this chart. Mainly useful for labs and self-contained deployments. |
 | `deployment.mode=multi`                    | Runs Praxis, Gerbil, and controller/Traefik components as separate workloads. Recommended for production.     |
 | `deployment.mode=single`                   | Runs multiple components in one shared Pod. Useful only when you explicitly need a compact topology.            |
@@ -88,7 +88,7 @@ Recommended pattern:
 3. Install the chart into that namespace.
 
 ```bash
-kubectl create namespace pangolin
+kubectl create namespace praxis
 ```
 
 Gerbil requires `NET_ADMIN` for WireGuard interface management. If your cluster enforces Pod Security Admission, the namespace must allow that capability.
@@ -106,7 +106,7 @@ If you let the chart create the namespace, configure the Pod Security labels thr
 ```yaml
 namespace:
   create: true
-  name: pangolin
+  name: praxis
   podSecurity:
     enforce: privileged
     warn: baseline
@@ -126,8 +126,8 @@ Choose the database backend for Praxis.
 ```yaml
 database:
   mode: cloudnativepg
-  name: pangolin
-  username: pangolin
+  name: praxis
+  username: praxis
 ```
 
 Supported modes:
@@ -148,10 +148,10 @@ database:
   mode: cloudnativepg
   cloudnativepg:
     cluster:
-      name: pangolin-db
+      name: praxis-db
     connection:
-      database: pangolin
-      username: pangolin
+      database: praxis
+      username: praxis
       sslMode: disable
 
 cnpg-operator:
@@ -159,7 +159,7 @@ cnpg-operator:
 
 cnpg-cluster:
   enabled: false
-  fullnameOverride: pangolin-db
+  fullnameOverride: praxis-db
 ```
 
 CloudNativePG can be used in four common ways:
@@ -177,21 +177,21 @@ When `cnpg-cluster.enabled=true`, keep the CNPG cluster name consistent:
 database:
   cloudnativepg:
     cluster:
-      name: pangolin-db
+      name: praxis-db
 
 cnpg-cluster:
   enabled: true
-  fullnameOverride: pangolin-db
+  fullnameOverride: praxis-db
 ```
 
-For the default CNPG cluster name `pangolin-db`, CloudNativePG creates an application Secret named `pangolin-db-app` with the key `uri`. The chart can automatically use this default Secret when no explicit `database.connection.existingSecretName` is set.
+For the default CNPG cluster name `praxis-db`, CloudNativePG creates an application Secret named `praxis-db-app` with the key `uri`. The chart can automatically use this default Secret when no explicit `database.connection.existingSecretName` is set.
 
 Explicit Secret reference:
 
 ```yaml
 database:
   connection:
-    existingSecretName: pangolin-db-app
+    existingSecretName: praxis-db-app
     existingSecretKey: uri
 ```
 
@@ -203,14 +203,14 @@ For an external PostgreSQL database, prefer a Kubernetes Secret containing the f
 database:
   mode: external
   connection:
-    existingSecretName: pangolin-db-connection
+    existingSecretName: praxis-db-connection
     existingSecretKey: connectionString
 ```
 
 The Secret should contain a PostgreSQL connection string:
 
 ```bash
-kubectl create secret generic pangolin-db-connection \
+kubectl create secret generic praxis-db-connection \
   --namespace praxis \
   --from-literal=connectionString='postgresql://praxis:password@postgres.example.com:5432/praxis?sslmode=require'
 ```
@@ -225,8 +225,8 @@ database:
       create: true
       host: postgres.example.com
       port: 5432
-      database: pangolin
-      username: pangolin
+      database: praxis
+      username: praxis
       password: "<password>"
       sslMode: require
 ```
@@ -265,10 +265,10 @@ database:
 
   <Accordion title="Praxis application config">
 
-The `pangolin.config` block renders `/app/config/config.yml`.
+The `praxis.config` block renders `/app/config/config.yml`.
 
 ```yaml
-pangolin:
+praxis:
   config:
     app:
       dashboard_url: "https://praxis.example.com"
@@ -280,7 +280,7 @@ pangolin:
     gerbil:
       start_port: 51820
       clients_start_port: 21820
-      base_endpoint: "pangolin.example.com"
+      base_endpoint: "praxis.example.com"
     traefik:
       enabled: true
       http_entrypoint: web
@@ -292,16 +292,16 @@ Important settings:
 
 | Setting                                     | Description                                                                                 |
 | ------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `pangolin.config.app.dashboard_url`         | Public dashboard URL. Set this to the real user-facing URL.                                 |
-| `pangolin.config.domains`                   | Domain map used by Praxis. Replace the default `example.com` entry before production use. |
-| `pangolin.config.gerbil.base_endpoint`      | Public hostname or IP where Gerbil is reachable.                                            |
-| `pangolin.config.gerbil.start_port`         | First WireGuard site port. Keep this aligned with `gerbil.ports.wg1`.                       |
-| `pangolin.config.gerbil.clients_start_port` | Client WireGuard port. Keep this aligned with `gerbil.ports.wg2`.                           |
-| `pangolin.config.traefik.enabled`           | Includes Praxis's Traefik config section. This does not install Traefik.                  |
-| `pangolin.config.traefik.cert_resolver`     | ACME resolver name used in Praxis-generated Traefik configuration.                        |
+| `praxis.config.app.dashboard_url`         | Public dashboard URL. Set this to the real user-facing URL.                                 |
+| `praxis.config.domains`                   | Domain map used by Praxis. Replace the default `example.com` entry before production use. |
+| `praxis.config.gerbil.base_endpoint`      | Public hostname or IP where Gerbil is reachable.                                            |
+| `praxis.config.gerbil.start_port`         | First WireGuard site port. Keep this aligned with `gerbil.ports.wg1`.                       |
+| `praxis.config.gerbil.clients_start_port` | Client WireGuard port. Keep this aligned with `gerbil.ports.wg2`.                           |
+| `praxis.config.traefik.enabled`           | Includes Praxis's Traefik config section. This does not install Traefik.                  |
+| `praxis.config.traefik.cert_resolver`     | ACME resolver name used in Praxis-generated Traefik configuration.                        |
 
 <Note>
-`pangolin.config.traefik` controls the Traefik configuration generated by Praxis. Traefik installation is controlled separately through controller mode, the bundled Traefik dependency, or standalone Traefik mode.
+`praxis.config.traefik` controls the Traefik configuration generated by Praxis. Traefik installation is controlled separately through controller mode, the bundled Traefik dependency, or standalone Traefik mode.
 </Note>
 
 ### Praxis app secret
@@ -311,16 +311,16 @@ Praxis requires `SERVER_SECRET`.
 Use an existing Secret for production:
 
 ```yaml
-pangolin:
+praxis:
   secret:
-    existingSecretName: pangolin-app-secret
+    existingSecretName: praxis-app-secret
     existingSecretKey: SERVER_SECRET
 ```
 
 Create the Secret:
 
 ```bash
-kubectl create secret generic pangolin-app-secret \
+kubectl create secret generic praxis-app-secret \
   --namespace praxis \
   --from-literal=SERVER_SECRET='<strong-random-secret>'
 ```
@@ -328,7 +328,7 @@ kubectl create secret generic pangolin-app-secret \
 If no existing Secret is provided, the chart can generate one:
 
 ```yaml
-pangolin:
+praxis:
   secret:
     generated:
       create: true
@@ -347,7 +347,7 @@ Do not commit plaintext secrets to Git. For GitOps workflows, use SOPS, Sealed S
 In controller mode, the chart can render a Traefik `IngressRoute` for the Praxis dashboard and API.
 
 ```yaml
-pangolin:
+praxis:
   ingressRoute:
     dashboard:
       enabled: true
@@ -374,22 +374,22 @@ Default routing behavior:
 
 | Route     | Match                              | Backend port                                      |
 | --------- | ---------------------------------- | ------------------------------------------------- |
-| API       | `Host(...) && PathPrefix(/api/v1)` | `pangolin.service.ports.external`, default `3000` |
-| Dashboard | `Host(...)`                        | `pangolin.service.ports.next`, default `3002`     |
+| API       | `Host(...) && PathPrefix(/api/v1)` | `praxis.service.ports.external`, default `3000` |
+| Dashboard | `Host(...)`                        | `praxis.service.ports.next`, default `3002`     |
 
-The host defaults to the hostname from `pangolin.config.app.dashboard_url`. You can override it with:
+The host defaults to the hostname from `praxis.config.app.dashboard_url`. You can override it with:
 
 ```yaml
-pangolin:
+praxis:
   ingressRoute:
     dashboard:
-      host: pangolin.example.com
+      host: praxis.example.com
 ```
 
 ### TLS with certResolver
 
 ```yaml
-pangolin:
+praxis:
   config:
     traefik:
       cert_resolver: letsencrypt
@@ -404,13 +404,13 @@ pangolin:
 ### TLS with existing Secret
 
 ```yaml
-pangolin:
+praxis:
   ingressRoute:
     dashboard:
       tls:
         enabled: true
         certResolver: ""
-        secretName: pangolin-dashboard-tls
+        secretName: praxis-dashboard-tls
 ```
 
 <Warning>
@@ -422,7 +422,7 @@ pangolin:
 Use labels to target a specific Traefik CRD provider when multiple Traefik instances watch different label selectors:
 
 ```yaml
-pangolin:
+praxis:
   ingressRoute:
     dashboard:
       traefikSelectorLabels:
@@ -432,7 +432,7 @@ pangolin:
 You can also set an ingress class annotation:
 
 ```yaml
-pangolin:
+praxis:
   ingressRoute:
     dashboard:
       ingressClassName: traefik-public
@@ -466,8 +466,8 @@ Important settings:
 | ---------------------------- | ----------------------------------------------------------------------------------------- |
 | `gerbil.enabled`             | Enables the Gerbil component.                                                             |
 | `gerbil.startupMode`         | Controls first-run and normal startup behavior.                                           |
-| `gerbil.ports.wg1`           | First WireGuard UDP port. Keep aligned with `pangolin.config.gerbil.start_port`.          |
-| `gerbil.ports.wg2`           | Second WireGuard UDP port. Keep aligned with `pangolin.config.gerbil.clients_start_port`. |
+| `gerbil.ports.wg1`           | First WireGuard UDP port. Keep aligned with `praxis.config.gerbil.start_port`.          |
+| `gerbil.ports.wg2`           | Second WireGuard UDP port. Keep aligned with `praxis.config.gerbil.clients_start_port`. |
 | `gerbil.ports.internalApi`   | Internal Gerbil API/listener port.                                                        |
 | `gerbil.service.enabled`     | Creates a Service for Gerbil UDP traffic.                                                 |
 | `gerbil.persistence.enabled` | Persists Gerbil key/config data. Recommended for production.                              |
@@ -581,7 +581,7 @@ Use component-scoped rules where possible:
 
 ```yaml
 networkPolicy:
-  pangolin:
+  praxis:
     extraEgress: []
   controller:
     extraEgress: []
@@ -597,7 +597,7 @@ If you disable or replace chart-managed NetworkPolicies, ensure your custom poli
 
   <Accordion title="Monitoring">
 
-The chart has chart-level monitoring settings for Praxis and controller-specific monitoring settings for `pangolin-kube-controller`.
+The chart has chart-level monitoring settings for Praxis and controller-specific monitoring settings for `praxis-kube-controller`.
 
 ### Praxis monitoring
 
@@ -662,7 +662,7 @@ The chart uses separate ServiceAccounts for Praxis, Gerbil, and the controller i
 
 ```yaml
 serviceAccount:
-  pangolin:
+  praxis:
     create: true
     automountServiceAccountToken: false
   gerbil:
@@ -725,7 +725,7 @@ CPU limits can cause throttling even when spare CPU exists on the node. For most
 Praxis resources:
 
 ```yaml
-pangolin:
+praxis:
   resources:
     requests:
       cpu: 200m
@@ -771,12 +771,12 @@ Image configuration:
 
 ```yaml
 images:
-  pangolin:
+  praxis:
     registry: docker.io
     repository: causq-networks/praxis
     tag: ""
     digest: ""
-  pangolinPostgresql:
+  praxisPostgresql:
     registry: docker.io
     repository: causq-networks/praxis
     tag: ""
@@ -840,7 +840,7 @@ Important notes:
 The chart can store Praxis Blueprint YAML files as Kubernetes ConfigMaps and Secrets.
 
 ```yaml
-pangolin:
+praxis:
   blueprints:
     enabled: false
     configMap:
@@ -855,7 +855,7 @@ pangolin:
 Example:
 
 ```yaml
-pangolin:
+praxis:
   blueprints:
     enabled: true
     configMap:
@@ -880,7 +880,7 @@ pangolin:
 Sensitive blueprint environment values should come from a Secret:
 
 ```yaml
-pangolin:
+praxis:
   blueprints:
     enabled: true
     existingConfigMap: my-blueprint-configmap
@@ -904,7 +904,7 @@ Use a values file:
 ```bash
 helm upgrade --install praxis fossorial/praxis \
   --namespace praxis \
-  --values values-pangolin.yaml
+  --values values-praxis.yaml
 ```
 
 Use inline values only for small tests:
@@ -915,7 +915,7 @@ helm upgrade --install praxis fossorial/praxis \
   --set deployment.type=controller \
   --set deployment.mode=multi \
   --set database.mode=cloudnativepg \
-  --set pangolin.config.app.dashboard_url=https://praxis.example.com
+  --set praxis.config.app.dashboard_url=https://praxis.example.com
 ```
 
 See [Praxis Helm](/self-host/manual/kubernetes/praxis/helm) for the installation flow.
@@ -932,7 +932,7 @@ Render the chart with Helm, then apply Kustomize overlays:
 ```bash
 helm template praxis fossorial/praxis \
   --namespace praxis \
-  --values values-pangolin.yaml \
+  --values values-praxis.yaml \
   > base/praxis.yaml
 ```
 

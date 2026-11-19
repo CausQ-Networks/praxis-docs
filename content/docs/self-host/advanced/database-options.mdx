@@ -54,11 +54,11 @@ Replace the placeholders with your actual PostgreSQL connection details.
 This example sets up PostgreSQL with health checks to ensure the database is ready before Praxis starts:
 
 ```yaml title="docker-compose.yml"
-name: pangolin
+name: praxis
 services:
-  pangolin:
+  praxis:
     image: causq-networks/praxis:postgresql-latest # Don't use latest in production
-    container_name: pangolin
+    container_name: praxis
     restart: unless-stopped
     depends_on:
       postgres:
@@ -128,7 +128,7 @@ POSTGRES_REPLICA_CONNECTION_STRINGS=postgresql://<user>:<password>@<replica-host
 
 ```yaml title="docker-compose.yml"
 services:
-  pangolin:
+  praxis:
     image: causq-networks/praxis:postgresql-latest # Don't use latest in production
     environment:
       POSTGRES_CONNECTION_STRING: postgresql://<user>:<password>@<primary-host>:<port>/<database>

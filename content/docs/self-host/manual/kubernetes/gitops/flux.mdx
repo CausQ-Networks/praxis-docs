@@ -81,13 +81,13 @@ kubectl get helmrepo -n flux-system
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: pangolin
-  namespace: pangolin
+  name: praxis
+  namespace: praxis
 spec:
   interval: 10m
   chart:
     spec:
-      chart: pangolin
+      chart: praxis
       version: 0.1.0-alpha.0  # or use ~0.1.0 for auto-upgrades
       sourceRef:
         kind: HelmRepository
@@ -107,7 +107,7 @@ spec:
     database:
       mode: cloudnativepg
 
-    pangolin:
+    praxis:
       config:
         app:
           dashboard_url: https://praxis.example.com
@@ -121,39 +121,39 @@ spec:
       enabled: true
       className: traefik
       hosts:
-        - host: pangolin.example.com
+        - host: praxis.example.com
           paths:
             - path: /
               pathType: Prefix
       tls:
-        - secretName: pangolin-tls
+        - secretName: praxis-tls
           hosts:
-            - pangolin.example.com
+            - praxis.example.com
 ```
 
 Create namespace:
 
 ```bash
-kubectl create namespace pangolin
+kubectl create namespace praxis
 ```
 
 Apply:
 
 ```bash
-kubectl apply -f pangolin-helmrelease.yaml
+kubectl apply -f praxis-helmrelease.yaml
 ```
 
 ### Step 3: Monitor reconciliation
 
 ```bash
 # Check HelmRelease status
-kubectl get helmrelease -n pangolin
+kubectl get helmrelease -n praxis
 
 # Watch live
 kubectl get helmrelease -n praxis -w
 
 # Describe for details
-kubectl describe helmrelease praxis -n pangolin
+kubectl describe helmrelease praxis -n praxis
 
 # Check Flux logs
 flux logs --all-namespaces --follow
@@ -178,7 +178,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: newt
-  namespace: pangolin
+  namespace: praxis
 spec:
   interval: 10m
   chart:
@@ -207,8 +207,8 @@ kubectl apply -f newt-helmrelease.yaml
 ### Step 3: Verify
 
 ```bash
-kubectl get helmrelease -n pangolin
-kubectl describe helmrelease newt -n pangolin
+kubectl get helmrelease -n praxis
+kubectl describe helmrelease newt -n praxis
 ```
 
 ## Using Flux with Git repository (GitOps)
@@ -223,13 +223,13 @@ infrastructure/
 │   └── production/
 │       ├── flux-system/
 │       │   └── gotk-components.yaml (auto-generated)
-│       ├── pangolin/
+│       ├── praxis/
 │       │   ├── helmrepo.yaml
-│       │   ├── pangolin-helmrelease.yaml
+│       │   ├── praxis-helmrelease.yaml
 │       │   └── newt-helmrelease.yaml
 │       └── kustomization.yaml
 └── apps/
-    ├── pangolin/
+    ├── praxis/
     │   └── values.yaml
     └── newt/
         └── values.yaml
@@ -280,12 +280,12 @@ Manage environment-specific overlays with Flux:
 overlays/
 ├── dev/
 │   ├── kustomization.yaml
-│   └── pangolin-patch.yaml
+│   └── praxis-patch.yaml
 ├── staging/
 │   └── kustomization.yaml
 └── prod/
     ├── kustomization.yaml
-    └── pangolin-patch.yaml
+    └── praxis-patch.yaml
 ```
 
 ### Kustomization resource
@@ -294,7 +294,7 @@ overlays/
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: pangolin-prod
+  name: praxis-prod
   namespace: flux-system
 spec:
   interval: 10m
@@ -326,13 +326,13 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: pangolin
-  namespace: pangolin
+  name: praxis
+  namespace: praxis
 spec:
   interval: 10m
   chart:
     spec:
-      chart: pangolin
+      chart: praxis
       version: 0.1.0-alpha.0
       sourceRef:
         kind: OCIRepository
@@ -363,8 +363,8 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: pangolin
-  namespace: pangolin
+  name: praxis
+  namespace: praxis
 spec:
   interval: 10m
   dependsOn:
@@ -372,11 +372,11 @@ spec:
       namespace: cert-manager
   chart:
     spec:
-      chart: pangolin
+      chart: praxis
       # ...
 ```
 
-Flux ensures `cert-manager` reconciles before `pangolin`.
+Flux ensures `cert-manager` reconciles before `praxis`.
 
 ## Advanced: valuesFrom ConfigMap/Secret
 
@@ -386,8 +386,8 @@ Store values in ConfigMaps or Secrets, referenced from HelmRelease:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pangolin-values
-  namespace: pangolin
+  name: praxis-values
+  namespace: praxis
 data:
   values.yaml: |
     deployment:
@@ -398,17 +398,17 @@ data:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: pangolin
-  namespace: pangolin
+  name: praxis
+  namespace: praxis
 spec:
   interval: 10m
   chart:
     spec:
-      chart: pangolin
+      chart: praxis
       # ...
   valuesFrom:
     - kind: ConfigMap
-      name: pangolin-values
+      name: praxis-values
 ```
 
 Flux extracts values from the ConfigMap and applies them to the HelmRelease.
@@ -425,8 +425,8 @@ flux check --all-namespaces
 ### Check HelmRelease status
 
 ```bash
-kubectl get helmrelease -n pangolin
-kubectl describe helmrelease praxis -n pangolin
+kubectl get helmrelease -n praxis
+kubectl describe helmrelease praxis -n praxis
 kubectl get helmrelease praxis -n praxis -o yaml
 ```
 
@@ -442,20 +442,20 @@ kubectl logs -n praxis deployment/helm-operator -f
 ### Manual reconciliation
 
 ```bash
-flux reconcile helmrelease praxis -n pangolin
+flux reconcile helmrelease praxis -n praxis
 flux reconcile kustomization production -n flux-system
 ```
 
 ### Suspend reconciliation
 
 ```bash
-flux suspend helmrelease praxis -n pangolin
+flux suspend helmrelease praxis -n praxis
 ```
 
 ### Resume reconciliation
 
 ```bash
-flux resume helmrelease praxis -n pangolin
+flux resume helmrelease praxis -n praxis
 ```
 
 ## Multi-environment example
@@ -486,17 +486,17 @@ Each cluster reconciles its own `clusters/*/` directory.
 clusters/
 ├── production/
 │   ├── kustomization.yaml
-│   └── pangolin/
+│   └── praxis/
 │       ├── helmrepo.yaml
 │       └── helmrelease.yaml (prod values)
 ├── staging/
 │   ├── kustomization.yaml
-│   └── pangolin/
+│   └── praxis/
 │       ├── helmrepo.yaml
 │       └── helmrelease.yaml (staging values)
 └── dev/
     ├── kustomization.yaml
-    └── pangolin/
+    └── praxis/
         └── helmrelease.yaml (dev values)
 ```
 

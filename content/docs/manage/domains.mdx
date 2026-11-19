@@ -60,9 +60,9 @@ Refer to the [DNS & Networking Section](/self-host/dns-and-networking).
     ```dns
     Type: NS
     Name: test.example.com
-    Value: ns1.pangolin-ns.net
-           ns2.pangolin-ns.net
-           ns3.pangolin-ns.net
+    Value: ns1.praxis-ns.net
+           ns2.praxis-ns.net
+           ns3.praxis-ns.net
     ```
 
     This is done at your registrar or in your current DNS provider's nameserver settings, not as a normal DNS record.
@@ -74,12 +74,12 @@ Refer to the [DNS & Networking Section](/self-host/dns-and-networking).
     ```dns
     Type: CNAME
     Name: test.example.com
-    Value: 0nbn5rpcq4wthq6.cname.pangolin.net
+    Value: 0nbn5rpcq4wthq6.cname.praxis.net
     ```
     ```dns
     Type: CNAME
     Name: _acme-challenge.test.example.com
-    Value: _acme-challenge.0nbn5rpcq4wthq6.cname.pangolin.net
+    Value: _acme-challenge.0nbn5rpcq4wthq6.cname.praxis.net
     ```
 
   </Tab>

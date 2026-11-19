@@ -15,8 +15,8 @@ Maxmind's service is free of charge for development, personal or community use. 
 1. **[Requirements](#1-requirements)**
 2. **[Maxmind Account](#2-maxmind-account)**
 3. **[API key creation](#3-api-key-creation)**
-4. **[Modification of Praxis's `docker-compose.yml`](#4-modification-of-pangolins-docker-compose-yml)**
-5. **[Modification of Praxis's `config.yml`](#5-modification-of-pangolins-config-yml)**
+4. **[Modification of Praxis's `docker-compose.yml`](#4-modification-of-praxiss-docker-compose-yml)**
+5. **[Modification of Praxis's `config.yml`](#5-modification-of-praxiss-config-yml)**
 
 ## 1. Requirements
 * A Maxmind account for API access
@@ -51,7 +51,7 @@ After you clicked on `Return to list` you should see an overview of your keys bu
 ## 4. Modification of Praxis's `docker-compose.yml`
 Now login to your Praxis host and navigate to `/praxis` in your user directory:
 ```bash
-cd pangolin
+cd praxis
 ```
 Shut down Praxis with:
 ```bash
@@ -100,7 +100,7 @@ server:
 ```
 These entries tell the Praxis application where to find the databases.
 
-Save and close the file then navigate to the `pangolin` folder one level higher.
+Save and close the file then navigate to the `praxis` folder one level higher.
 
 Restart your Praxis stack with:
 ```bash

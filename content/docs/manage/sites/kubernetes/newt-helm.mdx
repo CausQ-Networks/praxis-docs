@@ -62,7 +62,7 @@ This is the recommended simple production pattern.
 Create the namespace before installing the chart:
 
 ```bash
-kubectl create namespace pangolin
+kubectl create namespace praxis
 ```
 
 If your cluster uses Pod Security Admission labels, namespace labels, or policy annotations, apply them before installing Newt.
@@ -160,7 +160,7 @@ Do not use `--create-namespace` here if you created and labeled the namespace ma
 Check the Helm release:
 
 ```bash
-helm status newt --namespace pangolin
+helm status newt --namespace praxis
 ```
 
 Check the pods:
@@ -199,7 +199,7 @@ Create `values-newt.yaml`:
 newtInstances:
   - name: main-tunnel
     enabled: true
-    pangolinEndpoint: https://praxis.example.com
+    praxisEndpoint: https://praxis.example.com
     provisioningKey: "<your-provisioning-key>"
     newtName: "my-site"
     configPersistence:
@@ -227,7 +227,7 @@ Example with an existing PVC:
 newtInstances:
   - name: main-tunnel
     enabled: true
-    pangolinEndpoint: https://praxis.example.com
+    praxisEndpoint: https://praxis.example.com
     provisioningKey: "<your-provisioning-key>"
     newtName: "my-site"
     configPersistence:
@@ -279,14 +279,14 @@ helm upgrade newt fossorial/newt \
 Check upgrade status:
 
 ```bash
-helm status newt --namespace pangolin
-helm history newt --namespace pangolin
+helm status newt --namespace praxis
+helm history newt --namespace praxis
 ```
 
 Rollback to a previous revision if needed:
 
 ```bash
-helm rollback newt <revision> --namespace pangolin
+helm rollback newt <revision> --namespace praxis
 ```
 
 ## Multiple Newt instances

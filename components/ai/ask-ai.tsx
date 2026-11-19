@@ -35,7 +35,7 @@ import { getVisitorId, randomId, sendFeedback, type Vote } from '@/lib/analytics
 import { cn } from '@/lib/cn';
 
 /**
- * "Ask Praxis AI": the same floating bar and chat panel as pangolin.net
+ * "Ask Praxis AI": the same floating bar and chat panel as praxis.net
  * (landing-v5 `components/ask-ai/ask-ai.tsx`). Answers come from `/api/chat`, which
  * searches and reads these docs. Conversations and answer votes go to analytics.
  */

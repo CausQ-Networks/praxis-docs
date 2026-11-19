@@ -5,8 +5,8 @@ export const SITE = 'https://praxis.net';
 export const LINKS = {
   signup: 'https://app.praxis.causq.com/auth/signup',
   github: 'https://github.com/CausQ-Networks/praxis',
-  status: 'https://status.pangolin.net',
-  trust: 'https://trust.pangolin.net',
+  status: 'https://status.praxis.net',
+  trust: 'https://trust.praxis.net',
 } as const;
 
 /** announcement card at the top of the sidebar; bump `id` when the copy changes */
@@ -18,7 +18,7 @@ export const FEATURE_BANNER = {
   href: '/manage/ai/overview',
 };
 
-export const FEATURE_BANNER_STORAGE_KEY = 'pangolin:docs-feature-banner';
+export const FEATURE_BANNER_STORAGE_KEY = 'praxis:docs-feature-banner';
 export const FEATURE_BANNER_DISMISSED_ATTR = 'data-feature-banner-dismissed';
 
 /** marks <html> before first paint so a dismissed banner never flashes */
@@ -38,13 +38,13 @@ export const FOOTER_ADDRESS = [
 
 export type FooterLink = { label: string; href: string };
 
-/** Footer columns, laid out like the pangolin.net footer; local paths are docs pages. */
+/** Footer columns, laid out like the praxis.net footer; local paths are docs pages. */
 export const FOOTER_COLUMNS: { title: string; links: FooterLink[] }[] = [
   {
     title: 'Get started',
     links: [
       { label: 'Introduction', href: '/' },
-      { label: 'How Praxis Works', href: '/about/how-pangolin-works' },
+      { label: 'How Praxis Works', href: '/about/how-praxis-works' },
       { label: 'Cloud vs. Self-Hosted', href: '/about/praxis-cloud-vs-self-hosted' },
       { label: 'System Architecture', href: '/development/system-architecture' },
     ],
@@ -89,8 +89,8 @@ export const FOOTER_COLUMNS: { title: string; links: FooterLink[] }[] = [
       { label: 'Downloads', href: `${SITE}/downloads` },
       { label: 'Release Notes', href: `${SITE}/news/tags/release` },
       { label: 'Pricing', href: `${SITE}/pricing` },
-      { label: 'Trust Center', href: 'https://trust.pangolin.net' },
-      { label: 'Status', href: 'https://status.pangolin.net' },
+      { label: 'Trust Center', href: 'https://trust.praxis.net' },
+      { label: 'Status', href: 'https://status.praxis.net' },
     ],
   },
 ];

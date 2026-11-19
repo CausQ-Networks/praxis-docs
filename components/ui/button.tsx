@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
 /**
- * Same buttons as pangolin.net (landing-v5 `components/ui/button.tsx`), which ports
+ * Same buttons as praxis.net (landing-v5 `components/ui/button.tsx`), which ports
  * them from the Praxis dashboard.
  */
 export const buttonVariants = cva(

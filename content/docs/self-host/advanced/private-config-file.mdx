@@ -62,7 +62,7 @@ This section contains the complete reference for all configuration options in `p
 
   <Expandable title="properties">
     <ResponseField name="encryption_key" type="string" default="./config/encryption.pem" required>
-      Path to the RSA private key used for encrypting sensitive data. Must be at least 8 characters long. THIS IS ONLY USED WITH pangolin_dns FEATURE FLAG ENABLED AND REQUIRES EXTERNAL COMPONENTS.
+      Path to the RSA private key used for encrypting sensitive data. Must be at least 8 characters long. THIS IS ONLY USED WITH praxis_dns FEATURE FLAG ENABLED AND REQUIRES EXTERNAL COMPONENTS.
       
       ```yaml
       server:
@@ -197,11 +197,11 @@ This section contains the complete reference for all configuration options in `p
     </ResponseField>
 
     <ResponseField name="nameserver_name" type="string" required>
-      The FQDN Praxis advertises as itself when acting as a nameserver. Used as the `mname` in SOA responses and included in the NS record set returned for zones it is authoritative for. This is the hostname you point your domain's nameservers at when using NS-based domain delegation (e.g. `ns1.pangolin-ns.net`).
+      The FQDN Praxis advertises as itself when acting as a nameserver. Used as the `mname` in SOA responses and included in the NS record set returned for zones it is authoritative for. This is the hostname you point your domain's nameservers at when using NS-based domain delegation (e.g. `ns1.praxis-ns.net`).
 
       ```yaml
       dns:
-        nameserver_name: "ns1.pangolin-ns.net"
+        nameserver_name: "ns1.praxis-ns.net"
       ```
     </ResponseField>
 
@@ -210,7 +210,7 @@ This section contains the complete reference for all configuration options in `p
 
       ```yaml
       dns:
-        cname_extension: "cname.pangolin.net"
+        cname_extension: "cname.praxis.net"
       ```
     </ResponseField>
 
@@ -219,7 +219,7 @@ This section contains the complete reference for all configuration options in `p
 
       ```yaml
       dns:
-        site_extension: "site.pangolin.net"
+        site_extension: "site.praxis.net"
       ```
     </ResponseField>
 
@@ -234,13 +234,13 @@ This section contains the complete reference for all configuration options in `p
     </ResponseField>
 
     <ResponseField name="alternate_nameservers" type="array" default="[]">
-      Additional nameserver hostnames appended after `nameserver_name` in the NS record set Praxis returns for a zone, and in the NS records shown when using NS-based domain delegation (e.g. `ns2.pangolin-ns.net`, `ns3.pangolin-ns.net`).
+      Additional nameserver hostnames appended after `nameserver_name` in the NS record set Praxis returns for a zone, and in the NS records shown when using NS-based domain delegation (e.g. `ns2.praxis-ns.net`, `ns3.praxis-ns.net`).
 
       ```yaml
       dns:
         alternate_nameservers:
-          - "ns2.pangolin-ns.net"
-          - "ns3.pangolin-ns.net"
+          - "ns2.praxis-ns.net"
+          - "ns3.praxis-ns.net"
       ```
     </ResponseField>
 
@@ -351,12 +351,12 @@ This section contains the complete reference for all configuration options in `p
       ```
     </ResponseField>
 
-    <ResponseField name="use_pangolin_dns" type="boolean" default="false">
+    <ResponseField name="use_praxis_dns" type="boolean" default="false">
       Allow creating domains using CNAME and NS.
       
       ```yaml
       flags:
-        use_pangolin_dns: true
+        use_praxis_dns: true
       ```
     </ResponseField>
   </Expandable>
@@ -373,7 +373,7 @@ This section contains the complete reference for all configuration options in `p
 
       Possible values:
       - `traefik`: (default) Traefik's built-in ACME resolver handles certificate issuance and renewal itself.
-      - `pangolin`: Praxis issues and manages certificates itself via its self-hosted ACME client, using DNS-01 challenges. Requires `dns.enabled` and `acme.enable_acme_client` to both be `true`. ENSURE ONLY ONE NODE IN A CLUSTER HAS THE `acme.enable_acme_client` FLAG ENABLED, OTHERWISE MULTIPLE NODES WILL TRY TO ISSUE CERTIFICATES SIMULTANEOUSLY.
+      - `praxis`: Praxis issues and manages certificates itself via its self-hosted ACME client, using DNS-01 challenges. Requires `dns.enabled` and `acme.enable_acme_client` to both be `true`. ENSURE ONLY ONE NODE IN A CLUSTER HAS THE `acme.enable_acme_client` FLAG ENABLED, OTHERWISE MULTIPLE NODES WILL TRY TO ISSUE CERTIFICATES SIMULTANEOUSLY.
 
       ```yaml
       acme:

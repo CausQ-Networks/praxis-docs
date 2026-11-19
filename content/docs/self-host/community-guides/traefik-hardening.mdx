@@ -176,7 +176,7 @@ http:
   routers:
     next-router:
       rule: >
-        (Host(`pangolin.{{ env "DOMAIN1" }}`))
+        (Host(`praxis.{{ env "DOMAIN1" }}`))
       service: next-service
       middlewares:
         - chain-secure@file
@@ -184,7 +184,7 @@ http:
 
     api-router:
       rule: >
-        (Host(`pangolin.{{ env "DOMAIN1" }}`) && PathPrefix(`/api/v1`))
+        (Host(`praxis.{{ env "DOMAIN1" }}`) && PathPrefix(`/api/v1`))
       service: api-service
       middlewares:
         - chain-secure@file

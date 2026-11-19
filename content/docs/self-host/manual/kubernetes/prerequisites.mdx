@@ -110,7 +110,7 @@ At minimum, the Praxis dashboard domain should resolve to the ingress controller
 Example:
 
 ```bash
-nslookup pangolin.example.com
+nslookup praxis.example.com
 ```
 
 For tunneled site deployments, also verify the DNS name used by the site connector endpoint.
@@ -141,7 +141,7 @@ Choose the namespace where Praxis and related components should run.
 Example:
 
 ```bash
-kubectl create namespace pangolin
+kubectl create namespace praxis
 ```
 
 When using Helm, you can also let Helm create the namespace:

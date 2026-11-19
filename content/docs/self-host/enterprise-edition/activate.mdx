@@ -17,7 +17,7 @@ If you install with the [quick installer](/self-host/quick-install), it asks whe
 
   ```yaml
   services:
-    pangolin:
+    praxis:
       image: causq-networks/praxis:ee-latest  # Enterprise Edition (SQLite)
       # ... rest of configuration
   ```
@@ -26,7 +26,7 @@ If you install with the [quick installer](/self-host/quick-install), it asks whe
 
   ```yaml
   services:
-    pangolin:
+    praxis:
       image: causq-networks/praxis:ee-postgresql-latest  # Enterprise Edition (PostgreSQL)
       # ... rest of configuration
   ```
@@ -70,7 +70,7 @@ If you rebuild the server, it often comes back with a new host ID. The key is st
   Check container logs if the issue persists:
 
   ```bash
-  sudo docker compose logs pangolin
+  sudo docker compose logs praxis
   ```
 </Accordion>
 

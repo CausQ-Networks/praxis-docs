@@ -89,7 +89,7 @@ export default async function AnalyticsPage(props: PageProps<'/'>) {
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h1 className="text-2xl font-semibold">{site ? `${siteLabel[site]} analytics` : 'Analytics'}</h1>
           <p className="text-sm text-fd-muted-foreground">
-            {range.label} · {site ? siteLabel[site] : 'docs + pangolin.net'}
+            {range.label} · {site ? siteLabel[site] : 'docs + praxis.net'}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">

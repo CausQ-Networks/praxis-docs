@@ -402,7 +402,7 @@ Almost every setting below can also be set via an environment variable (**Env va
 <ResponseField name="interface" type="string">
   Name of the WireGuard interface.
 
-  **Default**: `pangolin`
+  **Default**: `praxis`
 
   **Env var**: `INTERFACE`
 
@@ -476,7 +476,7 @@ Almost every setting below can also be set via an environment variable (**Env va
     Most users should not use this feature.
   </Note>
 
-  **Default**: `pangolin`
+  **Default**: `praxis`
 
   **Env var**: `INTERFACE_MAIN`
 
@@ -510,7 +510,7 @@ If `--config-file`/`CONFIG_FILE` isn't set, the site reads and writes the config
 | Platform | Default path |
 | --- | --- |
 | macOS | `~/.config/praxis/site.json` |
-| Windows | `C:\Users\<Username>\.config\pangolin\site.json` |
+| Windows | `C:\Users\<Username>\.config\praxis\site.json` |
 | Linux / others | `~/.config/praxis/site.json` |
 
 ### Example
@@ -666,7 +666,7 @@ This is the original method and still supported.
 **Example:**
 
 ```bash
-pangolin \
+praxis \
 --id 31frd0uzbjvp721 \
 --secret h51mmlknrvrwv8s4r1i210azhumt6isgbpyavxodibx1k2d6 \
 --endpoint https://example.com \
@@ -684,7 +684,7 @@ You can now provide separate files for:
 **Example:**
 
 ```bash
-pangolin \
+praxis \
 --id 31frd0uzbjvp721 \
 --secret h51mmlknrvrwv8s4r1i210azhumt6isgbpyavxodibx1k2d6 \
 --endpoint https://example.com \

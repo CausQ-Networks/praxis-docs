@@ -46,23 +46,23 @@ Recommended ownership model:
 ## Example repository layout
 
 ```text
-my-pangolin-k8s/
+my-praxis-k8s/
 ├── base/
 │   ├── kustomization.yaml
-│   ├── pangolin.yaml
+│   ├── praxis.yaml
 │   └── newt.yaml
 ├── overlays/
 │   ├── dev/
 │   │   ├── kustomization.yaml
-│   │   └── pangolin-resources.patch.yaml
+│   │   └── praxis-resources.patch.yaml
 │   ├── staging/
 │   │   ├── kustomization.yaml
-│   │   └── pangolin-resources.patch.yaml
+│   │   └── praxis-resources.patch.yaml
 │   └── prod/
 │       ├── kustomization.yaml
-│       └── pangolin-resources.patch.yaml
+│       └── praxis-resources.patch.yaml
 └── values/
-    ├── values-pangolin.yaml
+    ├── values-praxis.yaml
     └── values-newt.yaml
 ```
 
@@ -79,7 +79,7 @@ Render Praxis:
 ```bash tab="Classic Helm repository"
 helm template praxis fossorial/praxis \
   --namespace praxis \
-  --values values/values-pangolin.yaml \
+  --values values/values-praxis.yaml \
   > base/praxis.yaml
 ```
 
@@ -87,7 +87,7 @@ helm template praxis fossorial/praxis \
 helm template praxis oci://ghcr.io/fosrl/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
   --namespace praxis \
-  --values values/values-pangolin.yaml \
+  --values values/values-praxis.yaml \
   > base/praxis.yaml
 ```
 
@@ -116,7 +116,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - pangolin.yaml
+  - praxis.yaml
   - newt.yaml
 ```
 
@@ -138,12 +138,12 @@ labels:
       app.kubernetes.io/managed-by: kustomize
 
 patches:
-  - path: pangolin-resources.patch.yaml
+  - path: praxis-resources.patch.yaml
     target:
       group: apps
       version: v1
       kind: Deployment
-      name: pangolin
+      name: praxis
 ```
 
 <Note>
@@ -159,12 +159,12 @@ Example Strategic Merge patch for container resources:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pangolin
+  name: praxis
 spec:
   template:
     spec:
       containers:
-        - name: pangolin
+        - name: praxis
           resources:
             requests:
               cpu: 1000m
@@ -188,7 +188,7 @@ patches:
       group: apps
       version: v1
       kind: Deployment
-      name: pangolin
+      name: praxis
     patch: |-
       - op: replace
         path: /spec/template/spec/containers/0/resources/requests/cpu
@@ -238,7 +238,7 @@ Render the updated chart output:
 ```bash
 helm template praxis fossorial/praxis \
   --namespace praxis \
-  --values values/values-pangolin.yaml \
+  --values values/values-praxis.yaml \
   > base/praxis.yaml
 ```
 
@@ -277,14 +277,14 @@ Render the charts with the namespace you intend to use:
 ```bash
 helm template praxis fossorial/praxis \
   --namespace praxis \
-  --values values/values-pangolin.yaml \
+  --values values/values-praxis.yaml \
   > base/praxis.yaml
 ```
 
 Create the namespace before applying the overlay:
 
 ```bash
-kubectl create namespace pangolin
+kubectl create namespace praxis
 ```
 
 Apply any required Pod Security Admission labels or cluster-policy labels before workloads are created.
@@ -347,7 +347,7 @@ kubectl diff -f manifests.yaml
 Check live resources:
 
 ```bash
-kubectl get all -n pangolin
+kubectl get all -n praxis
 kubectl get events -n praxis --sort-by=.lastTimestamp
 ```
 

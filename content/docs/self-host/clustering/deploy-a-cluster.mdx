@@ -29,9 +29,9 @@ Throughout this guide, replace the following placeholders with your own values:
 | `CONTACT_EMAIL` | Email address used for Let's Encrypt ACME registration |
 | `SECRET` | Shared server secret - identical on every node |
 | `LOAD_BALANCER_IP` | IP address of the load balancer in front of the cluster |
-| `pangolin.example.com` | Your dashboard domain - DNS points at the load balancer, not at either node |
+| `praxis.example.com` | Your dashboard domain - DNS points at the load balancer, not at either node |
 
-You need a domain for the Praxis UI and API (`pangolin.example.com` in this guide), pointed at your load balancer. **The load balancer is responsible for TLS on this domain** - terminate HTTPS there and forward plain HTTP to the nodes' dashboard port. The nodes' built-in ACME client only issues certificates for resource domains under the delegated nameserver zone, not for the dashboard domain itself. See [Requirements](/self-host/clustering/requirements#dashboard-domain).
+You need a domain for the Praxis UI and API (`praxis.example.com` in this guide), pointed at your load balancer. **The load balancer is responsible for TLS on this domain** - terminate HTTPS there and forward plain HTTP to the nodes' dashboard port. The nodes' built-in ACME client only issues certificates for resource domains under the delegated nameserver zone, not for the dashboard domain itself. See [Requirements](/self-host/clustering/requirements#dashboard-domain).
 
 <Steps>
 
@@ -87,20 +87,20 @@ node/
         └── traefik_config.yml
 ```
 
-`config/certificates` and `config/dynamic` are shared volumes between the `pangolin` and `traefik` containers - Praxis writes router configuration and certificates there for Traefik to read, since Traefik can only load certificates from files, not from the Praxis API. This is `traefik.file_mode` in `config.yml`, covered below.
+`config/certificates` and `config/dynamic` are shared volumes between the `praxis` and `traefik` containers - Praxis writes router configuration and certificates there for Traefik to read, since Traefik can only load certificates from files, not from the Praxis API. This is `traefik.file_mode` in `config.yml`, covered below.
 </Step>
 
 <Step title="Write docker-compose.yml">
-Both nodes run the same three containers: `pangolin`, `gerbil`, and `traefik`. Gerbil owns the host networking (WireGuard, relay, DNS, resource ports), and Traefik joins its network namespace so its ports appear alongside Gerbil's.
+Both nodes run the same three containers: `praxis`, `gerbil`, and `traefik`. Gerbil owns the host networking (WireGuard, relay, DNS, resource ports), and Traefik joins its network namespace so its ports appear alongside Gerbil's.
 
 Each node's `--reachableAt` flag must point at **that node's own** internal address, and `--trusted-upstreams` lists the external IPs of every node in the cluster so Gerbil accepts proxied connections from them.
 
 ```yaml tab="Node 1"
-name: pangolin
+name: praxis
 services:
-  pangolin:
+  praxis:
     image: docker.io/causq-networks/praxis:ee-latest
-    container_name: pangolin
+    container_name: praxis
     restart: unless-stopped
     volumes:
       - ./config:/app/config
@@ -117,7 +117,7 @@ services:
     container_name: gerbil
     restart: unless-stopped
     depends_on:
-      pangolin:
+      praxis:
         condition: service_healthy
     command:
       - --reachableAt=http://<NODE1_INTERNAL_IP>:3004
@@ -144,7 +144,7 @@ services:
     restart: unless-stopped
     network_mode: service:gerbil # Ports appear on the gerbil service
     depends_on:
-      pangolin:
+      praxis:
         condition: service_healthy
     command:
       - --configFile=/etc/traefik/traefik_config.yml
@@ -157,15 +157,15 @@ services:
 networks:
   default:
     driver: bridge
-    name: pangolin
+    name: praxis
 ```
 
 ```yaml tab="Node 2"
-name: pangolin
+name: praxis
 services:
-  pangolin:
+  praxis:
     image: docker.io/causq-networks/praxis:ee-latest
-    container_name: pangolin
+    container_name: praxis
     restart: unless-stopped
     volumes:
       - ./config:/app/config
@@ -182,7 +182,7 @@ services:
     container_name: gerbil
     restart: unless-stopped
     depends_on:
-      pangolin:
+      praxis:
         condition: service_healthy
     command:
       - --reachableAt=http://<NODE2_INTERNAL_IP>:3004
@@ -209,7 +209,7 @@ services:
     restart: unless-stopped
     network_mode: service:gerbil # Ports appear on the gerbil service
     depends_on:
-      pangolin:
+      praxis:
         condition: service_healthy
     command:
       - --configFile=/etc/traefik/traefik_config.yml
@@ -222,7 +222,7 @@ services:
 networks:
   default:
     driver: bridge
-    name: pangolin
+    name: praxis
 ```
 
 <Tip>
@@ -330,7 +330,7 @@ redis:
   port: 6379
 flags:
   enable_redis: true
-  use_pangolin_dns: true
+  use_praxis_dns: true
 acme:
   cert_mode: "praxis"
   contact_email: "<CONTACT_EMAIL>"
@@ -351,7 +351,7 @@ redis:
   port: 6379
 flags:
   enable_redis: true
-  use_pangolin_dns: true
+  use_praxis_dns: true
 acme:
   cert_mode: "praxis"
 dns:
@@ -482,7 +482,7 @@ udp:
     dns-service:
       loadBalancer:
         servers:
-          - address: "pangolin:53"
+          - address: "praxis:53"
 ```
 
 This is also where you place the MaxMind databases referenced in `config.yml` - download `GeoLite2-Country.mmdb` and `GeoLite2-ASN.mmdb` into each node's `config/` directory. See [Enable Geo-location](/self-host/advanced/enable-geolocation) and [Enable ASN Lookup](/self-host/advanced/enable-asn-lookup).
@@ -491,10 +491,10 @@ This is also where you place the MaxMind databases referenced in `config.yml` - 
 <Step title="Point your load balancer at both nodes">
 Configure your load balancer - a cloud load balancer or a self-hosted one such as Traefik - to:
 
-- Route TCP `3000` to both nodes for your Praxis domain. For example `pangolin.example.com` should resolve to the load balancer, which routes to either node's `:3000` port.
+- Route TCP `3000` to both nodes for your Praxis domain. For example `praxis.example.com` should resolve to the load balancer, which routes to either node's `:3000` port.
 - Route UDP `53` to both nodes for DNS. For example `ns.example.com` should resolve to the load balancer, which routes to either node's `:53/udp` port.
 - Health-check the `:80/ping` endpoint on each node, and stop routing to a node that fails it. `:3000/api/v1/` can also be monitored for the Praxis UI and API
-- **Terminate TLS for the dashboard domain** (`pangolin.example.com`) at the load balancer, then forward plain HTTP to `:3000` on the nodes. Obtain and renew that certificate through the load balancer itself (a cloud provider's managed certificate, its own ACME client, etc.) - the nodes' built-in ACME client only covers resource domains, not the dashboard domain
+- **Terminate TLS for the dashboard domain** (`praxis.example.com`) at the load balancer, then forward plain HTTP to `:3000` on the nodes. Obtain and renew that certificate through the load balancer itself (a cloud provider's managed certificate, its own ACME client, etc.) - the nodes' built-in ACME client only covers resource domains, not the dashboard domain
 
 This is what makes the cluster appear as a single, consistent domain to users, and what drives failover when a node goes down.
 </Step>
@@ -508,7 +508,7 @@ docker compose up -d
 
 # On Node 1
 docker compose up -d
-docker compose logs -f pangolin
+docker compose logs -f praxis
 ```
 
 Use the init token from the logs to visit the dashboard and create the first user. Once Node 1 is healthy and you've logged in, bring up Node 2:

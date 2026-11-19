@@ -17,7 +17,7 @@ Agents and SDKs expect an API key. Virtual keys let many people and services cal
 - Attribute usage to a user or a named key
 - Use the same Praxis credential in clients that send `Authorization: Bearer`, `x-api-key`, or `x-goog-api-key`
 
-Praxis accepts the virtual key in those headers and strips it before the upstream call. Keys look like `pangolin-key-<id>.<secret>`.
+Praxis accepts the virtual key in those headers and strips it before the upstream call. Keys look like `praxis-key-<id>.<secret>`.
 
 Logging into Praxis in a browser is how you **retrieve** a key. Model calls still need the virtual key in the request. A dashboard session cookie cannot proxy through the gateway.
 
@@ -35,7 +35,7 @@ HTTPS resources can add PIN, passcode, header auth, shareable links, or email OT
 
 ## Identity Keys vs Manual Keys
 
-Both kinds are `pangolin-key-…` secrets. They differ in how access is granted.
+Both kinds are `praxis-key-…` secrets. They differ in how access is granted.
 
 ### Identity Keys
 

@@ -18,12 +18,12 @@ Prebuilt images are the fastest way to self-host Praxis. They come with Docker, 
 
 Whichever provider you choose, you need:
 
-- **A domain** whose DNS you control. Praxis uses a **base domain** (for example `example.com`) for the resources you expose, and a **dashboard domain** (default `pangolin.example.com`) for the admin UI.
+- **A domain** whose DNS you control. Praxis uses a **base domain** (for example `example.com`) for the resources you expose, and a **dashboard domain** (default `praxis.example.com`) for the admin UI.
 - **An email address** for Let's Encrypt certificates.
 - **DNS records** pointing at the server's public IP. You can create them as soon as you know the IP:
 
   ```
-  A   pangolin.example.com   ->  <server public IP>
+  A   praxis.example.com   ->  <server public IP>
   A   *.example.com          ->  <server public IP>
   ```
 
@@ -37,8 +37,8 @@ Praxis publishes one Ubuntu 24.04 AMI per architecture:
 
 | Architecture | AMI name | Example instance |
 | --- | --- | --- |
-| x86_64 | `pangolin-ubuntu-24.04-amd64-*` | `t3.small` |
-| arm64 / Graviton | `pangolin-ubuntu-24.04-arm64-*` | `t4g.small` |
+| x86_64 | `praxis-ubuntu-24.04-amd64-*` | `t3.small` |
+| arm64 / Graviton | `praxis-ubuntu-24.04-arm64-*` | `t4g.small` |
 
 The same AMI installs either the **Community Edition** (the default) or the **Enterprise Edition**. You choose the edition when you configure the instance: set `PANGOLIN_EDITION` in user-data, use the **Edition** parameter in CloudFormation, or answer the wizard's prompt. The Enterprise Edition is free for personal use and for businesses under $100K USD gross annual revenue. See [Enterprise Edition](/self-host/enterprise-edition).
 
@@ -65,7 +65,7 @@ Graviton (`t4g`) instances are the most cost-effective choice. `t4g.small` (2 vC
   ```bash
   aws ec2 describe-images --region us-east-1 \
     --owners <PANGOLIN_AWS_ACCOUNT_ID> \
-    --filters "Name=name,Values=pangolin-ubuntu-*-arm64-*" "Name=state,Values=available" \
+    --filters "Name=name,Values=praxis-ubuntu-*-arm64-*" "Name=state,Values=available" \
     --query 'sort_by(Images, &CreationDate)[-1].ImageId' --output text
   ```
 
@@ -75,7 +75,7 @@ Graviton (`t4g`) instances are the most cost-effective choice. `t4g.small` (2 vC
 <Tab title="AWS Console">
   1. Switch to the region you want to launch in.
   2. Open **EC2 → Images → AMIs** and change the filter to **Public images**.
-  3. Search for `pangolin-ubuntu`, then sort by **Creation date**.
+  3. Search for `praxis-ubuntu`, then sort by **Creation date**.
   4. Select the newest image for your architecture and click **Launch instance from AMI**.
 </Tab>
 </Tabs>
@@ -90,7 +90,7 @@ Pick one way to give the instance your edition, domain and email. With CloudForm
 
   - **Edition**: `community` (default) or `enterprise`
   - **BaseDomain** and **LetsEncryptEmail** (required)
-  - **DashboardDomain** (optional, default `pangolin.<BaseDomain>`)
+  - **DashboardDomain** (optional, default `praxis.<BaseDomain>`)
   - **HostedZoneId** (optional). If you give a Route 53 hosted zone, the DNS records are created for you.
   - **VpcId**, **SubnetId** (a public subnet), **SSHLocation** (your IP, e.g. `203.0.113.10/32`) and optionally a **KeyName**
 
@@ -125,7 +125,7 @@ Pick one way to give the instance your edition, domain and email. With CloudForm
   ssh ubuntu@<public-ip>
   ```
 
-  On login you're offered the setup wizard (you can also run `sudo pangolin-setup`). It asks for the edition, your domains, email, tunneling and optional SMTP, checks DNS, and installs Praxis.
+  On login you're offered the setup wizard (you can also run `sudo praxis-setup`). It asks for the edition, your domains, email, tunneling and optional SMTP, checks DNS, and installs Praxis.
 </Tab>
 </Tabs>
 
@@ -134,7 +134,7 @@ Pick one way to give the instance your edition, domain and email. With CloudForm
 | --- | --- | --- |
 | `PANGOLIN_EDITION` | `community` | `community` or `enterprise` |
 | `PANGOLIN_BASE_DOMAIN` | required | Base domain for resources, e.g. `example.com` |
-| `PANGOLIN_DASHBOARD_DOMAIN` | `pangolin.<base domain>` | Domain for the Praxis dashboard |
+| `PANGOLIN_DASHBOARD_DOMAIN` | `praxis.<base domain>` | Domain for the Praxis dashboard |
 | `PANGOLIN_EMAIL` | required | Let's Encrypt email |
 | `PANGOLIN_INSTALL_GERBIL` | `true` | Enable WireGuard tunneling. Set `false` to run Praxis [without tunneling](/self-host/advanced/without-tunneling) |
 | `PANGOLIN_ENABLE_IPV6` | auto | IPv6 on the Docker network. Defaults to on if the instance has an IPv6 address |
@@ -143,7 +143,7 @@ Pick one way to give the instance your edition, domain and email. With CloudForm
 | `PANGOLIN_WAIT_FOR_DNS` | `true` | Wait for the dashboard domain to resolve to the instance before installing |
 | `PANGOLIN_DNS_TIMEOUT` | `1800` | Seconds to wait for DNS before installing anyway |
 
-If you give only `PANGOLIN_DASHBOARD_DOMAIN`, the base domain is that domain with its first label removed (`pangolin.example.com` → `example.com`).
+If you give only `PANGOLIN_DASHBOARD_DOMAIN`, the base domain is that domain with its first label removed (`praxis.example.com` → `example.com`).
 
 <Warning>
 Any process on the instance can read user-data. Consider adding SMTP credentials later in `/opt/praxis/config/config.yml` instead.
@@ -161,8 +161,8 @@ aws ec2 get-console-output --instance-id i-... --latest --output text | grep 'Se
 Or over SSH:
 
 ```bash
-pangolin-setup status        # waiting-dns | installing | complete | ...
-sudo pangolin-setup token
+praxis-setup status        # waiting-dns | installing | complete | ...
+sudo praxis-setup token
 ```
 
 Then continue with [Finish setup](#finish-setup).
@@ -181,7 +181,7 @@ The [Praxis (CE) 1-Click App](https://marketplace.digitalocean.com/apps/praxis-c
   </Tab>
 
   <Tab title="API">
-    Create the droplet from the `fossorial-pangolince1` image with the DigitalOcean API. Set `TOKEN` to a [personal access token](https://docs.digitalocean.com/reference/api/create-personal-access-token/), and put your SSH key IDs or fingerprints in `ssh_keys`:
+    Create the droplet from the `fossorial-praxisce1` image with the DigitalOcean API. Set `TOKEN` to a [personal access token](https://docs.digitalocean.com/reference/api/create-personal-access-token/), and put your SSH key IDs or fingerprints in `ssh_keys`:
 
     ```bash
     curl -X POST "https://api.digitalocean.com/v2/droplets" \
@@ -191,7 +191,7 @@ The [Praxis (CE) 1-Click App](https://marketplace.digitalocean.com/apps/praxis-c
         "name": "praxis",
         "region": "nyc3",
         "size": "s-1vcpu-2gb",
-        "image": "fossorial-pangolince1",
+        "image": "fossorial-praxisce1",
         "ssh_keys": ["<ssh-key-id-or-fingerprint>"]
       }'
     ```
@@ -200,7 +200,7 @@ The [Praxis (CE) 1-Click App](https://marketplace.digitalocean.com/apps/praxis-c
   <Tab title="doctl">
     ```bash
     doctl compute droplet create praxis \
-      --image fossorial-pangolince1 \
+      --image fossorial-praxisce1 \
       --region nyc3 \
       --size s-1vcpu-2gb \
       --ssh-keys <ssh-key-id-or-fingerprint> \
@@ -268,7 +268,7 @@ Both images install Praxis with Docker Compose in `/opt/praxis`. To update to ne
   Check that the dashboard domain resolves to the instance's public IP:
 
   ```bash
-  dig +short pangolin.example.com @1.1.1.1
+  dig +short praxis.example.com @1.1.1.1
   ```
 
   The instance keeps checking and installs anyway after `PANGOLIN_DNS_TIMEOUT` (30 minutes by default). If the server sits behind a load balancer, set `PANGOLIN_WAIT_FOR_DNS=false`. Follow progress with `sudo tail -f /var/log/praxis-setup.log`.
@@ -283,7 +283,7 @@ Both images install Praxis with Docker Compose in `/opt/praxis`. To update to ne
 </Accordion>
 
 <Accordion title="AWS setup failed">
-  Run `pangolin-setup status` and read `/var/log/praxis-setup.log`. After fixing the cause, run `sudo pangolin-setup` to try again.
+  Run `praxis-setup status` and read `/var/log/praxis-setup.log`. After fixing the cause, run `sudo praxis-setup` to try again.
 </Accordion>
 
 <Accordion title="Sites can't connect">

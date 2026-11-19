@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 
 /**
- * "Contents" list with scroll spy, same as the pangolin.net news article TOC
+ * "Contents" list with scroll spy, same as the praxis.net news article TOC
  * (landing-v5 `components/marketing/news-article-toc.tsx`).
  */
 

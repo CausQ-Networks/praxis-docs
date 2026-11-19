@@ -83,7 +83,7 @@ Recommended production pattern:
 3. Install the chart into that namespace.
 
 ```bash
-kubectl create namespace pangolin
+kubectl create namespace praxis
 ```
 
 Example namespace labels:
@@ -102,7 +102,7 @@ newtInstances:
   - name: main-tunnel
     allowGlobalOverride: true
     namespace:
-      name: pangolin
+      name: praxis
       create: false
       labels: {}
       podSecurity:
@@ -170,7 +170,7 @@ newtInstances:
   - name: main-tunnel
     enabled: true
     auth:
-      pangolinEndpoint: "https://praxis.example.com"
+      praxisEndpoint: "https://praxis.example.com"
       id: "<newt-id>"
       secret: "<newt-secret>"
 ```
@@ -198,7 +198,7 @@ newtInstances:
   - name: main-tunnel
     enabled: true
     auth:
-      pangolinEndpoint: https://praxis.example.com
+      praxisEndpoint: https://praxis.example.com
       provisioningKey: "<provisioning-key>"
       newtName: "my-site"
     configPersistence:
@@ -217,7 +217,7 @@ newtInstances:
   - name: main-tunnel
     enabled: true
     auth:
-      pangolinEndpoint: https://praxis.example.com
+      praxisEndpoint: https://praxis.example.com
       provisioningKey: "<provisioning-key>"
       newtName: "my-site"
     configPersistence:
@@ -235,7 +235,7 @@ newtInstances:
   - name: main-tunnel
     enabled: true
     auth:
-      pangolinEndpoint: https://praxis.example.com
+      praxisEndpoint: https://praxis.example.com
       provisioningKey: "<provisioning-key>"
       newtName: "my-site"
     configPersistence:

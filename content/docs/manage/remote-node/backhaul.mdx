@@ -41,7 +41,7 @@ Because the node forwards packets between the WireGuard tunnel and the host netw
 sudo sysctl -w net.ipv4.ip_forward=1
 ```
 
-Make it permanent by adding `net.ipv4.ip_forward=1` to `/etc/sysctl.d/99-pangolin-backhaul.conf`.
+Make it permanent by adding `net.ipv4.ip_forward=1` to `/etc/sysctl.d/99-praxis-backhaul.conf`.
 
 Docker enables forwarding in its own iptables rules by default, but if you've disabled Docker's iptables management, or packets are still being dropped, allow forwarded traffic through Docker's chain in `/etc/docker/daemon.json`:
 
@@ -58,17 +58,17 @@ Restart Docker after changing this file. See Docker's [packet filtering and fire
 The standard node install runs Gerbil and Traefik on a bridge network, with Traefik sharing Gerbil's network namespace. For backhaul, all three services run with `network_mode: host` instead. This gives Gerbil direct access to the host's network stack and routing table, which is required for it to create routes for the subnets you register instead of only handling its own tunnel traffic.
 
 ```yaml title="docker-compose.yml"
-name: pangolin
+name: praxis
 services:
-  pangolin:
+  praxis:
     image: docker.io/causq-networks/praxis-node:latest # We recommend locking to a specific version for stability.
-    container_name: pangolin
+    container_name: praxis
     restart: unless-stopped
     network_mode: host
     volumes:
       - ./config:/app/config
-      - pangolin-data-certificates:/var/certificates
-      - pangolin-data-dynamic:/var/dynamic
+      - praxis-data-certificates:/var/certificates
+      - praxis-data-dynamic:/var/dynamic
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001/api/v1/"]
       interval: "10s"
@@ -81,7 +81,7 @@ services:
     restart: unless-stopped
     network_mode: host
     depends_on:
-      pangolin:
+      praxis:
         condition: service_healthy
     command:
       - --reachableAt=http://localhost:3003
@@ -99,19 +99,19 @@ services:
     restart: unless-stopped
     network_mode: host
     depends_on:
-      pangolin:
+      praxis:
         condition: service_healthy
     command:
       - --configFile=/etc/traefik/traefik_config.yml
     volumes:
       - ./config/traefik:/etc/traefik:ro
       - ./config/traefik/logs:/var/log/traefik
-      - pangolin-data-certificates:/var/certificates:ro
-      - pangolin-data-dynamic:/var/dynamic:ro
+      - praxis-data-certificates:/var/certificates:ro
+      - praxis-data-dynamic:/var/dynamic:ro
 
 volumes:
-  pangolin-data-dynamic:
-  pangolin-data-certificates:
+  praxis-data-dynamic:
+  praxis-data-certificates:
 ```
 
 <Note>
@@ -242,9 +242,9 @@ sudo praxis up site \
 --no-cloud # Used to prevent it from failing over to Praxis nodes
 ```
 
-On Windows, set `nativeMain` in `C:\Users\<Username>\.config\pangolin\site.json` instead:
+On Windows, set `nativeMain` in `C:\Users\<Username>\.config\praxis\site.json` instead:
 
-```json title="C:\Users\<Username>\.config\pangolin\site.json"
+```json title="C:\Users\<Username>\.config\praxis\site.json"
 {
 	"id": "34s48my8iba5wsl",
 	"secret": "ts1v7480qqw01j7ba4uiw5y7l58skw7anpji2ndludhgzloh",
@@ -272,7 +272,7 @@ If you are using a Praxis Site on Windows, `wintun.dll` is required to run in na
 
 ## Resolving a Site's Address Directly
 
-If something outside of Praxis's normal resource routing needs to reach a site directly, for example a static route configured elsewhere in your network or a cloud service sending traffic to a specific edge device, you can resolve `<siteId>.site.pangolin.net` (the site ID is the one used in the `--id` argument when running the site) to get the site's current routable address.
+If something outside of Praxis's normal resource routing needs to reach a site directly, for example a static route configured elsewhere in your network or a cloud service sending traffic to a specific edge device, you can resolve `<siteId>.site.praxis.net` (the site ID is the one used in the `--id` argument when running the site) to get the site's current routable address.
 
 ## High Availability
 

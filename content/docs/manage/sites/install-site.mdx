@@ -28,7 +28,7 @@ Binaries for Linux, macOS, and Windows are available in the [GitHub releases](ht
 Run the site connector with the configuration from Praxis:
 
 ```bash
-pangolin up site \
+praxis up site \
 --id 31frd0uzbjvp721 \
 --secret h51mmlknrvrwv8s4r1i210azhumt6isgbpyavxodibx1k2d6 \
 --endpoint https://app.praxis.causq.com
@@ -100,7 +100,7 @@ WantedBy=multi-user.target
 ```
 
 <Warning>
-Make sure the binary exists at `/usr/local/bin/praxis` before daemon reload and starting the service: `~$ which pangolin`
+Make sure the binary exists at `/usr/local/bin/praxis` before daemon reload and starting the service: `~$ which praxis`
 </Warning>
 
 Reload systemd and enable the service:

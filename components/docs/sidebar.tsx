@@ -13,7 +13,7 @@ import { ArrowUpRightIcon, ChevronDownIcon, ChevronRightIcon, XIcon } from '@/co
 import { FeatureBanner } from '@/components/site/feature-banner';
 
 /**
- * Docs navigation, styled like pangolin.net: group labels like the news "Contents"
+ * Docs navigation, styled like praxis.net: group labels like the news "Contents"
  * heading, top-level rows like the install page nav, nested pages like the article
  * TOC (hairline rail, orange marker on the current page).
  */

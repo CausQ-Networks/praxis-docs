@@ -16,7 +16,7 @@ import { DocsToc, type TocItem } from '@/components/docs/toc';
 import { PageFeedback } from '@/components/page-feedback';
 import { ViewOptionsPopover } from '@/components/view-options';
 
-/** Docs page, laid out like a pangolin.net news article. */
+/** Docs page, laid out like a praxis.net news article. */
 export default async function Page(props: PageProps<'/[[...slug]]'>) {
   const params = await props.params;
   const page = source.getPage(params.slug);

@@ -4,7 +4,7 @@
       "group": "About",
       "pages": [
         "index",
-        "about/how-pangolin-works",
+        "about/how-praxis-works",
         "about/praxis-vs-reverse-proxy-vs-vpn",
         "about/praxis-vs-bifrost-vs-litellm",
         "about/praxis-cloud-vs-self-hosted"
@@ -391,7 +391,7 @@
     },
     {
       "label": "Trust Center",
-      "href": "https://trust.pangolin.net/"
+      "href": "https://trust.praxis.net/"
     }
   ],
   "anchors": [

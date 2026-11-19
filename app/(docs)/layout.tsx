@@ -9,7 +9,7 @@ import { getRepoStarCount } from '@/lib/repo-meta';
  * (content + "On this page") on the right. See app/(docs)/[[...slug]]/page.tsx.
  */
 export default async function Layout({ children }: LayoutProps<'/'>) {
-  const stars = await getRepoStarCount('pangolin');
+  const stars = await getRepoStarCount('praxis');
 
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-x-clip bg-background">

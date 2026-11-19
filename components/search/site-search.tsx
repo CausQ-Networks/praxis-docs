@@ -29,7 +29,7 @@ import { cn } from '@/lib/cn';
 import { SITE } from '@/lib/site';
 
 /**
- * Docs search (Cmd/Ctrl+K or "/"), the same dialog as pangolin.net's site search.
+ * Docs search (Cmd/Ctrl+K or "/"), the same dialog as praxis.net's site search.
  * Results come from the docs' own index (`/api/search`); a 3+ word query also offers
  * to ask Praxis AI. Each search is logged once for analytics (see `useSearchLog`).
  */
@@ -103,7 +103,7 @@ export function SearchShortcut({ className }: { className?: string }) {
   return <kbd className={className}>{label}</kbd>;
 }
 
-/** Search field look-alike that opens the dialog (pangolin.net news search) */
+/** Search field look-alike that opens the dialog (praxis.net news search) */
 export function SearchField({ className }: { className?: string }) {
   return (
     <SearchButton
@@ -135,7 +135,7 @@ type Item =
 
 const QUICK_LINKS: Item[] = [
   { kind: 'docs', key: 'q-install', url: '/self-host/quick-install', title: 'Quick install' },
-  { kind: 'docs', key: 'q-how', url: '/about/how-pangolin-works', title: 'How Praxis works' },
+  { kind: 'docs', key: 'q-how', url: '/about/how-praxis-works', title: 'How Praxis works' },
   { kind: 'docs', key: 'q-sites', url: '/manage/sites/understanding-sites', title: 'Sites' },
   {
     kind: 'docs',

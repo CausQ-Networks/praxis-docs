@@ -33,10 +33,10 @@ Adjust the unit and env file names to match what you created.
 
 ## Remove the Binary
 
-Find and delete the `pangolin` binary:
+Find and delete the `praxis` binary:
 
 ```bash
-sudo rm -f "$(command -v pangolin)"
+sudo rm -f "$(command -v praxis)"
 ```
 
 The installer usually places it at `/usr/local/bin/praxis`.
@@ -52,7 +52,7 @@ If you installed the CLI from the Windows desktop app menu (**Install Praxis CLI
 The CLI stores settings and session data under its config directory. Print the path, then delete it:
 
 ```bash
-pangolin config path
+praxis config path
 rm -rf ~/.config/praxis
 ```
 

@@ -83,7 +83,7 @@ Remove-Item -Recurse -Force "$env:PROGRAMDATA\newt"
 If you installed Newt with Helm:
 
 ```bash
-helm uninstall newt --namespace pangolin
+helm uninstall newt --namespace praxis
 ```
 
 Use your actual release name and namespace if they differ. Uninstalling the release does not always delete PersistentVolumeClaims, Secrets you created outside Helm, or related DNS and certificates. Review those resources before deleting them.

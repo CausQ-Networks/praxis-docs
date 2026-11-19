@@ -119,14 +119,14 @@ Create `docker-compose.yml` in your project root:
 
 ```yaml title="docker-compose.yml"
 services:
-  pangolin:
+  praxis:
     image: causq-networks/praxis:latest # https://github.com/CausQ-Networks/praxis/releases
-    container_name: pangolin
+    container_name: praxis
     restart: unless-stopped
     volumes:
       - ./config:/app/config
-      - pangolin-data:/var/certificates
-      - pangolin-data:/var/dynamic
+      - praxis-data:/var/certificates
+      - praxis-data:/var/dynamic
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001/api/v1/"]
       interval: "3s"
@@ -138,7 +138,7 @@ services:
     container_name: gerbil
     restart: unless-stopped
     depends_on:
-      pangolin:
+      praxis:
         condition: service_healthy
     command:
       - --reachableAt=http://gerbil:3004
@@ -161,7 +161,7 @@ services:
     restart: unless-stopped
     network_mode: service:gerbil # Ports appear on the gerbil service
     depends_on:
-      pangolin:
+      praxis:
         condition: service_healthy
     command:
       - --configFile=/etc/traefik/traefik_config.yml
@@ -169,16 +169,16 @@ services:
       - ./config/traefik:/etc/traefik:ro # Volume to store the Traefik configuration
       - ./config/letsencrypt:/letsencrypt # Volume to store the Let's Encrypt certificates
       # Shared volume for certificates and dynamic config in file mode
-      - pangolin-data:/var/certificates:ro
-      - pangolin-data:/var/dynamic:ro
+      - praxis-data:/var/certificates:ro
+      - praxis-data:/var/dynamic:ro
 
 networks:
   default:
     driver: bridge
-    name: pangolin
+    name: praxis
 
 volumes:
-  pangolin-data:
+  praxis-data:
 ```
 
 ## Traefik Static Configuration

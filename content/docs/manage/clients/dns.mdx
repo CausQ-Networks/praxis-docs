@@ -184,7 +184,7 @@ Upstream DNS is where the Praxis resolver sends queries that are not Praxis reco
 - **Port.** Port 53 is used unless you give one, as in `10.0.0.53:5353`.
 
 ```bash
-pangolin up --upstream-dns 1.1.1.1,9.9.9.9
+praxis up --upstream-dns 1.1.1.1,9.9.9.9
 ```
 
 Upstream DNS only applies when Override DNS is on. With it off, the OS uses its own resolvers and never sends anything to the Praxis resolver.
@@ -210,7 +210,7 @@ Patterns use the same wildcard rules as aliases and are not case-sensitive:
 - `host-0?.corp.internal` matches `host-01.corp.internal` but not `host-10.corp.internal`.
 
 ```bash
-pangolin up --match-domains "*.corp.internal,*.apps.example.com"
+praxis up --match-domains "*.corp.internal,*.apps.example.com"
 ```
 
 **When to use match domains:**

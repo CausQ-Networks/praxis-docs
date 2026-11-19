@@ -53,7 +53,7 @@ import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react';
 type IconComponent = (props: SVGProps<SVGSVGElement>) => React.ReactElement;
 
 /**
- * UI icons are Hugeicons (stroke rounded), the same set as pangolin.net. Size and
+ * UI icons are Hugeicons (stroke rounded), the same set as praxis.net. Size and
  * colour come from the caller's classes (`size-*`, `text-*`).
  */
 function huge(icon: IconSvgElement): IconComponent {

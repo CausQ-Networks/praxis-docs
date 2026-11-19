@@ -26,7 +26,7 @@ The classic Helm repository flow is the default path for most installations:
 
 ```bash
 helm install my-newt fossorial/newt
-helm install my-pangolin fossorial/praxis
+helm install my-praxis fossorial/praxis
 ```
 
 ## Installation overview
@@ -38,7 +38,7 @@ A typical Helm installation flow looks like this:
     Create the namespace manually and apply required labels or annotations.
   </Step>
   <Step title="Prepare values files">
-    Create a `values.yaml` file for each release (`values-pangolin.yaml`, `values-newt.yaml`).
+    Create a `values.yaml` file for each release (`values-praxis.yaml`, `values-newt.yaml`).
   </Step>
   <Step title="Install with Helm">
     Install with `helm upgrade --install` to support first install and future updates with the same command.
@@ -61,7 +61,7 @@ For detailed installation steps, see:
 ```bash tab="Classic Helm repository"
 helm upgrade --install praxis fossorial/praxis \
   --namespace praxis \
-  --values values-pangolin.yaml
+  --values values-praxis.yaml
 
 helm upgrade --install newt fossorial/newt \
   --namespace praxis \
@@ -72,7 +72,7 @@ helm upgrade --install newt fossorial/newt \
 helm upgrade --install praxis oci://ghcr.io/fosrl/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
   --namespace praxis \
-  --values values-pangolin.yaml
+  --values values-praxis.yaml
 
 helm upgrade --install newt oci://ghcr.io/fosrl/helm-charts/newt \
   --version 1.4.0 \
@@ -85,7 +85,7 @@ helm upgrade --install newt oci://ghcr.io/fosrl/helm-charts/newt \
 Create the namespace before installing the chart:
 
 ```bash
-kubectl create namespace pangolin
+kubectl create namespace praxis
 ```
 
 If your cluster uses Pod Security Admission or namespace-based policies, apply the required labels before installation.
@@ -114,7 +114,7 @@ Praxis example:
 ```bash
 helm upgrade --install praxis fossorial/praxis \
   --namespace praxis \
-  --values values-pangolin.yaml
+  --values values-praxis.yaml
 ```
 
 Newt example:
@@ -138,7 +138,7 @@ Keep reusable configuration in a values file:
 ```bash
 helm upgrade --install praxis fossorial/praxis \
   --namespace praxis \
-  --values values-pangolin.yaml
+  --values values-praxis.yaml
 ```
 
 Use `--set` only for small tests or temporary overrides:
@@ -151,7 +151,7 @@ helm upgrade --install praxis fossorial/praxis \
 
 Common value sources:
 
-* `values-pangolin.yaml` for Praxis.
+* `values-praxis.yaml` for Praxis.
 * `values-newt.yaml` for Newt.
 * Kubernetes Secrets for credentials.
 * Existing cluster resources such as TLS secrets, StorageClasses, or ingress controllers.
@@ -220,7 +220,7 @@ Praxis example:
 helm upgrade --install praxis oci://ghcr.io/fosrl/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
   --namespace praxis \
-  --values values-pangolin.yaml
+  --values values-praxis.yaml
 ```
 
 <Info>
@@ -244,7 +244,7 @@ Classic Helm repository:
 ```bash
 helm upgrade praxis fossorial/praxis \
   --namespace praxis \
-  --values values-pangolin.yaml
+  --values values-praxis.yaml
 ```
 
 OCI:
@@ -253,7 +253,7 @@ OCI:
 helm upgrade praxis oci://ghcr.io/fosrl/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
   --namespace praxis \
-  --values values-pangolin.yaml
+  --values values-praxis.yaml
 ```
 
 ### Upgrade Newt
@@ -278,53 +278,53 @@ helm upgrade newt oci://ghcr.io/fosrl/helm-charts/newt \
 ### Check release status
 
 ```bash
-helm status praxis --namespace pangolin
-helm history praxis --namespace pangolin
+helm status praxis --namespace praxis
+helm history praxis --namespace praxis
 ```
 
 ```bash
-helm status newt --namespace pangolin
-helm history newt --namespace pangolin
+helm status newt --namespace praxis
+helm history newt --namespace praxis
 ```
 
 ### View rendered manifests
 
 ```bash
-helm get manifest praxis --namespace pangolin
+helm get manifest praxis --namespace praxis
 ```
 
 ```bash
-helm get manifest newt --namespace pangolin
+helm get manifest newt --namespace praxis
 ```
 
 ### View applied values
 
 ```bash
-helm get values praxis --namespace pangolin
+helm get values praxis --namespace praxis
 ```
 
 ```bash
-helm get values newt --namespace pangolin
+helm get values newt --namespace praxis
 ```
 
 ### Roll back a release
 
 ```bash
-helm rollback praxis <revision> --namespace pangolin
+helm rollback praxis <revision> --namespace praxis
 ```
 
 ```bash
-helm rollback newt <revision> --namespace pangolin
+helm rollback newt <revision> --namespace praxis
 ```
 
 ### Uninstall a release
 
 ```bash
-helm uninstall praxis --namespace pangolin
+helm uninstall praxis --namespace praxis
 ```
 
 ```bash
-helm uninstall newt --namespace pangolin
+helm uninstall newt --namespace praxis
 ```
 
 <Warning>
@@ -348,10 +348,10 @@ helm get manifest <release-name> --namespace <namespace>
 Useful Kubernetes commands:
 
 ```bash
-kubectl get pods -n pangolin
+kubectl get pods -n praxis
 kubectl get events -n praxis --sort-by=.lastTimestamp
-kubectl describe pod <pod-name> -n pangolin
-kubectl logs <pod-name> -n pangolin
+kubectl describe pod <pod-name> -n praxis
+kubectl logs <pod-name> -n praxis
 ```
 
 ## Next steps

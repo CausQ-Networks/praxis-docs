@@ -16,7 +16,7 @@ Start with the basic checks, then move to the section that matches the symptom.
 Set the namespace and release name used by your installation:
 
 ```bash
-export NEWT_NAMESPACE=pangolin
+export NEWT_NAMESPACE=praxis
 export NEWT_RELEASE=newt
 ```
 
@@ -189,7 +189,7 @@ kubectl get pod "$NEWT_POD" --namespace "$NEWT_NAMESPACE" -o yaml | grep -A5 -B2
 
 ```bash
 kubectl exec "$NEWT_POD" --namespace "$NEWT_NAMESPACE" -- \
-  nslookup pangolin.example.com
+  nslookup praxis.example.com
 ```
 
 ### Test HTTPS from the Newt pod
@@ -275,7 +275,7 @@ newtInstances:
   - name: main-tunnel
     enabled: true
     auth:
-      pangolinEndpoint: https://praxis.example.com
+      praxisEndpoint: https://praxis.example.com
       provisioningKey: "<provisioning-key>"
       newtName: "my-site"
     configPersistence:
@@ -292,7 +292,7 @@ newtInstances:
   - name: main-tunnel
     enabled: true
     auth:
-      pangolinEndpoint: https://praxis.example.com
+      praxisEndpoint: https://praxis.example.com
       provisioningKey: "<provisioning-key>"
       newtName: "my-site"
     configPersistence:

@@ -6,7 +6,7 @@ description: "Install, configure, and update the Praxis client for Linux"
 ## Install
 
 - [Praxis for Linux](https://praxis.net/downloads/linux) - This is the official page to download the latest packages for Linux.
-- [All Versions](https://github.com/fosrl/windows-linux/releases) - The releases section of this repository contains release notes and download artifacts for the latest version and all older versions.
+- [All Versions](https://github.com/CausQ-Networks/praxis-desktop/releases) - The releases section of this repository contains release notes and download artifacts for the latest version and all older versions.
 
 Praxis for Linux runs on Ubuntu 22.04 or later, Debian 12 or later, and current Fedora, openSUSE, and Arch Linux. Packages are available for x86_64 (`amd64`) and ARM64 (`arm64`). RHEL 9 and its rebuilds do not ship WebKitGTK 4.1, so they cannot install the package.
 
@@ -100,7 +100,7 @@ The extension is installed with the package but is not turned on automatically. 
 2. Enable it in the **Extensions** app, or run:
 
 ```bash
-gnome-extensions enable pangolin@pangolin.net
+gnome-extensions enable praxis@praxis.net
 ```
 
 If you use the AppIndicator extension instead, Praxis's icon appears there too, but it opens the menu only on a double-click. While the Praxis extension is on, Praxis hides its AppIndicator icon so only one icon shows.
@@ -143,7 +143,7 @@ On Linux, companion mode is on by default once both the desktop app and the CLI 
 3. Run CLI commands in a terminal. For example, open SSH to a [private SSH resource](/manage/resources/private/ssh):
 
 ```bash
-pangolin ssh username@alias
+praxis ssh username@alias
 ```
 
 The CLI follows the account, organization, and exit node selected in the desktop app. Change those in the app. While companion mode is on, `praxis login`, `praxis logout`, and `praxis select` for account, organization, or exit node are blocked.
@@ -168,7 +168,7 @@ When enabled, the tunnel connects whenever Praxis starts. This also opens Praxis
 
 ### Config File
 
-On Linux, the Praxis GUI reads configuration from two `pangolin.json` files:
+On Linux, the Praxis GUI reads configuration from two `praxis.json` files:
 
 - User config: `~/.config/praxis-client/praxis.json` (or `$XDG_CONFIG_HOME/praxis-client/praxis.json`)
 - System config: `/etc/praxis-client/praxis.json`, for every user of the computer
@@ -178,7 +178,7 @@ These are separate from Praxis CLI's files in `~/.config/praxis`.
 Most keys in the `Config` object below can be set in either file. If the same key is in both, the user config's value is used, so administrators can set defaults in the system config while each user can still change their own. Keys marked **System config only** must be set in `/etc/praxis-client/praxis.json`; after changing them, restart the background service (`sudo systemctl restart praxis-client`, or `sudo rc-service praxis-client restart` on OpenRC) and reopen Praxis. See [Which Setting Applies](#which-setting-applies) for how the two files combine with per-organization settings and server-side client settings.
 
 <ResponseField name="Config" type="object">
-  JSON configuration for the Linux Praxis client stored in `pangolin.json`.
+  JSON configuration for the Linux Praxis client stored in `praxis.json`.
 
   <Expandable title="Config">
     <ResponseField name="dnsOverride" type="boolean">
@@ -264,7 +264,7 @@ Most keys in the `Config` object below can be set in either file. If the same ke
   </Expandable>
 </ResponseField>
 
-As a system administrator, you can script placing `pangolin.json` in `/etc/praxis-client/` to set defaults for every user, and/or in each user's `~/.config/praxis-client/` folder for per-user settings.
+As a system administrator, you can script placing `praxis.json` in `/etc/praxis-client/` to set defaults for every user, and/or in each user's `~/.config/praxis-client/` folder for per-user settings.
 
 ### Per-Organization Settings
 
@@ -280,7 +280,7 @@ The app writes the user config. In **Settings** > **Connection**, an organizatio
 
 The system config and the user config have the same format, including `orgs`. When the client connects to an organization, it uses each connection setting from the first place that sets it:
 
-1. [Server-side client settings](/manage/clients/server-side-settings) for the user's role in the organization. These always apply: nothing in either `pangolin.json` or the app can change a setting the server manages.
+1. [Server-side client settings](/manage/clients/server-side-settings) for the user's role in the organization. These always apply: nothing in either `praxis.json` or the app can change a setting the server manages.
 2. The organization's entry in `orgs` in the user config.
 3. The organization's entry in `orgs` in the system config.
 4. The top-level key in the user config.
@@ -347,7 +347,7 @@ You can also check from the system tray: **More** > **Check for Updates…**.
 
 ### Manual Updates
 
-Find the latest version in the [GitHub releases](https://github.com/fosrl/windows-linux/releases), or on [https://praxis.net/downloads/linux](https://praxis.net/downloads/linux).
+Find the latest version in the [GitHub releases](https://github.com/CausQ-Networks/praxis-desktop/releases), or on [https://praxis.net/downloads/linux](https://praxis.net/downloads/linux).
 
 Re-run the installation script to upgrade to the latest version:
 

@@ -8,7 +8,7 @@ export type NotFoundLink = {
   url: string;
 };
 
-const fallbackUrls = ['/', '/about/how-pangolin-works', '/self-host/quick-install'];
+const fallbackUrls = ['/', '/about/how-praxis-works', '/self-host/quick-install'];
 
 function segments(path: string) {
   return path.split('/').filter(Boolean);

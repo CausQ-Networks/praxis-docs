@@ -33,7 +33,7 @@ function FooterLink({ link }: { link: FooterLinkData }) {
 }
 
 /**
- * Laid out like the pangolin.net footer (logo column, link columns, slim legal row),
+ * Laid out like the praxis.net footer (logo column, link columns, slim legal row),
  * with docs links. Columns live in `lib/site.ts`.
  */
 export function SiteFooter() {
@@ -47,7 +47,7 @@ export function SiteFooter() {
             <Link
               href="/"
               aria-label="Praxis Docs home"
-              title="Fossorial (adj.): adapted for digging. Like a pangolin."
+              title="Fossorial (adj.): adapted for digging. Like a praxis."
               className="flex w-fit items-center gap-2.5"
             >
               <Logo className="h-7" />

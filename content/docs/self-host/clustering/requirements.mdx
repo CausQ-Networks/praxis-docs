@@ -33,7 +33,7 @@ For sizing information, see [Choosing a VPS](/self-host/choosing-a-vps) - the sa
 
 ### Dashboard Domain
 
-You also need a domain for the Praxis UI and API itself (e.g. `pangolin.example.com`) - this is separate from the nameserver domain above, which is the nameserver to resolve resource DNS.
+You also need a domain for the Praxis UI and API itself (e.g. `praxis.example.com`) - this is separate from the nameserver domain above, which is the nameserver to resolve resource DNS.
 
 Point this domain's DNS record at your **load balancer**, not at either node directly. The load balancer is also responsible for obtaining and serving the TLS certificate for this domain - the nodes' built-in ACME client only issues certificates for resource domains under the delegated nameserver zone, not for the dashboard domain. Terminate TLS at the load balancer and forward plain HTTP to the nodes.
 

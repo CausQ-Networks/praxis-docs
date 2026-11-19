@@ -3,7 +3,7 @@ title: "TCP / UDP"
 description: "Expose raw TCP and UDP services on a Praxis server port without authentication"
 ---
 
-TCP and UDP public resources are protocol-agnostic proxies. Unlike HTTP/HTTPS, SSH, RDP, and VNC, they do **not** receive a fully qualified domain name or TLS certificate. Instead, each resource binds to a port on the Praxis server host. Clients connect to `<pangolin-server>:<port>` and traffic is forwarded to the downstream service through a site connector.
+TCP and UDP public resources are protocol-agnostic proxies. Unlike HTTP/HTTPS, SSH, RDP, and VNC, they do **not** receive a fully qualified domain name or TLS certificate. Instead, each resource binds to a port on the Praxis server host. Clients connect to `<praxis-server>:<port>` and traffic is forwarded to the downstream service through a site connector.
 
 Because TCP and UDP resources are not protocol-aware, they do **not** enforce Praxis authentication or access rules. They are simple pipes—use them only when you need a raw public proxy and accept that traffic is unauthenticated at the Praxis layer.
 
@@ -26,7 +26,7 @@ For workloads that do not need a public proxy, prefer a [private host or CIDR re
 ## How TCP and UDP Resources Work
 
 1. You map a port on the Praxis server to the resource.
-2. A client connects to `<pangolin-server>:<port>`.
+2. A client connects to `<praxis-server>:<port>`.
 3. Praxis forwards the traffic as-is through the tunnel to a site, which delivers it to the target.
 
 Praxis does not inspect or authenticate the traffic, so any security has to come from the service itself.

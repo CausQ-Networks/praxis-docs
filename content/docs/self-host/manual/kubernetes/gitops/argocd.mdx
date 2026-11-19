@@ -10,7 +10,7 @@ Argo CD is a declarative GitOps tool that continuously syncs your cluster state 
 ### Step 1: Create Praxis namespace
 
 ```bash
-kubectl create namespace pangolin
+kubectl create namespace praxis
 ```
 
 ### Step 2: Create Application
@@ -21,14 +21,14 @@ Create an Argo CD Application resource that tells Argo CD to deploy Praxis using
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: pangolin
+  name: praxis
   namespace: argocd
 spec:
   project: default
 
   source:
     repoURL: https://charts.fossorial.io
-    chart: pangolin
+    chart: praxis
     targetRevision: 0.1.0-alpha.0  # or use ~0.1.0 for range
     helm:
       values: |
@@ -39,7 +39,7 @@ spec:
         database:
           mode: cloudnativepg
 
-        pangolin:
+        praxis:
           config:
             app:
               dashboard_url: https://praxis.example.com
@@ -53,18 +53,18 @@ spec:
           enabled: true
           className: traefik
           hosts:
-            - host: pangolin.example.com
+            - host: praxis.example.com
               paths:
                 - path: /
                   pathType: Prefix
           tls:
-            - secretName: pangolin-tls
+            - secretName: praxis-tls
               hosts:
-                - pangolin.example.com
+                - praxis.example.com
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: pangolin
+    namespace: praxis
 
   syncPolicy:
     syncOptions:
@@ -77,26 +77,26 @@ spec:
 Apply the Application:
 
 ```bash
-kubectl apply -f pangolin-app.yaml
+kubectl apply -f praxis-app.yaml
 ```
 
 ### Step 3: Monitor in Argo CD
 
-In the Argo CD UI, you should see the `pangolin` application. Argo CD will:
+In the Argo CD UI, you should see the `praxis` application. Argo CD will:
 
 1. Fetch the Helm chart from `https://charts.fossorial.io`
 2. Render the chart with your inline `values`
-3. Create all resources in the `pangolin` namespace
+3. Create all resources in the `praxis` namespace
 4. Continuously monitor for drift
 
 ### Step 4: Verify deployment
 
 ```bash
 # Check Argo CD status
-kubectl describe app -n argocd pangolin
+kubectl describe app -n argocd praxis
 
 # Check pod status
-kubectl get pods -n pangolin
+kubectl get pods -n praxis
 ```
 
 ## Install Newt with Argo CD using Helm
@@ -136,7 +136,7 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: pangolin
+    namespace: praxis
 
   syncPolicy:
     syncOptions:
@@ -161,7 +161,7 @@ Instead of inline values, you can store configuration in Git and have Argo CD de
 ```
 infrastructure/
 ├── apps/
-│   ├── pangolin/
+│   ├── praxis/
 │   │   ├── values-base.yaml
 │   │   ├── values-prod.yaml
 │   │   └── app.yaml  (Argo CD Application CRD)
@@ -170,7 +170,7 @@ infrastructure/
 │       └── app.yaml
 └── clusters/
     └── production/
-        ├── pangolin.yaml (reference to app)
+        ├── praxis.yaml (reference to app)
         └── newt.yaml
 ```
 
@@ -180,7 +180,7 @@ infrastructure/
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: pangolin
+  name: praxis
   namespace: argocd
 spec:
   project: default
@@ -194,11 +194,11 @@ spec:
         deployment:
           type: controller
           mode: multi
-      releaseName: pangolin
+      releaseName: praxis
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: pangolin
+    namespace: praxis
 
   syncPolicy:
     syncOptions:
@@ -218,7 +218,7 @@ Deploy Praxis using Kustomize overlays:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: pangolin
+  name: praxis
   namespace: argocd
 spec:
   project: default
@@ -230,7 +230,7 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: pangolin
+    namespace: praxis
 
   syncPolicy:
     syncOptions:
@@ -269,7 +269,7 @@ syncPolicy:
 Manually sync:
 
 ```bash
-argocd app sync pangolin
+argocd app sync praxis
 # or use UI
 ```
 
@@ -281,7 +281,7 @@ Deploy Praxis and Newt across multiple clusters or environments:
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: pangolin-multienv
+  name: praxis-multienv
   namespace: argocd
 spec:
   generators:
@@ -293,7 +293,7 @@ spec:
             env: staging
   template:
     metadata:
-      name: pangolin-{{ .cluster }}
+      name: praxis-{{ .cluster }}
     spec:
       project: default
       source:
@@ -302,7 +302,7 @@ spec:
         targetRevision: main
       destination:
         name: '{{ .cluster }}'
-        namespace: pangolin
+        namespace: praxis
       syncPolicy:
         automated:
           prune: true
@@ -316,7 +316,7 @@ If the Helm chart is available in an OCI registry:
 ```yaml
 source:
   repoURL: oci://registry.example.com/fossorial
-  chart: pangolin
+  chart: praxis
   targetRevision: 0.1.0-alpha.0
   helm:
     values: |
@@ -330,15 +330,15 @@ OCI chart references work the same as traditional Helm repository references in 
 ### Check Application status
 
 ```bash
-kubectl describe app -n argocd pangolin
+kubectl describe app -n argocd praxis
 kubectl get app -n argocd praxis -o yaml
 ```
 
 ### Check sync status
 
 ```bash
-argocd app get pangolin
-argocd app logs pangolin
+argocd app get praxis
+argocd app logs praxis
 ```
 
 ### Manual sync
@@ -350,13 +350,13 @@ argocd app sync praxis --force
 ### Refresh from repository
 
 ```bash
-argocd app diff pangolin
+argocd app diff praxis
 ```
 
 ### Delete Application
 
 ```bash
-kubectl delete app -n argocd pangolin
+kubectl delete app -n argocd praxis
 ```
 
 ## Common patterns
@@ -399,7 +399,7 @@ apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
   name: newt-auth
-  namespace: pangolin
+  namespace: praxis
 spec:
   encryptedData:
     PRAXIS_ENDPOINT: AgC4F5qd...

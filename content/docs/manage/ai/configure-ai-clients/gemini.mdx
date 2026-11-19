@@ -15,25 +15,25 @@ You'll need the resource's URL (its `<endpoint>`) and its API key (`<key>`). Bot
 [Install the Praxis CLI](/manage/clients/platforms/cli#install) if you don't have it, then log in:
 
 ```bash
-pangolin login
+praxis login
 ```
 
 Configure Gemini CLI against a resource:
 
 ```bash
-pangolin configure gemini
+praxis configure gemini
 ```
 
 This prompts you to pick an organization and resource if you have more than one, fetches a key for you if the resource needs one, and writes `~/.gemini/.env` - the file Gemini CLI loads automatically on every run, regardless of which directory you start it from. To skip the prompts:
 
 ```bash
-pangolin configure gemini --resource <resource-niceid-or-domain>
+praxis configure gemini --resource <resource-niceid-or-domain>
 ```
 
 To undo it:
 
 ```bash
-pangolin configure gemini --reset
+praxis configure gemini --reset
 ```
 
 ## Manual setup

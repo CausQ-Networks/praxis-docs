@@ -6,7 +6,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react';
 
-/** UI icons from Hugeicons (stroke rounded), same set as pangolin.net */
+/** UI icons from Hugeicons (stroke rounded), same set as praxis.net */
 function hugeIcon(icon: IconSvgElement) {
   return function Icon({ className, strokeWidth }: { className?: string; strokeWidth?: number }) {
     return <HugeiconsIcon icon={icon} className={className} strokeWidth={strokeWidth} />;

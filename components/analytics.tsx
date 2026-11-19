@@ -1,7 +1,7 @@
 import Script from 'next/script';
 
 /**
- * Same analytics as the Mintlify site (PostHog via the pangolin.net relay, Rybbit).
+ * Same analytics as the Mintlify site (PostHog via the praxis.net relay, Rybbit).
  * Only loaded in production builds; set NEXT_PUBLIC_DISABLE_ANALYTICS=1 to turn off.
  */
 const POSTHOG_KEY = 'phc_RIHQ7o2Y2hf8qms2nP62vpoJHEvsrw6TieflQGQO7yI';

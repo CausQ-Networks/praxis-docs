@@ -30,7 +30,7 @@ Below is an example if you're working on the Praxis repository.
 
   ```bash
   git clone https://github.com/YOUR_USERNAME/praxis.git
-  cd pangolin/
+  cd praxis/
   ```
 </Step>
 
@@ -223,10 +223,10 @@ INSERT INTO "exitNodes" (
 VALUES (
     'exit-node-1', 
     '10.0.0.1/24', 
-    'gerbil.pangolin.net', 
+    'gerbil.praxis.net', 
     'abc123', 
     1234, 
-    'gerbil.pangolin.net', 
+    'gerbil.praxis.net', 
     'gerbil'
 );
 ```
@@ -248,7 +248,7 @@ Windows users with Docker Desktop + WSL2: File change detection may not work pro
     - For further information, see Link Section below.
 
   - **Accessing WSL2 files from Windows:**
-    - You can access your WSL2 home directory from Windows using the UNC path: `\\wsl$\<DistroName>\home\<user>\pangolin` (replace `<DistroName>` with your actual WSL distribution, e.g. `Ubuntu-22.04`).
+    - You can access your WSL2 home directory from Windows using the UNC path: `\\wsl$\<DistroName>\home\<user>\praxis` (replace `<DistroName>` with your actual WSL distribution, e.g. `Ubuntu-22.04`).
     - This path works in Windows Explorer, VS Code, and other Windows applications. You can drag & drop files, create shortcuts, or map a network drive for convenience.
     - **Note:** This UNC path is for Windows tools only. Do not use it for Docker container mounts.
 

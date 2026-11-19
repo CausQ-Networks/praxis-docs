@@ -69,7 +69,7 @@ newt-deployment/
 Create the namespace before applying rendered manifests:
 
 ```bash
-kubectl create namespace pangolin
+kubectl create namespace praxis
 ```
 
 If your cluster uses Pod Security Admission, namespace labels, or other policy labels, apply them before creating workloads.
@@ -174,7 +174,7 @@ resources:
 ```
 
 <Note>
-The namespace is already rendered by Helm through `--namespace pangolin`. You can also set `namespace: pangolin` in Kustomize, but avoid changing namespaces in overlays unless you have verified all rendered resources and references.
+The namespace is already rendered by Helm through `--namespace praxis`. You can also set `namespace: praxis` in Kustomize, but avoid changing namespaces in overlays unless you have verified all rendered resources and references.
 </Note>
 
 ## Step 6: Inspect the rendered resource names
@@ -519,7 +519,7 @@ Do not run `helm upgrade` against a release that is managed by Kustomize.
 Avoid this pattern:
 
 ```bash
-helm upgrade newt fossorial/newt --namespace pangolin
+helm upgrade newt fossorial/newt --namespace praxis
 kubectl apply -k overlays/site-a
 ```
 
@@ -554,7 +554,7 @@ kustomize build overlays/site-a | kubectl diff -f -
 Check live resources:
 
 ```bash
-kubectl get all --namespace pangolin
+kubectl get all --namespace praxis
 kubectl get events --namespace praxis --sort-by=.lastTimestamp
 ```
 
@@ -575,8 +575,8 @@ Then verify the patch target in your overlay.
 Check pod status and events:
 
 ```bash
-kubectl get pods --namespace pangolin
-kubectl describe pod <pod-name> --namespace pangolin
+kubectl get pods --namespace praxis
+kubectl describe pod <pod-name> --namespace praxis
 kubectl get events --namespace praxis --sort-by=.lastTimestamp
 ```
 

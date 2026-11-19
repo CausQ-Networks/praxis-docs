@@ -15,7 +15,7 @@ Refer to the [documentation in the official repository](https://github.com/CausQ
 
 ## Install
 
-Use this command to automatically install Praxis CLI. It detects your system architecture automatically and always pulls the latest version, adding `pangolin` to your PATH:
+Use this command to automatically install Praxis CLI. It detects your system architecture automatically and always pulls the latest version, adding `praxis` to your PATH:
 
 ```bash
 curl -fsSL https://praxis.causq.com/get-cli.sh | bash
@@ -177,29 +177,29 @@ Companion mode is available on Windows only, and it requires Praxis for Windows 
 2. SSH to a [private SSH resource](/manage/resources/private/ssh):
 
 ```bash
-pangolin ssh username@alias
+praxis ssh username@alias
 ```
 
 The CLI uses the desktop app's session and the tunnel that app already opened. `praxis scp` works the same way.
 
 ### Commands
 
-Enable companion mode. This takes effect on the next `pangolin` command:
+Enable companion mode. This takes effect on the next `praxis` command:
 
 ```bash
-pangolin companion enable
+praxis companion enable
 ```
 
 Turn it off and go back to a standalone CLI login:
 
 ```bash
-pangolin companion disable
+praxis companion disable
 ```
 
 Check whether the desktop app session is ready:
 
 ```bash
-pangolin companion status
+praxis companion status
 ```
 
 When the desktop app is logged in, status looks like this:
@@ -309,7 +309,7 @@ Find the latest version in the [GitHub releases](https://github.com/CausQ-Networ
 If you already have Praxis CLI installed, use the update command:
 
 ```bash
-pangolin update
+praxis update
 ```
 
 Or you can re-run the installation script:

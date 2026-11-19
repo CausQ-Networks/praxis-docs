@@ -6,10 +6,10 @@ description: "API routes and patterns for the most common actions and flows"
 All routes in this guide require an API key. See [Integration API](/manage/integration-api) for creating and using API keys (Bearer token in the `Authorization` header). Many routes use an organization ID in the path — see [Organization ID](/manage/organizations/org-id) for where to find it.
 
 <Note>
-This guide is a **minimal** walkthrough for creating core Praxis components (sites, resources, targets) via the API. It is not exhaustive — some elements are omitted for simplicity — but everything shown here works and illustrates patterns used elsewhere in the API. For full coverage of endpoints (get, update, delete, list, etc.), use the [Swagger docs](https://api.pangolin.net/v1/docs).
+This guide is a **minimal** walkthrough for creating core Praxis components (sites, resources, targets) via the API. It is not exhaustive — some elements are omitted for simplicity — but everything shown here works and illustrates patterns used elsewhere in the API. For full coverage of endpoints (get, update, delete, list, etc.), use the [Swagger docs](https://api.praxis.net/v1/docs).
 </Note>
 
-OpenAPI-compliant documentation is available at https://api.pangolin.net/v1/openapi.json and https://api.pangolin.net/v1/openapi.yaml
+OpenAPI-compliant documentation is available at https://api.praxis.net/v1/openapi.json and https://api.praxis.net/v1/openapi.yaml
 
 ## What is an identifier?
 
@@ -33,7 +33,7 @@ Use the numeric ID when an endpoint asks for `siteId`, `resourceId`, or `siteRes
 
 ## Create site
 
-This section assumes you're creating a **Praxis Site**. For all Site endpoints, see [Site API (Swagger)](https://api.pangolin.net/v1/docs/#/Site).
+This section assumes you're creating a **Praxis Site**. For all Site endpoints, see [Site API (Swagger)](https://api.praxis.net/v1/docs/#/Site).
 
 **PUT** `/org/{orgId}/site`
 
@@ -134,7 +134,7 @@ Returns values you pass into the create-site endpoint. The response also include
 
 ## Create public HTTP resource
 
-You need a **domain ID** before creating a resource. List your org's domains, then create the resource with the chosen domain. For all public resource endpoints, see [Public Resource API (Swagger)](https://api.pangolin.net/v1/docs/#/Public%20Resource).
+You need a **domain ID** before creating a resource. List your org's domains, then create the resource with the chosen domain. For all public resource endpoints, see [Public Resource API (Swagger)](https://api.praxis.net/v1/docs/#/Public%20Resource).
 
 <Steps>
 <Step title="List domains">
@@ -170,13 +170,13 @@ Returns all domains for the organization. Use `domainId` from a domain when crea
     "domains": [
       {
         "domainId": "pg3i1k4lhibhl3i",
-        "baseDomain": "pangolin.net",
+        "baseDomain": "praxis.net",
         "verified": true,
         "type": "ns"
       },
       {
         "domainId": "q1ngj5341k7oydo",
-        "baseDomain": "bitwarden.pangolin.net",
+        "baseDomain": "bitwarden.praxis.net",
         "verified": true,
         "type": "cname"
       }
@@ -221,7 +221,7 @@ Domains come in three types: **ns** | **cname** | **wildcard**.
 **Wildcard** is only available in self-hosted Praxis. Praxis Cloud uses **ns** and **cname** only.
 </Note>
 
-- **ns** — You can use the base domain (set `subdomain` to `null`) or set a subdomain (e.g. `my-app` → `my-app.digpangolin.io`).
+- **ns** — You can use the base domain (set `subdomain` to `null`) or set a subdomain (e.g. `my-app` → `my-app.digpraxis.io`).
 - **cname** — Only the base domain is used; set `subdomain` to `null` (the domain’s `baseDomain` is the FQDN).
 - **wildcard** — Same as ns for subdomain behavior (self-hosted only).
 
@@ -245,7 +245,7 @@ The `subdomain` value is combined with the base domain from `domainId` to form t
     "niceId": "decent-louisiana-waterthrush",
     "name": "My Resource",
     "subdomain": "my-subdomain",
-    "fullDomain": "my-subdomain.pangolin.net",
+    "fullDomain": "my-subdomain.praxis.net",
     "domainId": "pg3i1k4lhibhl3i"
   },
   "success": true,
@@ -259,7 +259,7 @@ The `subdomain` value is combined with the base domain from `domainId` to form t
 
 **PUT** `/public-resource/{resourceId}/target`
 
-Add a target (backend) to a resource. Use the numeric `resourceId` from the create-resource response. The target is the site and address (ip + port) that will receive traffic for the resource. For all target endpoints, see [Resource Target API (Swagger)](https://api.pangolin.net/v1/docs/#/Resource%20Target).
+Add a target (backend) to a resource. Use the numeric `resourceId` from the create-resource response. The target is the site and address (ip + port) that will receive traffic for the resource. For all target endpoints, see [Resource Target API (Swagger)](https://api.praxis.net/v1/docs/#/Resource%20Target).
 
 **Path**
 - `resourceId` (number) — From create-resource response (e.g. `9942`)
@@ -302,7 +302,7 @@ Add a target (backend) to a resource. Use the numeric `resourceId` from the crea
 
 ## Create private resource
 
-You need an existing site. For more endpoints, see [Private Resource API (Swagger)](https://api.pangolin.net/v1/docs/#/Private%20Resource).
+You need an existing site. For more endpoints, see [Private Resource API (Swagger)](https://api.praxis.net/v1/docs/#/Private%20Resource).
 
 ### Create private resource
 
@@ -404,4 +404,4 @@ Both return `{ "data": {}, "success": true, "error": false, "message": "...", "s
 
 **POST** `/private-resource/{siteResourceId}/users/add` — **Path:** `siteResourceId` (number). **Body:** `{ "userId": string }`.
 
-Same response shape as above. Role must belong to the same org as the private resource. For more endpoints (list/remove), see [Public Resource API](https://api.pangolin.net/v1/docs/#/Public%20Resource) and [Private Resource API](https://api.pangolin.net/v1/docs/#/Private%20Resource).
+Same response shape as above. Role must belong to the same org as the private resource. For more endpoints (list/remove), see [Public Resource API](https://api.praxis.net/v1/docs/#/Public%20Resource) and [Private Resource API](https://api.praxis.net/v1/docs/#/Private%20Resource).

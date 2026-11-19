@@ -11,13 +11,13 @@ Open **Settings** > **About** > **Logs**. Select **Save...** to save them to a f
 You can also open the log file directly. The default location is:
 
 ```
-C:\ProgramData\pangolin\logs\pangolin.log
+C:\ProgramData\praxis\logs\praxis.log
 ```
 
 To tail the log in PowerShell:
 
 ```powershell
-Get-Content "C:\ProgramData\pangolin\logs\pangolin.log" -Tail 0 -Wait
+Get-Content "C:\ProgramData\praxis\logs\praxis.log" -Tail 0 -Wait
 ```
 
 ## Mac
@@ -52,7 +52,7 @@ The default log file location is:
 If you run `praxis up` in detached mode, you can tail logs with:
 
 ```bash
-pangolin logs client -f -n 10
+praxis logs client -f -n 10
 ```
 
 This example follows new log lines and shows the last 10 rows.

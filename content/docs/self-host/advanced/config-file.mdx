@@ -13,7 +13,7 @@ Minimal Praxis configuration:
 ```yaml title="config.yml"
 gerbil:
     start_port: 51820
-    base_endpoint: "pangolin.example.com" # REPLACE WITH YOUR DOMAIN
+    base_endpoint: "praxis.example.com" # REPLACE WITH YOUR DOMAIN
     # Optional network settings (defaults shown):
     # subnet_group: "100.89.137.0/20"
     # block_size: 24
@@ -168,7 +168,7 @@ This section contains the complete reference for all configuration options in `c
     <ResponseField name="internal_hostname" type="string">
       The hostname of the Praxis container for internal communication.
 
-      **Example**: `pangolin`
+      **Example**: `praxis`
 
       <Tip>
         If using Docker Compose, this should match your container name.
@@ -615,7 +615,7 @@ This section contains the complete reference for all configuration options in `c
     <ResponseField name="base_endpoint" type="string" required>
       Domain name included in WireGuard configuration for tunnel connections.
 
-      **Example**: `pangolin.example.com`
+      **Example**: `praxis.example.com`
     </ResponseField>
 
     <ResponseField name="exit_node_name" type="string">
@@ -1149,7 +1149,7 @@ This section contains the complete reference for all configuration options in `c
 
       ```yaml
       acme:
-        acme_http_endpoint: "http://controller-api.pangolin.svc.cluster.local/api/v1/certificates"
+        acme_http_endpoint: "http://controller-api.praxis.svc.cluster.local/api/v1/certificates"
       ```
     </ResponseField>
   </Expandable>
@@ -1284,7 +1284,7 @@ Setting both `<VARIABLE>` and `<VARIABLE>_FILE` at the same time is an error.
 
 ```yaml title="docker-compose.yml"
 services:
-  pangolin:
+  praxis:
     secrets:
       - server_secret
     environment:

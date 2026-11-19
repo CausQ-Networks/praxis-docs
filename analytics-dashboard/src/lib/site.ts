@@ -1,7 +1,7 @@
 import { param, type SearchParams } from './range';
 
 /**
- * Which site an event came from. The docs (docs.praxis.causq.com) and pangolin.net
+ * Which site an event came from. The docs (docs.praxis.causq.com) and praxis.net
  * ("landing") both send AI chats and searches to the same tables, tagged with `site`.
  * Page votes only exist on the docs.
  */
@@ -10,7 +10,7 @@ export type Site = 'docs' | 'landing';
 export const sites = [
   { id: undefined, label: 'All sites' },
   { id: 'docs', label: 'Docs' },
-  { id: 'landing', label: 'pangolin.net' },
+  { id: 'landing', label: 'praxis.net' },
 ] as const satisfies readonly { id: Site | undefined; label: string }[];
 
 /** `?site=docs|landing`; anything else (or nothing) means both sites */
@@ -19,7 +19,7 @@ export function resolveSite(params: SearchParams): Site | undefined {
   return value === 'docs' || value === 'landing' ? value : undefined;
 }
 
-export const siteLabel: Record<Site, string> = { docs: 'Docs', landing: 'pangolin.net' };
+export const siteLabel: Record<Site, string> = { docs: 'Docs', landing: 'praxis.net' };
 
 const siteUrls: Record<Site, string> = {
   docs: process.env.DOCS_SITE_URL ?? 'https://docs.praxis.causq.com',

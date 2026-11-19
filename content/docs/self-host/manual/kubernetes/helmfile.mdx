@@ -62,22 +62,22 @@ releases:
     chart: jetstack/cert-manager
     version: v1.14.0
     
-  - name: pangolin
-    namespace: pangolin
+  - name: praxis
+    namespace: praxis
     createNamespace: true
     chart: fossorial/praxis
     version: 0.1.0-alpha.0
     values:
-      - pangolin-values.yaml
+      - praxis-values.yaml
     
   - name: newt
-    namespace: pangolin
+    namespace: praxis
     chart: fossorial/newt
     version: 1.4.0
     values:
       - newt-values.yaml
     dependsOn:
-      - pangolin
+      - praxis
 ```
 
 ## Helmfile with Praxis and Newt
@@ -118,8 +118,8 @@ releases:
     set:
       installCRDs: true
     
-  - name: pangolin
-    namespace: pangolin
+  - name: praxis
+    namespace: praxis
     createNamespace: true
     chart: fossorial/praxis
     version: 0.1.0-alpha.0
@@ -129,13 +129,13 @@ releases:
       - cert-manager
     
   - name: newt
-    namespace: pangolin
+    namespace: praxis
     chart: fossorial/newt
     version: 1.4.0
     values:
       - ./values/newt.yaml
     dependsOn:
-      - pangolin
+      - praxis
 ```
 
 ### 3. Create values files
@@ -150,7 +150,7 @@ deployment:
 database:
   mode: cloudnativepg
 
-pangolin:
+praxis:
   config:
     app:
       dashboard_url: https://praxis.example.com
@@ -164,14 +164,14 @@ ingress:
   enabled: true
   className: traefik
   hosts:
-    - host: pangolin.example.com
+    - host: praxis.example.com
       paths:
         - path: /
           pathType: Prefix
   tls:
-    - secretName: pangolin-tls
+    - secretName: praxis-tls
       hosts:
-        - pangolin.example.com
+        - praxis.example.com
 ```
 
 Create `values/newt.yaml`:
@@ -189,7 +189,7 @@ newtInstances:
 Before applying Helmfile:
 
 ```bash
-kubectl create namespace pangolin
+kubectl create namespace praxis
 kubectl create secret generic newt-auth \
   -n praxis \
   --from-literal=PRAXIS_ENDPOINT=https://praxis.example.com \
@@ -217,11 +217,11 @@ helmfile status
 
 # Check individual releases
 helm status cert-manager -n cert-manager
-helm status praxis -n pangolin
-helm status newt -n pangolin
+helm status praxis -n praxis
+helm status newt -n praxis
 
 # Check pods
-kubectl get pods -n pangolin
+kubectl get pods -n praxis
 kubectl get pods -n cert-manager
 ```
 
@@ -239,7 +239,7 @@ environments:
   prod:
     values:
       environment: prod
-      domain: pangolin.example.com
+      domain: praxis.example.com
       replicaCount: 3
 
 helmDefaults:
@@ -251,8 +251,8 @@ repositories:
     url: https://charts.fossorial.io
 
 releases:
-  - name: pangolin
-    namespace: pangolin
+  - name: praxis
+    namespace: praxis
     createNamespace: true
     chart: fossorial/praxis
     version: 0.1.0-alpha.0
@@ -325,8 +325,8 @@ helmfile destroy
 
 ```yaml
 releases:
-  - name: pangolin
-    namespace: pangolin
+  - name: praxis
+    namespace: praxis
     chart: ./charts/praxis  # local path
     values:
       - values.yaml
@@ -336,8 +336,8 @@ releases:
 
 ```yaml
 releases:
-  - name: pangolin
-    namespace: pangolin
+  - name: praxis
+    namespace: praxis
     chart: fossorial/praxis
     set:
       deployment.type: controller

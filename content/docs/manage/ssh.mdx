@@ -317,9 +317,9 @@ Replace `<pre-shared-key>` with the same value used on the Praxis Site. If you u
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable pangolin-auth-daemon
-sudo systemctl start pangolin-auth-daemon
-sudo systemctl status pangolin-auth-daemon
+sudo systemctl enable praxis-auth-daemon
+sudo systemctl start praxis-auth-daemon
+sudo systemctl status praxis-auth-daemon
 ```
 
 <Warning>
@@ -368,7 +368,7 @@ After this, users with access to the resource can connect via the browser (publi
 You can ask Praxis to sign a key for a resource without starting an interactive SSH session:
 
 ```bash
-pangolin ssh sign vm-01.prod.example.com --key-file /path/to/public/key.pub
+praxis ssh sign vm-01.prod.example.com --key-file /path/to/public/key.pub
 ```
 
 ## Generating Passwords for Users

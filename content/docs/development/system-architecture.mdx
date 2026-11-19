@@ -11,7 +11,7 @@ The software that powers [Praxis Cloud](https://app.praxis.causq.com) is open so
 
 Praxis is split into a **control plane** (configuration, identity, and orchestration) and a **data plane** (encrypted tunnels, ingress, and relay). For [public resources](/manage/resources/understanding-resources#public-resource-types), site connectors initiate **outbound** connections to a Praxis node so the node can reverse-proxy traffic into the remote network without opening inbound ports there. For [private resources](/manage/resources/understanding-resources#private-resource-types), [clients](/manage/clients/understanding-clients) connect **peer-to-peer** to the site; the node is only in the data path as a relay when a direct path cannot be established. See [Peer-to-Peer and Relay Paths](#peer-to-peer-and-relay-paths).
 
-For a product-level walkthrough of sites, resources, and clients, see [How Praxis Works](/about/how-pangolin-works). This page focuses on how those pieces are implemented and how traffic moves through the system.
+For a product-level walkthrough of sites, resources, and clients, see [How Praxis Works](/about/how-praxis-works). This page focuses on how those pieces are implemented and how traffic moves through the system.
 
 <Frame caption="High-level Praxis architecture">
 <img src="/images/system-diagram.png" alt="Praxis system architecture diagram"/>
@@ -176,7 +176,7 @@ Praxis's open-source repositories map to the roles above. Codenames are used thr
 | Component | Repository | Role |
 | --- | --- | --- |
 | Praxis | [causq-networks/praxis](https://github.com/CausQ-Networks/praxis) | Control plane server |
-| Clients | [causq-networks/praxis-cli](https://github.com/CausQ-Networks/praxis-cli), [fosrl/windows-linux](https://github.com/fosrl/windows-linux), [fosrl/apple](https://github.com/fosrl/apple), [fosrl/android](https://github.com/fosrl/android) | Endpoint agents |
+| Clients | [causq-networks/praxis-cli](https://github.com/CausQ-Networks/praxis-cli), [fosrl/windows-linux](https://github.com/CausQ-Networks/praxis-desktop), [fosrl/apple](https://github.com/CausQ-Networks/praxis-apple), [fosrl/android](https://github.com/CausQ-Networks/praxis-android) | Endpoint agents |
 | Site Connector | [causq-networks/praxis-cli](https://github.com/CausQ-Networks/praxis-cli) | Connect remote networks for public and private resources |
 | Gerbil | [causq-networks/praxis-gerbil](https://github.com/CausQ-Networks/praxis-gerbil) | Node tunnel manager and relay |
 | Badger | [causq-networks/praxis-badger](https://github.com/CausQ-Networks/praxis-badger) | Traefik forward-auth middleware |

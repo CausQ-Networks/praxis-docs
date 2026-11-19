@@ -1,6 +1,6 @@
 import 'server-only';
 
-/** Same source and formatting as pangolin.net (landing-v5 `lib/marketing/repo-meta.ts`). */
+/** Same source and formatting as praxis.net (landing-v5 `lib/marketing/repo-meta.ts`). */
 const STARS_URL = 'https://api.github.com/repos/CausQ-Networks/praxis-cli/api/v1/stars';
 const REVALIDATE_SECONDS = 3600;
 

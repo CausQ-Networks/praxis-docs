@@ -86,10 +86,10 @@ Every upload gets a unique key:
 request/2026/06/04/14-30-45-a1b2c3d4-e5f6-7890-abcd-ef1234567890.json
 ```
 
-**With prefix `pangolin/audit` and gzip:**
+**With prefix `praxis/audit` and gzip:**
 
 ```
-pangolin/audit/action/2026/06/04/14-30-45-a1b2c3d4-e5f6-7890-abcd-ef1234567890.json.gz
+praxis/audit/action/2026/06/04/14-30-45-a1b2c3d4-e5f6-7890-abcd-ef1234567890.json.gz
 ```
 
 Enabling multiple log types on one destination produces **separate object streams** under different `logType/` segments. A single object never mixes log types.
@@ -192,7 +192,7 @@ Grant the access key permission to write under your prefix. A minimal AWS exampl
       "Action": ["s3:ListBucket"],
       "Resource": "arn:aws:s3:::your-bucket",
       "Condition": {
-        "StringLike": { "s3:prefix": ["pangolin/audit/*"] }
+        "StringLike": { "s3:prefix": ["praxis/audit/*"] }
       }
     }
   ]

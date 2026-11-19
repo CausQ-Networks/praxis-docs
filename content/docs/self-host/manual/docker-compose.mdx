@@ -13,7 +13,7 @@ Review the [quick install guide](/self-host/quick-install) and [DNS & networking
 
 - A public Linux server
 - A base domain such as `example.com`
-- A dashboard hostname such as `pangolin.example.com`
+- A dashboard hostname such as `praxis.example.com`
 - An email address for Let's Encrypt
 - TCP ports `80` and `443` open
 - UDP ports `51820` and `21820` open if you are using tunneling
@@ -23,7 +23,7 @@ If you do not want tunneling, see [Without Tunneling](/self-host/advanced/withou
 </Tip>
 
 <Note>
-`base domain` is the parent domain you will attach resources to, such as `example.com`. `dashboard hostname` is the specific hostname for the Praxis UI and API, such as `pangolin.example.com`.
+`base domain` is the parent domain you will attach resources to, such as `example.com`. `dashboard hostname` is the specific hostname for the Praxis UI and API, such as `praxis.example.com`.
 </Note>
 
 ## File Layout
@@ -64,11 +64,11 @@ mkdir -p config/db config/letsencrypt config/traefik/logs
   This file defines the Praxis, Gerbil, and Traefik containers, their shared volumes, and the ports exposed on the host.
 
 ```yaml title="docker-compose.yml"
-name: pangolin
+name: praxis
 services:
-  pangolin:
+  praxis:
     image: docker.io/causq-networks/praxis:latest
-    container_name: pangolin
+    container_name: praxis
     restart: unless-stopped
     volumes:
       - ./config:/app/config
@@ -83,7 +83,7 @@ services:
     container_name: gerbil
     restart: unless-stopped
     depends_on:
-      pangolin:
+      praxis:
         condition: service_healthy
     command:
       - --reachableAt=http://gerbil:3004
@@ -107,7 +107,7 @@ services:
     restart: unless-stopped
     network_mode: service:gerbil
     depends_on:
-      pangolin:
+      praxis:
         condition: service_healthy
     command:
       - --configFile=/etc/traefik/traefik_config.yml
@@ -119,7 +119,7 @@ services:
 networks:
   default:
     driver: bridge
-    name: pangolin
+    name: praxis
     # enable_ipv6: true
 ```
 
@@ -212,7 +212,7 @@ http:
 
   routers:
     main-app-router-redirect:
-      rule: "Host(`pangolin.example.com`)" # REPLACE
+      rule: "Host(`praxis.example.com`)" # REPLACE
       service: next-service
       entryPoints:
         - web
@@ -221,7 +221,7 @@ http:
         - badger
 
     next-router:
-      rule: "Host(`pangolin.example.com`) && !PathPrefix(`/api/v1`)" # REPLACE
+      rule: "Host(`praxis.example.com`) && !PathPrefix(`/api/v1`)" # REPLACE
       service: next-service
       entryPoints:
         - websecure
@@ -231,7 +231,7 @@ http:
         certResolver: letsencrypt
 
     api-router:
-      rule: "Host(`pangolin.example.com`) && PathPrefix(`/api/v1`)" # REPLACE
+      rule: "Host(`praxis.example.com`) && PathPrefix(`/api/v1`)" # REPLACE
       service: api-service
       entryPoints:
         - websecure
@@ -241,7 +241,7 @@ http:
         certResolver: letsencrypt
 
     ws-router:
-      rule: "Host(`pangolin.example.com`)" # REPLACE
+      rule: "Host(`praxis.example.com`)" # REPLACE
       service: api-service
       entryPoints:
         - websecure
@@ -278,7 +278,7 @@ tcp:
 ```yaml title="config/config.yml"
 gerbil:
     start_port: 51820
-    base_endpoint: "pangolin.example.com" # REPLACE WITH YOUR DASHBOARD DOMAIN
+    base_endpoint: "praxis.example.com" # REPLACE WITH YOUR DASHBOARD DOMAIN
 
 app:
     dashboard_url: "https://praxis.example.com" # REPLACE WITH YOUR DASHBOARD DOMAIN
@@ -307,7 +307,7 @@ flags:
 
 Replace these values before starting the stack:
 
-- `pangolin.example.com` with your dashboard hostname
+- `praxis.example.com` with your dashboard hostname
 - `example.com` with your base domain
 - `replace-with-a-long-random-secret` with a strong random secret
 - `admin@example.com` in `traefik_config.yml` with your Let's Encrypt email
@@ -369,14 +369,14 @@ See [Enable Geo-blocking](/self-host/advanced/enable-geoblocking) for the full p
   sudo docker compose ps
   ```
 
-  `pangolin`, `traefik`, and `gerbil` should all report as running after the first startup finishes.
+  `praxis`, `traefik`, and `gerbil` should all report as running after the first startup finishes.
 </Step>
 
 <Step title="Get the setup token from the Praxis logs">
   Check the Praxis container logs:
 
   ```bash
-  sudo docker compose logs pangolin
+  sudo docker compose logs praxis
   ```
 
   Praxis prints a setup token to stdout on first boot. Copy that token before continuing.
@@ -397,8 +397,8 @@ See [Enable Geo-blocking](/self-host/advanced/enable-geoblocking) for the full p
 
 You should expect the following on a healthy first install:
 
-- `docker compose ps` shows `pangolin`, `traefik`, and `gerbil` as running.
-- `docker compose logs pangolin` includes the one-time setup token for the first admin account.
+- `docker compose ps` shows `praxis`, `traefik`, and `gerbil` as running.
+- `docker compose logs praxis` includes the one-time setup token for the first admin account.
 - Visiting `https://<your-dashboard-domain>/auth/initial-setup` loads the setup page.
 - `config/db/db.sqlite` exists after Praxis starts.
 - `config/key` exists after Gerbil starts.
@@ -410,11 +410,11 @@ The first Let's Encrypt certificate request can take a short while. If the page 
 ## If Something Fails
 
 - If the setup page does not load, confirm your DNS record points to the server and ports `80` and `443` are reachable.
-- If you cannot complete first-time signup, check `sudo docker compose logs pangolin` and copy the setup token printed by Praxis.
+- If you cannot complete first-time signup, check `sudo docker compose logs praxis` and copy the setup token printed by Praxis.
 - If certificates are not issued, confirm `admin@example.com` was replaced and that nothing else is already bound to ports `80` or `443`.
-- If `pangolin` never becomes healthy, inspect `sudo docker compose logs -f pangolin`.
+- If `praxis` never becomes healthy, inspect `sudo docker compose logs -f praxis`.
 - If tunneling does not work, inspect `sudo docker compose logs -f gerbil` and confirm UDP ports `51820` and `21820` are open.
-- If Traefik serves the wrong host, re-check every `pangolin.example.com` replacement in both Traefik files and `config/config.yml`.
+- If Traefik serves the wrong host, re-check every `praxis.example.com` replacement in both Traefik files and `config/config.yml`.
 
 ## Without Tunneling
 

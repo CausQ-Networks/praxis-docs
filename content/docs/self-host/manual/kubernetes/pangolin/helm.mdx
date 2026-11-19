@@ -14,7 +14,7 @@ The Praxis Helm chart deploys the Praxis control plane and related Kubernetes co
 Depending on the selected values, the chart can deploy:
 
 - **Praxis application**: dashboard, API, authentication, configuration, and application state.
-- **pangolin-kube-controller**: Kubernetes controller used in controller mode.
+- **praxis-kube-controller**: Kubernetes controller used in controller mode.
 - **Gerbil**: WireGuard tunnel manager used by the Praxis tunnel stack.
 - **Traefik integration**: Traefik CRD-based routing in controller mode, bundled Traefik controller when enabled, or standalone Traefik mode.
 - **Database backend**: CloudNativePG, external PostgreSQL, embedded PostgreSQL, or SQLite.
@@ -64,7 +64,7 @@ This example assumes a Traefik controller is available and can process the chart
 Create the namespace before installing the chart:
 
 ```bash
-kubectl create namespace pangolin
+kubectl create namespace praxis
 ```
 
 Gerbil requires `NET_ADMIN` for WireGuard interface management. If your cluster enforces Pod Security Admission, label the namespace accordingly:
@@ -86,7 +86,7 @@ Do not use a restricted Pod Security profile for a namespace running Gerbil unle
 Create a Secret for `SERVER_SECRET`:
 
 ```bash
-kubectl create secret generic pangolin-app-secret \
+kubectl create secret generic praxis-app-secret \
   --namespace praxis \
   --from-literal=SERVER_SECRET='<strong-random-secret>'
 ```
@@ -95,7 +95,7 @@ Use a long random value. Do not commit this secret to Git.
 
 ### Step 3: Create a values file
 
-Create `values-pangolin.yaml`:
+Create `values-praxis.yaml`:
 
 ```yaml
 deployment:
@@ -107,22 +107,22 @@ database:
   mode: cloudnativepg
   cloudnativepg:
     cluster:
-      name: pangolin-db
+      name: praxis-db
 
 cnpg-operator:
   enabled: true
 
 cnpg-cluster:
   enabled: true
-  fullnameOverride: pangolin-db
+  fullnameOverride: praxis-db
   cluster:
     instances: 1
     storage:
       size: 8Gi
 
-pangolin:
+praxis:
   secret:
-    existingSecretName: pangolin-app-secret
+    existingSecretName: praxis-app-secret
     existingSecretKey: SERVER_SECRET
 
   config:
@@ -145,7 +145,7 @@ pangolin:
   ingressRoute:
     dashboard:
       enabled: true
-      host: pangolin.example.com
+      host: praxis.example.com
       entryPoints:
         - websecure
       tls:
@@ -163,9 +163,9 @@ gerbil:
 
 Important points:
 
-* Replace `pangolin.example.com`, `example.com`, and `vpn.example.com`.
-* Keep `pangolin.config.gerbil.start_port` aligned with `gerbil.ports.wg1`.
-* Keep `pangolin.config.gerbil.clients_start_port` aligned with `gerbil.ports.wg2`.
+* Replace `praxis.example.com`, `example.com`, and `vpn.example.com`.
+* Keep `praxis.config.gerbil.start_port` aligned with `gerbil.ports.wg1`.
+* Keep `praxis.config.gerbil.clients_start_port` aligned with `gerbil.ports.wg2`.
 * Use `gerbil.startupMode=delayed` for the first install if Gerbil should not start before the initial Praxis setup is complete.
 
 The chart defaults to `deployment.type=controller`, `deployment.mode=multi`, `database.mode=cloudnativepg`, and NetworkPolicy rendering enabled. Gerbil `startupMode` supports `normal`, `delayed`, and `disabledUntilSetup`. ([GitHub][1])
@@ -184,7 +184,7 @@ Install Praxis:
 ```bash
 helm upgrade --install praxis fossorial/praxis \
   --namespace praxis \
-  --values values-pangolin.yaml
+  --values values-praxis.yaml
 ```
 
 Do not use `--create-namespace` here. The namespace was created and labeled before installation.
@@ -194,27 +194,27 @@ Do not use `--create-namespace` here. The namespace was created and labeled befo
 Check Helm release status:
 
 ```bash
-helm status praxis --namespace pangolin
-helm history praxis --namespace pangolin
+helm status praxis --namespace praxis
+helm history praxis --namespace praxis
 ```
 
 Check workloads:
 
 ```bash
-kubectl get pods --namespace pangolin
-kubectl get deploy,statefulset --namespace pangolin
+kubectl get pods --namespace praxis
+kubectl get deploy,statefulset --namespace praxis
 ```
 
 Check Services:
 
 ```bash
-kubectl get svc --namespace pangolin
+kubectl get svc --namespace praxis
 ```
 
 Check Traefik `IngressRoute` resources:
 
 ```bash
-kubectl get ingressroute --namespace pangolin
+kubectl get ingressroute --namespace praxis
 ```
 
 If Traefik CRDs are not installed, this command will fail. In that case, install Traefik CRDs or enable/install the Traefik controller path required by your selected deployment mode.
@@ -223,7 +223,7 @@ Wait for the Praxis pod to become ready:
 
 ```bash
 kubectl wait --for=condition=ready pod \
-  -l app.kubernetes.io/name=pangolin \
+  -l app.kubernetes.io/name=praxis \
   --namespace praxis \
   --timeout=300s
 ```
@@ -290,20 +290,20 @@ Upgrade the release:
 ```bash
 helm upgrade praxis fossorial/praxis \
   --namespace praxis \
-  --values values-pangolin.yaml
+  --values values-praxis.yaml
 ```
 
 Check upgrade status:
 
 ```bash
-helm status praxis --namespace pangolin
-helm history praxis --namespace pangolin
+helm status praxis --namespace praxis
+helm history praxis --namespace praxis
 ```
 
 Rollback if needed:
 
 ```bash
-helm rollback praxis <revision> --namespace pangolin
+helm rollback praxis <revision> --namespace praxis
 ```
 
 ## OCI install
@@ -323,7 +323,7 @@ Install from OCI:
 helm upgrade --install praxis oci://ghcr.io/fosrl/helm-charts/praxis \
   --version 0.1.0-alpha.0 \
   --namespace praxis \
-  --values values-pangolin.yaml
+  --values values-praxis.yaml
 ```
 
 OCI changes where Helm pulls the chart from. It does not change the values file or the release behavior.
@@ -343,7 +343,7 @@ In this topology:
 | Component                  | Role                                                                 |
 | -------------------------- | -------------------------------------------------------------------- |
 | Praxis                   | Main application, dashboard, API, authentication, and configuration. |
-| pangolin-kube-controller   | Reconciles dynamic Kubernetes and Traefik CRD configuration.         |
+| praxis-kube-controller   | Reconciles dynamic Kubernetes and Traefik CRD configuration.         |
 | Gerbil                     | WireGuard tunnel manager for Praxis sites.                         |
 | Traefik                    | Routes dashboard, API, and site traffic.                             |
 | CloudNativePG / PostgreSQL | Stores Praxis application state.                                   |

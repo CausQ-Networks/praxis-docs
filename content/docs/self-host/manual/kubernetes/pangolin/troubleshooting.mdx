@@ -12,8 +12,8 @@ Start with the core checks, then use the section that matches the symptom.
 Set the namespace and release name used by your installation:
 
 ```bash
-export PANGOLIN_NAMESPACE=pangolin
-export PANGOLIN_RELEASE=pangolin
+export PANGOLIN_NAMESPACE=praxis
+export PANGOLIN_RELEASE=praxis
 ```
 
 ### Helm diagnostics
@@ -33,7 +33,7 @@ helm repo update fossorial
 
 helm template "$PANGOLIN_RELEASE" fossorial/praxis \
   --namespace "$PANGOLIN_NAMESPACE" \
-  --values values-pangolin.yaml
+  --values values-praxis.yaml
 ```
 
 Preview an upgrade:
@@ -41,7 +41,7 @@ Preview an upgrade:
 ```bash
 helm upgrade "$PANGOLIN_RELEASE" fossorial/praxis \
   --namespace "$PANGOLIN_NAMESPACE" \
-  --values values-pangolin.yaml \
+  --values values-praxis.yaml \
   --dry-run
 ```
 
@@ -113,8 +113,8 @@ Then check CNPG resources:
 ```bash
 kubectl get cluster --namespace "$PANGOLIN_NAMESPACE"
 kubectl describe cluster <cluster-name> --namespace "$PANGOLIN_NAMESPACE"
-kubectl get pods --namespace "$PANGOLIN_NAMESPACE" | grep -E 'pangolin-db|postgres'
-kubectl get secret --namespace "$PANGOLIN_NAMESPACE" | grep -E 'pangolin-db|postgres'
+kubectl get pods --namespace "$PANGOLIN_NAMESPACE" | grep -E 'praxis-db|postgres'
+kubectl get secret --namespace "$PANGOLIN_NAMESPACE" | grep -E 'praxis-db|postgres'
 ```
 
 If you use external PostgreSQL, verify the connection Secret:
@@ -156,7 +156,7 @@ Install or upgrade with the values file:
 ```bash
 helm upgrade --install "$PANGOLIN_RELEASE" fossorial/praxis \
   --namespace "$PANGOLIN_NAMESPACE" \
-  --values values-pangolin.yaml
+  --values values-praxis.yaml
 ```
 
 After Praxis setup is complete, switch Gerbil to normal startup:
@@ -242,7 +242,7 @@ Do not use a restricted Pod Security profile for Gerbil unless you have validate
 Check DNS:
 
 ```bash
-nslookup pangolin.example.com
+nslookup praxis.example.com
 ```
 
 Check Traefik CRDs:
@@ -305,7 +305,7 @@ The dashboard `IngressRoute` TLS configuration should use either a Traefik certi
 Use Traefik ACME certificate resolver:
 
 ```yaml
-pangolin:
+praxis:
   ingressRoute:
     dashboard:
       tls:
@@ -317,19 +317,19 @@ pangolin:
 Or use an existing TLS Secret:
 
 ```yaml
-pangolin:
+praxis:
   ingressRoute:
     dashboard:
       tls:
         enabled: true
         certResolver: ""
-        secretName: pangolin-dashboard-tls
+        secretName: praxis-dashboard-tls
 ```
 
 Verify the Secret if using `secretName`:
 
 ```bash
-kubectl get secret pangolin-dashboard-tls --namespace "$PANGOLIN_NAMESPACE"
+kubectl get secret praxis-dashboard-tls --namespace "$PANGOLIN_NAMESPACE"
 ```
 
 <Note>
@@ -348,12 +348,12 @@ kubectl get secret pangolin-dashboard-tls --namespace "$PANGOLIN_NAMESPACE"
 
 **Common causes**
 
-* `pangolin.config.gerbil.base_endpoint` points to the wrong host.
+* `praxis.config.gerbil.base_endpoint` points to the wrong host.
 * Gerbil Service is not exposed as expected.
 * External firewall blocks UDP traffic.
 * NetworkPolicy blocks the required traffic.
-* `pangolin.config.gerbil.start_port` and `gerbil.ports.wg1` are not aligned.
-* `pangolin.config.gerbil.clients_start_port` and `gerbil.ports.wg2` are not aligned.
+* `praxis.config.gerbil.start_port` and `gerbil.ports.wg1` are not aligned.
+* `praxis.config.gerbil.clients_start_port` and `gerbil.ports.wg2` are not aligned.
 
 **Checks**
 
@@ -441,7 +441,7 @@ kubectl get svc --namespace "$PANGOLIN_NAMESPACE" \
 Create a connection Secret:
 
 ```bash
-kubectl create secret generic pangolin-db-connection \
+kubectl create secret generic praxis-db-connection \
   --namespace "$PANGOLIN_NAMESPACE" \
   --from-literal=connectionString='postgresql://praxis:password@postgres.example.com:5432/praxis?sslmode=require'
 ```
@@ -452,14 +452,14 @@ Reference it in values:
 database:
   mode: external
   connection:
-    existingSecretName: pangolin-db-connection
+    existingSecretName: praxis-db-connection
     existingSecretKey: connectionString
 ```
 
 Check the Secret:
 
 ```bash
-kubectl describe secret pangolin-db-connection --namespace "$PANGOLIN_NAMESPACE"
+kubectl describe secret praxis-db-connection --namespace "$PANGOLIN_NAMESPACE"
 ```
 
 <Warning>
@@ -475,7 +475,7 @@ Do not put database passwords directly in values files for production. Use an ex
 * CNPG Cluster resource is missing.
 * CNPG pods do not start.
 * Praxis cannot connect to the generated CNPG database.
-* Secret such as `pangolin-db-app` is missing.
+* Secret such as `praxis-db-app` is missing.
 
 **Common causes**
 
@@ -503,14 +503,14 @@ Check CNPG Cluster:
 
 ```bash
 kubectl get cluster --namespace "$PANGOLIN_NAMESPACE"
-kubectl describe cluster pangolin-db --namespace "$PANGOLIN_NAMESPACE"
+kubectl describe cluster praxis-db --namespace "$PANGOLIN_NAMESPACE"
 ```
 
 Check PVCs and Secrets:
 
 ```bash
 kubectl get pvc --namespace "$PANGOLIN_NAMESPACE"
-kubectl get secret --namespace "$PANGOLIN_NAMESPACE" | grep pangolin-db
+kubectl get secret --namespace "$PANGOLIN_NAMESPACE" | grep praxis-db
 ```
 
 Expected naming when using the default example:
@@ -519,11 +519,11 @@ Expected naming when using the default example:
 database:
   cloudnativepg:
     cluster:
-      name: pangolin-db
+      name: praxis-db
 
 cnpg-cluster:
   enabled: true
-  fullnameOverride: pangolin-db
+  fullnameOverride: praxis-db
 ```
 
 </Accordion>
@@ -605,7 +605,7 @@ Find the pod:
 
 ```bash
 kubectl get pods --namespace "$PANGOLIN_NAMESPACE" \
-  -l app.kubernetes.io/name=pangolin
+  -l app.kubernetes.io/name=praxis
 ```
 
 Inspect it:
@@ -695,7 +695,7 @@ Render before upgrading:
 ```bash
 helm template "$PANGOLIN_RELEASE" fossorial/praxis \
   --namespace "$PANGOLIN_NAMESPACE" \
-  --values values-pangolin.yaml > rendered.yaml
+  --values values-praxis.yaml > rendered.yaml
 ```
 
 Run a server-side dry run:
@@ -768,7 +768,7 @@ patches:
       group: apps
       version: v1
       kind: Deployment
-      name: pangolin
+      name: praxis
 ```
 
 <Note>
@@ -790,8 +790,8 @@ For Helm-rendered bases, do not assume resource names. Check the rendered manife
 ```bash
 kubectl describe application praxis --namespace argocd
 kubectl logs --namespace argocd deployment/argocd-application-controller --tail=100
-argocd app diff pangolin
-argocd app sync pangolin
+argocd app diff praxis
+argocd app sync praxis
 ```
 
 **Flux checks**
@@ -858,11 +858,11 @@ kubectl version
 helm version
 
 helm status "$PANGOLIN_RELEASE" --namespace "$PANGOLIN_NAMESPACE"
-helm get values "$PANGOLIN_RELEASE" --namespace "$PANGOLIN_NAMESPACE" --all > pangolin-values.yaml
-helm get manifest "$PANGOLIN_RELEASE" --namespace "$PANGOLIN_NAMESPACE" > pangolin-manifest.yaml
+helm get values "$PANGOLIN_RELEASE" --namespace "$PANGOLIN_NAMESPACE" --all > praxis-values.yaml
+helm get manifest "$PANGOLIN_RELEASE" --namespace "$PANGOLIN_NAMESPACE" > praxis-manifest.yaml
 
-kubectl get pods --namespace "$PANGOLIN_NAMESPACE" -o wide > pangolin-pods.txt
-kubectl get events --namespace "$PANGOLIN_NAMESPACE" --sort-by=.lastTimestamp > pangolin-events.txt
+kubectl get pods --namespace "$PANGOLIN_NAMESPACE" -o wide > praxis-pods.txt
+kubectl get events --namespace "$PANGOLIN_NAMESPACE" --sort-by=.lastTimestamp > praxis-events.txt
 ```
 
 Before sharing diagnostics, remove:
@@ -888,7 +888,7 @@ kubectl get events --namespace "$PANGOLIN_NAMESPACE" --sort-by=.lastTimestamp
 
 # Logs
 kubectl logs --namespace "$PANGOLIN_NAMESPACE" \
-  -l app.kubernetes.io/name=pangolin \
+  -l app.kubernetes.io/name=praxis \
   --tail=200
 
 kubectl logs --namespace "$PANGOLIN_NAMESPACE" \

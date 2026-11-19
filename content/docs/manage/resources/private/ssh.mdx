@@ -31,7 +31,7 @@ Private SSH resources let users connect to remote hosts from their terminal over
 The Praxis client provides the tunnel; the CLI handles certificate generation, user provisioning, and the SSH session itself. No manual SSH key distribution is required when using automated provisioning.
 
 ```bash
-pangolin ssh <resource-alias>
+praxis ssh <resource-alias>
 ```
 
 The tunnel can be provided by the CLI or by another Praxis client (for example the macOS app). You can run the GUI for the tunnel and use the CLI only for SSH. On Windows, [companion mode](/manage/clients/platforms/windows#companion-mode) uses the desktop app's login and connection, so `praxis ssh` runs as the account you already signed in with.

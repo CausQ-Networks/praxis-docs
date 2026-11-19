@@ -93,7 +93,7 @@ Use container labels when the resource definition should live inside your Compos
 </Card>
 
 <Card title="API">
-  Apply a blueprint through the Praxis API with an API key. See the [API documentation](https://api.pangolin.net/v1/docs/#/Organization/put_org__orgId__blueprint).
+  Apply a blueprint through the Praxis API with an API key. See the [API documentation](https://api.praxis.net/v1/docs/#/Organization/put_org__orgId__blueprint).
 
   `PUT /org/{orgId}/blueprint`
 
@@ -142,7 +142,7 @@ Use container labels when the resource definition should live inside your Compos
     --org <org_id>
   ```
 
-  For Praxis Cloud, use `https://api.pangolin.net` as the endpoint. For self-hosted Praxis, use your API host, for example `https://api.your-domain.com`. See [Integration API](/manage/integration-api) for creating API keys and enabling the API on self-hosted deployments.
+  For Praxis Cloud, use `https://api.praxis.net` as the endpoint. For self-hosted Praxis, use your API host, for example `https://api.your-domain.com`. See [Integration API](/manage/integration-api) for creating API keys and enabling the API on self-hosted deployments.
 
   You can also pipe a blueprint through stdin. When using stdin, provide `--name` because there is no filename to derive it from:
 
@@ -596,7 +596,7 @@ public-resources:
 
 Container labels are the same blueprint schema flattened into dot-separated keys:
 
-- Start every label with `pangolin.`
+- Start every label with `praxis.`
 - Keep the same object path as YAML
 - Use array indexes for lists, such as `[0]`
 
@@ -614,8 +614,8 @@ Equivalent Compose labels:
 
 ```yaml
 labels:
-  - pangolin.public-resources.my-app.request-headers[0].name=X-Env
-  - pangolin.public-resources.my-app.request-headers[0].value=prod
+  - praxis.public-resources.my-app.request-headers[0].name=X-Env
+  - praxis.public-resources.my-app.request-headers[0].value=prod
 ```
 
 <Note>
@@ -627,7 +627,7 @@ Container labels are continuously applied. Treat the Compose file as the source 
 To use container labels, the site must be able to read the Docker socket:
 
 ```bash
-pangolin up site --docker-socket /var/run/docker.sock --id <id> --secret <secret> --endpoint https://app.praxis.causq.com
+praxis up site --docker-socket /var/run/docker.sock --id <id> --secret <secret> --endpoint https://app.praxis.causq.com
 ```
 
 Or with an environment variable:
@@ -656,26 +656,26 @@ services:
     image: nginxdemos/hello
     container_name: nginx1
     labels:
-      - pangolin.public-resources.nginx.name=nginx
-      - pangolin.public-resources.nginx.full-domain=nginx.fosrl.io
-      - pangolin.public-resources.nginx.protocol=http
-      - pangolin.public-resources.nginx.request-headers[0].name=X-Example-Header
-      - pangolin.public-resources.nginx.request-headers[0].value=example-value
-      - pangolin.public-resources.nginx.targets[0].method=http
-      - pangolin.public-resources.nginx.targets[0].path=/path
-      - pangolin.public-resources.nginx.targets[0].path-match=prefix
+      - praxis.public-resources.nginx.name=nginx
+      - praxis.public-resources.nginx.full-domain=nginx.fosrl.io
+      - praxis.public-resources.nginx.protocol=http
+      - praxis.public-resources.nginx.request-headers[0].name=X-Example-Header
+      - praxis.public-resources.nginx.request-headers[0].value=example-value
+      - praxis.public-resources.nginx.targets[0].method=http
+      - praxis.public-resources.nginx.targets[0].path=/path
+      - praxis.public-resources.nginx.targets[0].path-match=prefix
 
   nginx2:
     image: nginxdemos/hello
     container_name: nginx2
     labels:
-      - pangolin.public-resources.nginx.targets[1].method=http
-      - pangolin.public-resources.nginx.targets[1].hostname=nginx2
-      - pangolin.public-resources.nginx.targets[1].port=80
+      - praxis.public-resources.nginx.targets[1].method=http
+      - praxis.public-resources.nginx.targets[1].hostname=nginx2
+      - praxis.public-resources.nginx.targets[1].port=80
 
 networks:
   default:
-    name: pangolin_default
+    name: praxis_default
 ```
 
 This creates a single Praxis resource with multiple targets:
@@ -742,35 +742,35 @@ sites:
     Public proxy resources keyed by resource ID. `proxy-resources` is an accepted alias (used by [dashboard exports](#exporting-resources)).
 
     YAML: `public-resources: { web-app: { ... } }`  
-    Container label: `pangolin.public-resources.web-app.name=Web App`
+    Container label: `praxis.public-resources.web-app.name=Web App`
   </ResponseField>
 
   <ResponseField name="private-resources" type="object">
     Private resources keyed by resource ID. `client-resources` is an accepted alias (used by [dashboard exports](#exporting-resources)).
 
     YAML: `private-resources: { internal-net: { ... } }`  
-    Container label: `pangolin.private-resources.internal-net.mode=cidr`
+    Container label: `praxis.private-resources.internal-net.mode=cidr`
   </ResponseField>
 
   <ResponseField name="public-policies" type="object">
     Reusable policy definitions keyed by policy ID.
 
     YAML: `public-policies: { default-member: { ... } }`  
-    Container label: `pangolin.public-policies.default-member.name=Default Member Policy`
+    Container label: `praxis.public-policies.default-member.name=Default Member Policy`
   </ResponseField>
 
   <ResponseField name="sites" type="object">
     Site-level settings keyed by site ID.
 
     YAML: `sites: { my-site: { name: My Site } }`  
-    Container label: `pangolin.sites.my-site.name=My Site`
+    Container label: `praxis.sites.my-site.name=My Site`
 
     <Expandable title="Site object">
       <ResponseField name="name" type="string" required>
         Display name for the site.
 
         YAML: `name: My Site`  
-        Container label: `pangolin.sites.my-site.name=My Site`
+        Container label: `praxis.sites.my-site.name=My Site`
       </ResponseField>
 
       <ResponseField name="docker-socket-enabled" type="boolean">
@@ -779,7 +779,7 @@ sites:
         **Default**: `true`
 
         YAML: `docker-socket-enabled: true`  
-        Container label: `pangolin.sites.my-site.docker-socket-enabled=true`
+        Container label: `praxis.sites.my-site.docker-socket-enabled=true`
       </ResponseField>
     </Expandable>
   </ResponseField>
@@ -858,7 +858,7 @@ public-resources:
         Human-readable resource name. Required unless the resource is targets-only.
 
         YAML: `name: Web App`  
-        Container label: `pangolin.public-resources.web-app.name=Web App`
+        Container label: `praxis.public-resources.web-app.name=Web App`
       </ResponseField>
 
       <ResponseField name="mode" type="string">
@@ -869,7 +869,7 @@ public-resources:
         `inference` turns the resource into an [AI Gateway](/manage/ai/overview) that proxies to attached `ai-providers` instead of `targets`.
 
         YAML: `mode: http`  
-        Container label: `pangolin.public-resources.web-app.mode=http`
+        Container label: `praxis.public-resources.web-app.mode=http`
       </ResponseField>
 
       <ResponseField name="protocol" type="string" deprecated>
@@ -878,28 +878,28 @@ public-resources:
         **Options**: `http`, `tcp`, `udp`, `ssh`, `rdp`, `vnc`
 
         YAML: `protocol: http`  
-        Container label: `pangolin.public-resources.web-app.protocol=http`
+        Container label: `praxis.public-resources.web-app.protocol=http`
       </ResponseField>
 
       <ResponseField name="policy" type="string">
         Policy key to attach from `public-policies`.
 
         YAML: `policy: default-member`  
-        Container label: `pangolin.public-resources.web-app.policy=default-member`
+        Container label: `praxis.public-resources.web-app.policy=default-member`
       </ResponseField>
 
       <ResponseField name="ssl" type="boolean">
         Optional SSL/TLS flag present in the schema.
 
         YAML: `ssl: true`  
-        Container label: `pangolin.public-resources.web-app.ssl=true`
+        Container label: `praxis.public-resources.web-app.ssl=true`
       </ResponseField>
 
       <ResponseField name="full-domain" type="string">
         Public hostname for HTTP resources. Required when `protocol: http`.
 
         YAML: `full-domain: app.example.com`  
-        Container label: `pangolin.public-resources.web-app.full-domain=app.example.com`
+        Container label: `praxis.public-resources.web-app.full-domain=app.example.com`
       </ResponseField>
 
       <ResponseField name="match-base-domain" type="boolean">
@@ -908,21 +908,21 @@ public-resources:
         **Default**: `false`
 
         YAML: `match-base-domain: true`  
-        Container label: `pangolin.public-resources.web-app.match-base-domain=true`
+        Container label: `praxis.public-resources.web-app.match-base-domain=true`
       </ResponseField>
 
       <ResponseField name="proxy-port" type="integer">
         Public port for raw TCP or UDP resources. Required when `mode` is `tcp` or `udp`.
 
         YAML: `proxy-port: 3000`  
-        Container label: `pangolin.public-resources.raw-api.proxy-port=3000`
+        Container label: `praxis.public-resources.raw-api.proxy-port=3000`
       </ResponseField>
 
       <ResponseField name="proxy-protocol" type="boolean">
         Enables Proxy Protocol on TCP resources.
 
         YAML: `proxy-protocol: true`  
-        Container label: `pangolin.public-resources.raw-api.proxy-protocol=true`
+        Container label: `praxis.public-resources.raw-api.proxy-protocol=true`
       </ResponseField>
 
       <ResponseField name="proxy-protocol-version" type="integer">
@@ -930,14 +930,14 @@ public-resources:
 
         **Minimum**: `1`  
         YAML: `proxy-protocol-version: 1`  
-        Container label: `pangolin.public-resources.raw-api.proxy-protocol-version=1`
+        Container label: `praxis.public-resources.raw-api.proxy-protocol-version=1`
       </ResponseField>
 
       <ResponseField name="enabled" type="boolean">
         Disables the resource without removing it.
 
         YAML: `enabled: true`  
-        Container label: `pangolin.public-resources.web-app.enabled=true`
+        Container label: `praxis.public-resources.web-app.enabled=true`
       </ResponseField>
 
       <ResponseField name="labels" type="array of strings">
@@ -946,7 +946,7 @@ public-resources:
         Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
         YAML: `labels: [production]`  
-        Container label: `pangolin.public-resources.web-app.labels[0]=production`
+        Container label: `praxis.public-resources.web-app.labels[0]=production`
       </ResponseField>
 
       <ResponseField name="ai-providers" type="array of objects">
@@ -955,14 +955,14 @@ public-resources:
         Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
         YAML: `ai-providers: [{ provider: openai-prod, access-mode: inherit }]`  
-        Container label: `pangolin.public-resources.ai-gateway.ai-providers[0].provider=openai-prod`
+        Container label: `praxis.public-resources.ai-gateway.ai-providers[0].provider=openai-prod`
 
         <Expandable title="AI provider attachment object">
           <ResponseField name="provider" type="string" required>
             Identifier of an AI provider already configured in the organization.
 
             YAML: `provider: openai-prod`  
-            Container label: `pangolin.public-resources.ai-gateway.ai-providers[0].provider=openai-prod`
+            Container label: `praxis.public-resources.ai-gateway.ai-providers[0].provider=openai-prod`
           </ResponseField>
 
           <ResponseField name="access-mode" type="string">
@@ -972,7 +972,7 @@ public-resources:
             **Default**: `inherit`
 
             YAML: `access-mode: select`  
-            Container label: `pangolin.public-resources.ai-gateway.ai-providers[0].access-mode=select`
+            Container label: `praxis.public-resources.ai-gateway.ai-providers[0].access-mode=select`
           </ResponseField>
 
           <ResponseField name="enabled" type="boolean">
@@ -981,7 +981,7 @@ public-resources:
             **Default**: `true`
 
             YAML: `enabled: true`  
-            Container label: `pangolin.public-resources.ai-gateway.ai-providers[0].enabled=true`
+            Container label: `praxis.public-resources.ai-gateway.ai-providers[0].enabled=true`
           </ResponseField>
 
           <ResponseField name="models" type="array of strings">
@@ -990,7 +990,7 @@ public-resources:
             Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
             YAML: `models: [gpt-4o]`  
-            Container label: `pangolin.public-resources.ai-gateway.ai-providers[0].models[0]=gpt-4o`
+            Container label: `praxis.public-resources.ai-gateway.ai-providers[0].models[0]=gpt-4o`
           </ResponseField>
         </Expandable>
       </ResponseField>
@@ -1001,14 +1001,14 @@ public-resources:
         Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
         YAML: `ai-budget: [{ amount: 100, unit: usd, period: monthly }]`  
-        Container label: `pangolin.public-resources.ai-gateway.ai-budget[0].amount=100`
+        Container label: `praxis.public-resources.ai-gateway.ai-budget[0].amount=100`
 
         <Expandable title="AI budget object">
           <ResponseField name="amount" type="number" required>
             Budget limit. Must be positive.
 
             YAML: `amount: 100`  
-            Container label: `pangolin.public-resources.ai-gateway.ai-budget[0].amount=100`
+            Container label: `praxis.public-resources.ai-gateway.ai-budget[0].amount=100`
           </ResponseField>
 
           <ResponseField name="unit" type="string" required>
@@ -1017,7 +1017,7 @@ public-resources:
             **Options**: `usd`, `tokens`
 
             YAML: `unit: usd`  
-            Container label: `pangolin.public-resources.ai-gateway.ai-budget[0].unit=usd`
+            Container label: `praxis.public-resources.ai-gateway.ai-budget[0].unit=usd`
           </ResponseField>
 
           <ResponseField name="period" type="string">
@@ -1027,7 +1027,7 @@ public-resources:
             **Default**: `monthly`
 
             YAML: `period: monthly`  
-            Container label: `pangolin.public-resources.ai-gateway.ai-budget[0].period=monthly`
+            Container label: `praxis.public-resources.ai-gateway.ai-budget[0].period=monthly`
           </ResponseField>
 
           <ResponseField name="enforcement" type="string">
@@ -1037,7 +1037,7 @@ public-resources:
             **Default**: `hard`
 
             YAML: `enforcement: hard`  
-            Container label: `pangolin.public-resources.ai-gateway.ai-budget[0].enforcement=hard`
+            Container label: `praxis.public-resources.ai-gateway.ai-budget[0].enforcement=hard`
           </ResponseField>
 
           <ResponseField name="enabled" type="boolean">
@@ -1046,7 +1046,7 @@ public-resources:
             **Default**: `true`
 
             YAML: `enabled: true`  
-            Container label: `pangolin.public-resources.ai-gateway.ai-budget[0].enabled=true`
+            Container label: `praxis.public-resources.ai-gateway.ai-budget[0].enabled=true`
           </ResponseField>
         </Expandable>
       </ResponseField>
@@ -1055,14 +1055,14 @@ public-resources:
         Overrides the upstream `Host` header sent to the target.
 
         YAML: `host-header: internal.example.local`  
-        Container label: `pangolin.public-resources.web-app.host-header=internal.example.local`
+        Container label: `praxis.public-resources.web-app.host-header=internal.example.local`
       </ResponseField>
 
       <ResponseField name="tls-server-name" type="string">
         Overrides the TLS SNI hostname used for upstream TLS connections.
 
         YAML: `tls-server-name: internal.example.local`  
-        Container label: `pangolin.public-resources.web-app.tls-server-name=internal.example.local`
+        Container label: `praxis.public-resources.web-app.tls-server-name=internal.example.local`
       </ResponseField>
 
       <ResponseField name="forward-identity-headers" type="boolean">
@@ -1071,7 +1071,7 @@ public-resources:
         **Default**: `true`
 
         YAML: `forward-identity-headers: false`  
-        Container label: `pangolin.public-resources.web-app.forward-identity-headers=false`
+        Container label: `praxis.public-resources.web-app.forward-identity-headers=false`
       </ResponseField>
 
       <ResponseField name="load-balancing-strategy" type="string">
@@ -1086,7 +1086,7 @@ public-resources:
         **Default**: `wrr`
 
         YAML: `load-balancing-strategy: hrw`  
-        Container label: `pangolin.public-resources.web-app.load-balancing-strategy=hrw`
+        Container label: `praxis.public-resources.web-app.load-balancing-strategy=hrw`
       </ResponseField>
 
       <ResponseField name="request-headers" type="array of objects">
@@ -1095,21 +1095,21 @@ public-resources:
         Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
         YAML: `request-headers: [{ name: X-Env, value: prod }]`  
-        Container label: `pangolin.public-resources.web-app.request-headers[0].name=X-Env`
+        Container label: `praxis.public-resources.web-app.request-headers[0].name=X-Env`
 
         <Expandable title="Header object">
           <ResponseField name="name" type="string" required>
             Header name.
 
             YAML: `name: X-Env`  
-            Container label: `pangolin.public-resources.web-app.request-headers[0].name=X-Env`
+            Container label: `praxis.public-resources.web-app.request-headers[0].name=X-Env`
           </ResponseField>
 
           <ResponseField name="value" type="string" required>
             Header value.
 
             YAML: `value: prod`  
-            Container label: `pangolin.public-resources.web-app.request-headers[0].value=prod`
+            Container label: `praxis.public-resources.web-app.request-headers[0].value=prod`
           </ResponseField>
         </Expandable>
       </ResponseField>
@@ -1120,21 +1120,21 @@ public-resources:
         Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
         YAML: `response-headers: [{ name: Cache-Control, value: no-cache }]`  
-        Container label: `pangolin.public-resources.web-app.response-headers[0].name=Cache-Control`
+        Container label: `praxis.public-resources.web-app.response-headers[0].name=Cache-Control`
 
         <Expandable title="Header object">
           <ResponseField name="name" type="string" required>
             Header name.
 
             YAML: `name: Cache-Control`  
-            Container label: `pangolin.public-resources.web-app.response-headers[0].name=Cache-Control`
+            Container label: `praxis.public-resources.web-app.response-headers[0].name=Cache-Control`
           </ResponseField>
 
           <ResponseField name="value" type="string" required>
             Header value.
 
             YAML: `value: no-cache`  
-            Container label: `pangolin.public-resources.web-app.response-headers[0].value=no-cache`
+            Container label: `praxis.public-resources.web-app.response-headers[0].value=no-cache`
           </ResponseField>
         </Expandable>
       </ResponseField>
@@ -1157,7 +1157,7 @@ public-resources:
         Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
         YAML: `rules: [{ action: allow, match: country, value: US }]`  
-        Container label: `pangolin.public-resources.web-app.rules[0].action=allow`
+        Container label: `praxis.public-resources.web-app.rules[0].action=allow`
 
         <Expandable title="Rule object">
           <ResponseField name="action" type="string" required>
@@ -1166,7 +1166,7 @@ public-resources:
             **Options**: `allow`, `deny`, `pass`
 
             YAML: `action: allow`  
-            Container label: `pangolin.public-resources.web-app.rules[0].action=allow`
+            Container label: `praxis.public-resources.web-app.rules[0].action=allow`
           </ResponseField>
 
           <ResponseField name="match" type="string" required>
@@ -1177,14 +1177,14 @@ public-resources:
             `country_is_not` matches requests from any country except the one given. `method` matches the request's HTTP method.
 
             YAML: `match: country`  
-            Container label: `pangolin.public-resources.web-app.rules[0].match=country`
+            Container label: `praxis.public-resources.web-app.rules[0].match=country`
           </ResponseField>
 
           <ResponseField name="value" type="string" required>
             Value to compare against, such as an IP, CIDR, path, two letter country code, ASN, region, or a comma-separated list of HTTP methods (for example `POST,PUT`).
 
             YAML: `value: US`  
-            Container label: `pangolin.public-resources.web-app.rules[0].value=US`
+            Container label: `praxis.public-resources.web-app.rules[0].value=US`
               <Note>
                 When using <code>match: region</code>, the value must be a supported region code. The following region IDs are available, based on the United Nations geoscheme:
                 <ul>
@@ -1234,7 +1234,7 @@ public-resources:
             Explicit rule priority. If omitted, priority is assigned from the rule order.
 
             YAML: `priority: 10`  
-            Container label: `pangolin.public-resources.web-app.rules[0].priority=10`
+            Container label: `praxis.public-resources.web-app.rules[0].priority=10`
           </ResponseField>
 
           <ResponseField name="enabled" type="boolean">
@@ -1242,7 +1242,7 @@ public-resources:
 
             **Default**: `true`  
             YAML: `enabled: true`  
-            Container label: `pangolin.public-resources.web-app.rules[0].enabled=true`
+            Container label: `praxis.public-resources.web-app.rules[0].enabled=true`
           </ResponseField>
         </Expandable>
       </ResponseField>
@@ -1255,21 +1255,21 @@ public-resources:
             Numeric PIN required before access is granted.
 
             YAML: `pincode: 123456`  
-            Container label: `pangolin.public-resources.web-app.auth.pincode=123456`
+            Container label: `praxis.public-resources.web-app.auth.pincode=123456`
           </ResponseField>
 
           <ResponseField name="password" type="string">
             Shared password gate for the resource.
 
             YAML: `password: super-secret`  
-            Container label: `pangolin.public-resources.web-app.auth.password=super-secret`
+            Container label: `praxis.public-resources.web-app.auth.password=super-secret`
           </ResponseField>
 
           <ResponseField name="sso-enabled" type="boolean">
             Enables Praxis sign-in for the resource.
 
             YAML: `sso-enabled: true`  
-            Container label: `pangolin.public-resources.web-app.auth.sso-enabled=true`
+            Container label: `praxis.public-resources.web-app.auth.sso-enabled=true`
           </ResponseField>
 
           <ResponseField name="sso-roles" type="array of strings">
@@ -1278,7 +1278,7 @@ public-resources:
             Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
             YAML: `sso-roles: [Member]`  
-            Container label: `pangolin.public-resources.web-app.auth.sso-roles[0]=Member`
+            Container label: `praxis.public-resources.web-app.auth.sso-roles[0]=Member`
           </ResponseField>
 
           <ResponseField name="sso-users" type="array of strings">
@@ -1287,7 +1287,7 @@ public-resources:
             Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
             YAML: `sso-users: [user@example.com]`  
-            Container label: `pangolin.public-resources.web-app.auth.sso-users[0]=user@example.com`
+            Container label: `praxis.public-resources.web-app.auth.sso-users[0]=user@example.com`
           </ResponseField>
 
           <ResponseField name="whitelist-users" type="array of strings">
@@ -1296,14 +1296,14 @@ public-resources:
             Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
             YAML: `whitelist-users: [admin@example.com]`  
-            Container label: `pangolin.public-resources.web-app.auth.whitelist-users[0]=admin@example.com`
+            Container label: `praxis.public-resources.web-app.auth.whitelist-users[0]=admin@example.com`
           </ResponseField>
 
           <ResponseField name="auto-login-idp" type="integer">
             Identity provider ID to redirect to automatically.
 
             YAML: `auto-login-idp: 1`  
-            Container label: `pangolin.public-resources.web-app.auth.auto-login-idp=1`
+            Container label: `praxis.public-resources.web-app.auth.auto-login-idp=1`
           </ResponseField>
 
           <ResponseField name="basic-auth" type="object">
@@ -1314,14 +1314,14 @@ public-resources:
                 Basic auth username.
 
                 YAML: `user: demo`  
-                Container label: `pangolin.public-resources.web-app.auth.basic-auth.user=demo`
+                Container label: `praxis.public-resources.web-app.auth.basic-auth.user=demo`
               </ResponseField>
 
               <ResponseField name="password" type="string" required>
                 Basic auth password.
 
                 YAML: `password: change-me`  
-                Container label: `pangolin.public-resources.web-app.auth.basic-auth.password=change-me`
+                Container label: `praxis.public-resources.web-app.auth.basic-auth.password=change-me`
               </ResponseField>
 
               <ResponseField name="extendedCompatibility" type="boolean">
@@ -1330,7 +1330,7 @@ public-resources:
                 **Default**: `true`
 
                 YAML: `extendedCompatibility: true`  
-                Container label: `pangolin.public-resources.web-app.auth.basic-auth.extendedCompatibility=true`
+                Container label: `praxis.public-resources.web-app.auth.basic-auth.extendedCompatibility=true`
               </ResponseField>
             </Expandable>
           </ResponseField>
@@ -1339,14 +1339,14 @@ public-resources:
             Mutual TLS settings. Requires clients to present a certificate signed by one of the trusted CAs. Only allowed when `mode: http`, and `ssl` must not be `false`. See [Mutual TLS (mTLS)](#mutual-tls-mtls).
 
             YAML: `mtls: { enabled: true, ca-certificates: [...] }`  
-            Container label: `pangolin.public-resources.web-app.auth.mtls.enabled=true`
+            Container label: `praxis.public-resources.web-app.auth.mtls.enabled=true`
 
             <Expandable title="mTLS object">
               <ResponseField name="enabled" type="boolean">
                 Turns mTLS on for the resource. Requires at least one entry in `ca-certificates`.
 
                 YAML: `enabled: true`  
-                Container label: `pangolin.public-resources.web-app.auth.mtls.enabled=true`
+                Container label: `praxis.public-resources.web-app.auth.mtls.enabled=true`
               </ResponseField>
 
               <ResponseField name="ca-certificates" type="array of strings">
@@ -1355,7 +1355,7 @@ public-resources:
                 Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
                 YAML: `ca-certificates: ["-----BEGIN CERTIFICATE-----\n..."]`  
-                Container label: `pangolin.public-resources.web-app.auth.mtls.ca-certificates[0]=-----BEGIN CERTIFICATE-----...`
+                Container label: `praxis.public-resources.web-app.auth.mtls.ca-certificates[0]=-----BEGIN CERTIFICATE-----...`
               </ResponseField>
             </Expandable>
           </ResponseField>
@@ -1370,7 +1370,7 @@ public-resources:
         Maintenance page configuration for public resources **(EE)**.
 
         YAML: `maintenance: { enabled: true, type: forced }`  
-        Container label: `pangolin.public-resources.web-app.maintenance.enabled=true`
+        Container label: `praxis.public-resources.web-app.maintenance.enabled=true`
 
         <Expandable title="Maintenance object">
           <ResponseField name="enabled" type="boolean">
@@ -1427,14 +1427,14 @@ public-resources:
         Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
         YAML: `targets: [{ hostname: app, port: 8080, method: http }]`  
-        Container label: `pangolin.public-resources.web-app.targets[0].hostname=app`
+        Container label: `praxis.public-resources.web-app.targets[0].hostname=app`
 
         <Expandable title="Target object">
           <ResponseField name="site" type="string">
             Site that hosts the target. Optional when deploying from a site. If omitted, the target is assigned to the site that applied the blueprint.
 
             YAML: `site: my-site`  
-            Container label: `pangolin.public-resources.web-app.targets[0].site=my-site`
+            Container label: `praxis.public-resources.web-app.targets[0].site=my-site`
           </ResponseField>
 
           <ResponseField name="method" type="string">
@@ -1443,42 +1443,42 @@ public-resources:
             **Options**: `http`, `https`, `h2c`
 
             YAML: `method: http`  
-            Container label: `pangolin.public-resources.web-app.targets[0].method=http`
+            Container label: `praxis.public-resources.web-app.targets[0].method=http`
           </ResponseField>
 
           <ResponseField name="hostname" type="string" required>
             Target hostname or IP address.
 
             YAML: `hostname: app`  
-            Container label: `pangolin.public-resources.web-app.targets[0].hostname=app`
+            Container label: `praxis.public-resources.web-app.targets[0].hostname=app`
           </ResponseField>
 
           <ResponseField name="port" type="integer" required>
             Target port.
 
             YAML: `port: 8080`  
-            Container label: `pangolin.public-resources.web-app.targets[0].port=8080`
+            Container label: `praxis.public-resources.web-app.targets[0].port=8080`
           </ResponseField>
 
           <ResponseField name="enabled" type="boolean">
             Disables the target without deleting it.
 
             YAML: `enabled: true`  
-            Container label: `pangolin.public-resources.web-app.targets[0].enabled=true`
+            Container label: `praxis.public-resources.web-app.targets[0].enabled=true`
           </ResponseField>
 
           <ResponseField name="internal-port" type="integer">
             Internal port override used in container-oriented setups.
 
             YAML: `internal-port: 8080`  
-            Container label: `pangolin.public-resources.web-app.targets[0].internal-port=8080`
+            Container label: `praxis.public-resources.web-app.targets[0].internal-port=8080`
           </ResponseField>
 
           <ResponseField name="path" type="string">
             Path condition used for HTTP routing.
 
             YAML: `path: /`  
-            Container label: `pangolin.public-resources.web-app.targets[0].path=/`
+            Container label: `praxis.public-resources.web-app.targets[0].path=/`
           </ResponseField>
 
           <ResponseField name="path-match" type="string">
@@ -1491,7 +1491,7 @@ public-resources:
             Replacement path or prefix used during path rewriting.
 
             YAML: `rewrite-path: /`  
-            Container label: `pangolin.public-resources.web-app.targets[0].rewrite-path=/`
+            Container label: `praxis.public-resources.web-app.targets[0].rewrite-path=/`
           </ResponseField>
 
           <ResponseField name="rewritePath" type="string" deprecated>
@@ -1511,7 +1511,7 @@ public-resources:
             **Default**: `100`
 
             YAML: `priority: 100`  
-            Container label: `pangolin.public-resources.web-app.targets[0].priority=100`
+            Container label: `praxis.public-resources.web-app.targets[0].priority=100`
           </ResponseField>
 
           <ResponseField name="healthcheck" type="object">
@@ -1564,7 +1564,7 @@ public-resources:
                 Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
                 YAML: `headers: [{ name: X-Health-Check, value: true }]`  
-                Container label: `pangolin.public-resources.web-app.targets[0].healthcheck.headers[0].name=X-Health-Check`
+                Container label: `praxis.public-resources.web-app.targets[0].healthcheck.headers[0].name=X-Health-Check`
 
                 <Expandable title="Healthcheck header object">
                   <ResponseField name="name" type="string" required>
@@ -1660,7 +1660,7 @@ private-resources:
         Display name for the resource.
 
         YAML: `name: Internal Network`  
-        Container label: `pangolin.private-resources.internal-net.name=Internal Network`
+        Container label: `praxis.private-resources.internal-net.name=Internal Network`
       </ResponseField>
 
       <ResponseField name="mode" type="string" required>
@@ -1676,7 +1676,7 @@ private-resources:
         - `exit-node`: Sends all of a client's internet traffic out through the site network. Does not take a `destination`; all ports and ICMP are always allowed. `gateway` is accepted as an alias.
 
         YAML: `mode: cidr`  
-        Container label: `pangolin.private-resources.internal-net.mode=cidr`
+        Container label: `praxis.private-resources.internal-net.mode=cidr`
       </ResponseField>
 
       <ResponseField name="sites" type="array of strings">
@@ -1685,14 +1685,14 @@ private-resources:
         Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
         YAML: `sites: [my-site]`  
-        Container label: `pangolin.private-resources.internal-net.sites[0]=my-site`
+        Container label: `praxis.private-resources.internal-net.sites[0]=my-site`
       </ResponseField>
 
       <ResponseField name="site" type="string" deprecated>
         Deprecated. Use `sites` instead.
 
         YAML: `site: my-site`  
-        Container label: `pangolin.private-resources.internal-net.site=my-site`
+        Container label: `praxis.private-resources.internal-net.site=my-site`
       </ResponseField>
 
       <ResponseField name="destination" type="string">
@@ -1706,7 +1706,7 @@ private-resources:
         - `exit-node`: not used; always routes `0.0.0.0/0`
 
         YAML: `destination: 10.0.0.0/24`  
-        Container label: `pangolin.private-resources.internal-net.destination=10.0.0.0/24`
+        Container label: `praxis.private-resources.internal-net.destination=10.0.0.0/24`
       </ResponseField>
 
       <ResponseField name="auth-daemon" type="object">
@@ -1737,21 +1737,21 @@ private-resources:
         Upstream port for the destination. Typically used with `mode: http` to point at the internal HTTP endpoint's port.
 
         YAML: `destination-port: 8080`  
-        Container label: `pangolin.private-resources.internal-app.destination-port=8080`
+        Container label: `praxis.private-resources.internal-app.destination-port=8080`
       </ResponseField>
 
       <ResponseField name="full-domain" type="string">
         Internal domain used to expose an HTTP private resource to clients. Applies when `mode: http`.
 
         YAML: `full-domain: app.internal.example.com`  
-        Container label: `pangolin.private-resources.internal-app.full-domain=app.internal.example.com`
+        Container label: `praxis.private-resources.internal-app.full-domain=app.internal.example.com`
       </ResponseField>
 
       <ResponseField name="ssl" type="boolean">
         Whether SSL/TLS should be used when serving the private HTTP resource.
 
         YAML: `ssl: true`  
-        Container label: `pangolin.private-resources.internal-app.ssl=true`
+        Container label: `praxis.private-resources.internal-app.ssl=true`
       </ResponseField>
 
       <ResponseField name="scheme" type="string">
@@ -1760,14 +1760,14 @@ private-resources:
         **Options**: `http`, `https`
 
         YAML: `scheme: https`  
-        Container label: `pangolin.private-resources.internal-app.scheme=https`
+        Container label: `praxis.private-resources.internal-app.scheme=https`
       </ResponseField>
 
       <ResponseField name="enabled" type="boolean">
         Disables the resource without removing it.
 
         YAML: `enabled: true`  
-        Container label: `pangolin.private-resources.internal-net.enabled=true`
+        Container label: `praxis.private-resources.internal-net.enabled=true`
       </ResponseField>
 
       <ResponseField name="tcp-ports" type="string">
@@ -1776,7 +1776,7 @@ private-resources:
         **Default**: `*`
 
         YAML: `tcp-ports: "22,443"`  
-        Container label: `pangolin.private-resources.internal-net.tcp-ports=22,443`
+        Container label: `praxis.private-resources.internal-net.tcp-ports=22,443`
       </ResponseField>
 
       <ResponseField name="udp-ports" type="string">
@@ -1785,7 +1785,7 @@ private-resources:
         **Default**: `*`
 
         YAML: `udp-ports: "53"`  
-        Container label: `pangolin.private-resources.internal-net.udp-ports=53`
+        Container label: `praxis.private-resources.internal-net.udp-ports=53`
       </ResponseField>
 
       <ResponseField name="disable-icmp" type="boolean">
@@ -1794,14 +1794,14 @@ private-resources:
         **Default**: `false`
 
         YAML: `disable-icmp: false`  
-        Container label: `pangolin.private-resources.internal-net.disable-icmp=false`
+        Container label: `praxis.private-resources.internal-net.disable-icmp=false`
       </ResponseField>
 
       <ResponseField name="alias" type="string">
         Internal DNS alias for the resource. Must be a fully qualified domain name and may include wildcards (`*`, `?`), e.g. `example.com`, `*.example.com`, or `host-0?.example.internal`. Required when `mode: host` and `destination` is a domain.
 
         YAML: `alias: "*.internal.example.com"`  
-        Container label: `pangolin.private-resources.internal-net.alias=*.internal.example.com`
+        Container label: `praxis.private-resources.internal-net.alias=*.internal.example.com`
       </ResponseField>
 
       <ResponseField name="roles" type="array of strings">
@@ -1810,7 +1810,7 @@ private-resources:
         Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
         YAML: `roles: [Member]`  
-        Container label: `pangolin.private-resources.internal-net.roles[0]=Member`
+        Container label: `praxis.private-resources.internal-net.roles[0]=Member`
       </ResponseField>
 
       <ResponseField name="users" type="array of strings">
@@ -1819,7 +1819,7 @@ private-resources:
         Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
         YAML: `users: [user@example.com]`  
-        Container label: `pangolin.private-resources.internal-net.users[0]=user@example.com`
+        Container label: `praxis.private-resources.internal-net.users[0]=user@example.com`
       </ResponseField>
 
       <ResponseField name="machines" type="array of strings">
@@ -1828,7 +1828,7 @@ private-resources:
         Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
         YAML: `machines: [machine-id-1]`  
-        Container label: `pangolin.private-resources.internal-net.machines[0]=machine-id-1`
+        Container label: `praxis.private-resources.internal-net.machines[0]=machine-id-1`
       </ResponseField>
 
       <ResponseField name="labels" type="array of strings">
@@ -1837,7 +1837,7 @@ private-resources:
         Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
         YAML: `labels: [production]`  
-        Container label: `pangolin.private-resources.internal-net.labels[0]=production`
+        Container label: `praxis.private-resources.internal-net.labels[0]=production`
       </ResponseField>
 
       <ResponseField name="ai-providers" type="array of objects">
@@ -1846,7 +1846,7 @@ private-resources:
         Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
         YAML: `ai-providers: [{ provider: openai-prod, access-mode: inherit }]`  
-        Container label: `pangolin.private-resources.ai-gateway.ai-providers[0].provider=openai-prod`
+        Container label: `praxis.private-resources.ai-gateway.ai-providers[0].provider=openai-prod`
       </ResponseField>
 
       <ResponseField name="ai-budget" type="array of objects">
@@ -1855,7 +1855,7 @@ private-resources:
         Container labels for arrays must include an index (`[0]`, `[1]`, ...).
 
         YAML: `ai-budget: [{ amount: 100, unit: usd, period: monthly }]`  
-        Container label: `pangolin.private-resources.ai-gateway.ai-budget[0].amount=100`
+        Container label: `praxis.private-resources.ai-gateway.ai-budget[0].amount=100`
       </ResponseField>
     </Expandable>
   </ResponseField>
